@@ -19,5 +19,6 @@ public class WatsonsWineActivity extends Activity {
                 		WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.main);
+        setContentView(R.layout.main);
     }
 }

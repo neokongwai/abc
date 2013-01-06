@@ -20,5 +20,6 @@ public class WatsonsWineActivity extends Activity {
         
         setContentView(R.layout.main);
         setContentView(R.layout.main);
+        setContentView(R.layout.main);
     }
 }

@@ -1,9 +1,12 @@
 package watsons.wine;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 public class WatsonsWineActivity extends Activity {
     /** Called when the activity is first created. */
@@ -18,8 +21,18 @@ public class WatsonsWineActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 		WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
+        
         setContentView(R.layout.main);
-        setContentView(R.layout.main);
-        setContentView(R.layout.main);
+        
+        ImageView main_bg = (ImageView) findViewById(R.id.main_bg);
+        main_bg.setOnClickListener(new View.OnClickListener()         
+        {
+
+            public void onClick(View v) {
+            	// Perform action on click
+            	Intent myIntent = new Intent(v.getContext(), TabBarExample.class);
+                startActivityForResult(myIntent, 0);
+            }
+        });
     }
 }

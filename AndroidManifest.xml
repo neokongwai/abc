@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TabBarExample" />
-        <activity android:name=".FirstTab" />
+        <activity android:name="watsons.wine.WineListTab" />
         <activity android:name=".SecondTab" />
         <activity android:name=".ThirdTab" />
         <activity android:name=".FourthTab" />

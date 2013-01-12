@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+ <TextView
+        android:id="@+id/list_wineitem_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="6dip"
+        android:textColor="@color/Maroon"
+        android:height="44sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingRight="10dip"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+</LinearLayout>

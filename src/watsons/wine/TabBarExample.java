@@ -45,8 +45,8 @@ public class TabBarExample extends TabActivity {
 		/** TabSpec setIndicator() is used to set name for the tab. */
 		/** TabSpec setContent() is used to set content for a particular tab. */
 		setupTab(new ImageView(this),R.drawable.ic_tab_winelist,WineListTab.class);
-		setupTab(new ImageView(this),R.drawable.ic_tab_cellar,SecondTab.class);
-		setupTab(new ImageView(this),R.drawable.ic_tab_food,ThirdTab.class);
+		setupTab(new ImageView(this),R.drawable.ic_tab_cellar,MyCellarTab.class);
+		setupTab(new ImageView(this),R.drawable.ic_tab_food,FoodTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_events,FourthTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_location,FifthTab.class);
 		/*//firstTabSpec.setIndicator("", this.getResources().getDrawable(R.drawable.ic_tab_winelist)).setContent(

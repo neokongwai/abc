@@ -22,8 +22,8 @@
         </activity>
         <activity android:name=".TabBarExample" />
         <activity android:name="watsons.wine.WineListTab" />
-        <activity android:name=".SecondTab" />
-        <activity android:name=".ThirdTab" />
+        <activity android:name="watsons.wine.MyCellarTab" />
+        <activity android:name="watsons.wine.FoodTab" />
         <activity android:name=".FourthTab" />
         <activity android:name=".FifthTab" />
         

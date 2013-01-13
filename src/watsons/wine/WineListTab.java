@@ -32,7 +32,7 @@ public class WineListTab extends Activity {
 
 		// Assign adapter to ListView
 		listView.setAdapter(adapter);
-		listView.setDividerHeight(0);
+		listView.setDividerHeight(2);
 
 	}
 }

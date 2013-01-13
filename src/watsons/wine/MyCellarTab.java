@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class SecondTab extends Activity {
+public class MyCellarTab extends Activity {
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* Second Tab Content */
-		TextView textView = new TextView(this);
-		textView.setText("Second Tab");
-		setContentView(textView);
+		/* My Cellar Tab Content */
+		setContentView(R.layout.mycellar_tab);
 
 	}
 }

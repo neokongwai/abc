@@ -1,5 +1,7 @@
 package watsons.wine;
 
+import com.google.android.maps.GeoPoint;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +11,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class WatsonsWineActivity extends Activity {
+	private static final int INITIAL_LATITUDE = 22420487;
+	private static final int INITIAL_LONGITUDE = 114207216;
+	private static final GeoPoint Central = new GeoPoint(INITIAL_LATITUDE, INITIAL_LONGITUDE);
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,9 +22,9 @@ public class WatsonsWineActivity extends Activity {
         // remove title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         
-        // remove status bar
+        /* remove status bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                		WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                		WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         
         
         setContentView(R.layout.main);

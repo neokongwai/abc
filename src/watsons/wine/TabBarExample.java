@@ -47,8 +47,8 @@ public class TabBarExample extends TabActivity {
 		setupTab(new ImageView(this),R.drawable.ic_tab_winelist,WineListTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_cellar,MyCellarTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_food,FoodTab.class);
-		setupTab(new ImageView(this),R.drawable.ic_tab_events,FourthTab.class);
-		setupTab(new ImageView(this),R.drawable.ic_tab_location,FifthTab.class);
+		setupTab(new ImageView(this),R.drawable.ic_tab_events,EventsTab.class);
+		setupTab(new ImageView(this),R.drawable.ic_tab_location,LocationTab.class);
 		/*//firstTabSpec.setIndicator("", this.getResources().getDrawable(R.drawable.ic_tab_winelist)).setContent(
 		//		new Intent(this, FirstTab.class));
 		secondTabSpec.setIndicator("", this.getResources().getDrawable(R.drawable.ic_tab_cellar)).setContent(

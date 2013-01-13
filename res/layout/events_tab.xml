@@ -7,11 +7,11 @@
     >
 
     <ImageView
-        android:id="@+id/title_food"
+        android:id="@+id/title_events"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/title_food" />
+        android:src="@drawable/title_events" />
 
     <ImageView
         android:id="@+id/list_wine"
@@ -20,13 +20,5 @@
         android:src="@drawable/bg_cellar_index"
         android:contentDescription="@string/app_name"
     />
-	<ListView
-        android:id="@+id/list_food"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_wine_item"
-        android:divider="@drawable/line_cellar_table"
-        android:cacheColorHint="#00000000" >
-    </ListView>
-    
+
 </LinearLayout>

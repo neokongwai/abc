@@ -24,8 +24,8 @@
         <activity android:name="watsons.wine.WineListTab" />
         <activity android:name="watsons.wine.MyCellarTab" />
         <activity android:name="watsons.wine.FoodTab" />
-        <activity android:name=".FourthTab" />
-        <activity android:name=".FifthTab" />
+        <activity android:name="watsons.wine.EventsTab" />
+        <activity android:name="watsons.wine.LocationTab" />
         
     </application>
 

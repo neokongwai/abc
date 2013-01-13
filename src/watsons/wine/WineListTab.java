@@ -14,10 +14,12 @@ public class WineListTab extends Activity {
 		
 		setContentView(R.layout.winelist_tab);
 		/* Wine List Tab Content */
+		
 		ListView listView = (ListView) findViewById(R.id.list_wine);
 		String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-		  "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-		  "Linux", "OS/2" };
+		  "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"
+		  ,"Linux", "OS/2","Test" 
+		  };
 
 		// Define a new Adapter
 		// First parameter - Context

@@ -7,8 +7,8 @@
 	android:id="@+id/tabsLayout" 
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:padding="0dip" 
-	android:gravity="bottom" 
+	android:padding="0dip"
+	android:layout_margin="0dp"
 	android:orientation="vertical">
 	
     <ImageView android:id ="@+id/tabsImage"

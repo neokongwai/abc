@@ -15,7 +15,7 @@ public class TabBarExample extends TabActivity {
 	private TabHost mTabHost;
 	
 	private void setupTabHost() {
-		mTabHost = (TabHost) findViewById(android.R.id.tabhost);		
+		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
 	}
 	/** Called when the activity is first created. */

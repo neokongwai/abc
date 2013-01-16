@@ -15,24 +15,12 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/title_events" />
 
-    <ImageView
-        android:id="@+id/calender"
+    <watsons.wine.CalendarView
+        android:id="@+id/calendar_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_calender"
-        android:contentDescription="@string/app_name"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="0dp"
-    />
-    <ImageView
-        android:id="@+id/calender_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_calender_bottom"
-        android:contentDescription="@string/app_name"
-        android:layout_gravity="center"
-    />
+        android:layout_marginTop="50dp" 
+        android:layout_gravity="center"/>
     
 
 </LinearLayout>

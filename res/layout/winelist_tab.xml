@@ -13,13 +13,14 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/title_wine" />
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/list_wine"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_wine_item"
         android:divider="@drawable/line_cellar_table"
-        android:cacheColorHint="#00000000" >
-    </ListView>
+        android:cacheColorHint="#00000000" 
+        android:groupIndicator="@null">
+    </ExpandableListView>
 
 </LinearLayout>

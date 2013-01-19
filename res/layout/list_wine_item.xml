@@ -1,19 +1,30 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
 
-
- <TextView
+    <TextView
         android:id="@+id/list_wineitem_text"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
-        android:paddingLeft="6dip"
-        android:textColor="@color/Maroon"
         android:height="44sp"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:paddingLeft="6dip"
         android:paddingRight="10dip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-</LinearLayout>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Maroon"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/explist_indicator"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:contentDescription="@string/app_name" />
+
+</RelativeLayout>

@@ -11,16 +11,22 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class WineListTab extends Activity {
 	// url to make request
@@ -31,7 +37,7 @@ public class WineListTab extends Activity {
     private static final String TAG_COUNTRIES = "countries";
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
-    private static final String TAG_PROVINCE = "provinces";
+    private static final String TAG_PROVINCE = "province";
     private static final String TAG_PRODUCT_COUNT = "product_count";
  
     // contacts JSONArray
@@ -40,6 +46,8 @@ public class WineListTab extends Activity {
     JSONArray provinces_children = null;
     private ExpandableListAdapter mAdapter;
     Context mContext = WineListTab.this;    
+
+    List<Integer> emptyList = new ArrayList<Integer>();
     
 	/** Called when the activity is first created. */
 	@Override
@@ -50,8 +58,9 @@ public class WineListTab extends Activity {
 		/* Wine List Tab Content */
 		
 		// Hashmap for ListView
-		final List<Map<String, String>> contryList = new ArrayList<Map<String, String>>();
-		List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();
+		final List<Map<String, String>> countryList = new ArrayList<Map<String, String>>();
+		final List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();
+		
  
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
@@ -107,7 +116,7 @@ public class WineListTab extends Activity {
                 map.put(TAG_PRODUCT_COUNT, product_count);
  
                 // adding HashList to ArrayList
-                contryList.add(map);
+                countryList.add(map);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -136,14 +145,14 @@ public class WineListTab extends Activity {
 
 		 mAdapter = new SimpleExpandableListAdapter(
 	                this,
-	                contryList,
+	                countryList,
 	                R.layout.list_wine_item,
 	                new String[] {TAG_NAME},
 	                new int[] { R.id.list_wineitem_text },
 	                provinceList,
-	                R.layout.list_wine_item,
+	                R.layout.list_wine_item_child,
 	                new String[] {TAG_NAME},
-	                new int[] {	R.id.list_wineitem_text }
+	                new int[] {	R.id.list_wineitem_text_child }
 	                )
 		 {
 			@Override
@@ -160,6 +169,7 @@ public class WineListTab extends Activity {
 					
 					if ( getChildrenCount( groupPosition ) == 0 ) 
 					{
+						emptyList.add(groupPosition);
 						inidicatorImage .setVisibility( View.INVISIBLE	 );
 					}
 					else
@@ -168,8 +178,18 @@ public class WineListTab extends Activity {
 						inidicatorImage .setVisibility( View.VISIBLE );
 					}
 					TextView tv = (TextView) view.findViewById(R.id.list_wineitem_text);
-		            tv.setText(contryList.get(groupPosition).get(TAG_NAME));
+		            tv.setText(countryList.get(groupPosition).get(TAG_NAME));
 					return view;
+			}
+			
+			public View getChildView(int groupPosition, int childPosition, 
+				    boolean isLastChild, View convertView, ViewGroup parent) 
+			{
+				LayoutInflater li = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View view = li.inflate(R.layout.list_wine_item_child, null);
+				TextView tv = (TextView) view.findViewById(R.id.list_wineitem_text_child);
+	            tv.setText(provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
+			    return view;
 			}
 			 
 		 };
@@ -180,7 +200,40 @@ public class WineListTab extends Activity {
 		//listView.setIndicatorBounds(width-GetDipsFromPixel(16), width-GetDipsFromPixel(5));
 		listView.setAdapter(mAdapter);
 		listView.setDividerHeight(2);
-
+		listView.setOnChildClickListener(new OnChildClickListener() 
+		{
+	        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+	                int childPosition, long id) 
+	        {
+	        	Bundle bundle = new Bundle();
+	        	bundle.putBoolean("country", false);
+	        	bundle.putString("id", provinceList.get(groupPosition).get(childPosition).get(TAG_ID));
+	        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
+	        	intent.putExtras(bundle);
+	        	startActivityForResult(intent, 0);
+	        	return true;
+	        }
+		});
+		listView.setOnGroupClickListener(new OnGroupClickListener()
+		{
+			public boolean onGroupClick(ExpandableListView parent, View v,
+					int groupPosition, long id) 
+			{
+				if ( emptyList.contains(groupPosition) ) 
+				{
+					Bundle bundle = new Bundle();
+		        	bundle.putBoolean("country", true);
+		        	bundle.putString("id", countryList.get(groupPosition).get(TAG_ID));
+		        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
+		        	intent.putExtras(bundle);
+		        	startActivityForResult(intent, 0);
+				}
+				return false;
+			}
+			
+			
+		});
+		
 	}
 	
 	//Convert pixel to dip 

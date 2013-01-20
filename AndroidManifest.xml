@@ -28,6 +28,7 @@
         <activity android:name="watsons.wine.EventsTab" />
         <activity android:name="watsons.wine.LocationTab" />
         <activity android:name="watsons.wine.CalendarActivity" />
+        <activity android:name="watsons.wine.WineListProduct" />
         
     </application>
 </manifest>

@@ -208,6 +208,7 @@ public class WineListTab extends Activity {
 	        	Bundle bundle = new Bundle();
 	        	bundle.putBoolean("country", false);
 	        	bundle.putString("id", provinceList.get(groupPosition).get(childPosition).get(TAG_ID));
+	        	bundle.putString("name", provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
 	        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
 	        	intent.putExtras(bundle);
 	        	startActivityForResult(intent, 0);
@@ -224,6 +225,7 @@ public class WineListTab extends Activity {
 					Bundle bundle = new Bundle();
 		        	bundle.putBoolean("country", true);
 		        	bundle.putString("id", countryList.get(groupPosition).get(TAG_ID));
+		        	bundle.putString("name", countryList.get(groupPosition).get(TAG_NAME));
 		        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
 		        	intent.putExtras(bundle);
 		        	startActivityForResult(intent, 0);

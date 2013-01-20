@@ -2,6 +2,7 @@ package watsons.wine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +12,15 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -72,8 +77,10 @@ public class WineListProduct extends Activity {
 		
 		// Hashmap for ListView
 		final List<Map<String, String>> productList = new ArrayList<Map<String, String>>();
-		//final List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();
  
+		
+		
+		
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
  
@@ -81,7 +88,11 @@ public class WineListProduct extends Activity {
         Bundle bundle = this.getIntent().getExtras();
         Boolean country = bundle.getBoolean("country");
         String id = bundle.getString("id");
-        /*
+        String name = bundle.getString("name");
+        // Top TextView
+     	TextView nameText = (TextView) findViewById(R.id.name_text);
+     	nameText.setText(name);
+        
         if (country)
         {
         	url = country_url+id;
@@ -89,20 +100,19 @@ public class WineListProduct extends Activity {
         else
         {
         	url = province_url+id;
-        }*/
+        }
         // getting JSON string from URL
         JSONObject json = jParser.getJSONFromUrl(url);
                 
         try {
             // Getting Array of Contacts
         	products = json.getJSONArray(TAG_PRODUCT);
-
             // looping through All Contacts
             for(int i = 0; i < products.length(); i++){
                 JSONObject p = products.getJSONObject(i);
                 
                 // creating new HashMap
-                HashMap<String, String> map = new HashMap<String, String>();
+                LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
                 // adding each child node to HashMap key => value
                 map.put(TAG_ID, p.getString(TAG_ID));
                 map.put(TAG_NAME, p.getString(TAG_NAME));
@@ -150,7 +160,20 @@ public class WineListProduct extends Activity {
 		listView.setVerticalFadingEdgeEnabled(false);
 		listView.setAdapter(adapter);
 		listView.setDividerHeight(2);
-		
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) 
+			{
+				Bundle bundle = new Bundle();
+	        	bundle.putBoolean("country", false);
+	        	bundle.putString("id", productList.get(position).get(TAG_ID));
+	        	Intent intent = new Intent(WineListProduct.this, ProductWebView.class);
+	        	intent.putExtras(bundle);
+	        	startActivityForResult(intent, 0);
+			}
+		}
+		);
 	}
 	
 	//Convert pixel to dip 

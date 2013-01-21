@@ -214,7 +214,9 @@ public class WineListTab extends Activity {
 	        	bundle.putString("name", provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
 	        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
 	        	intent.putExtras(bundle);
-	        	startActivityForResult(intent, 0);
+	        	//startActivityForResult(intent, 0);
+	        	Constants.SHOW_DETAILS = true;
+	        	replaceContentView("activity3", intent);
 	        	return true;
 	        }
 		});

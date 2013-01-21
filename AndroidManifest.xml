@@ -30,6 +30,7 @@
         <activity android:name="watsons.wine.CalendarActivity" />
         <activity android:name="watsons.wine.WineListProduct" />
         <activity android:name="watsons.wine.ProductWebView" />
+        <activity android:name="watsons.wine.LocationWebView" />
         
     </application>
 </manifest>

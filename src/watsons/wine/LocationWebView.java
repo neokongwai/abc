@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
  
-public class ProductWebView extends Activity {
+public class LocationWebView extends Activity {
  
 	private static String product_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/product_info/";
 	private WebView webView;
@@ -16,8 +16,8 @@ public class ProductWebView extends Activity {
 		
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
-        String id = bundle.getString("id");
-        //Toast.makeText(ProductWebView.this, id, Toast.LENGTH_SHORT).show();
+        int id = bundle.getInt("id");
+        Toast.makeText(LocationWebView.this, Integer.toString(id), Toast.LENGTH_SHORT).show();
         String url = product_url + id;
  
 		webView = (WebView) findViewById(R.id.webView1);

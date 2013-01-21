@@ -8,8 +8,10 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import watsons.wine.Constants;
 
 import android.app.Activity;
+import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ public class WineListTab extends Activity {
     private static final String TAG_NAME = "name";
     private static final String TAG_PROVINCE = "province";
     private static final String TAG_PRODUCT_COUNT = "product_count";
+
  
     // contacts JSONArray
     JSONArray contries = null;
@@ -228,7 +231,9 @@ public class WineListTab extends Activity {
 		        	bundle.putString("name", countryList.get(groupPosition).get(TAG_NAME));
 		        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
 		        	intent.putExtras(bundle);
-		        	startActivityForResult(intent, 0);
+		        	//startActivityForResult(intent, 0);
+		        	Constants.SHOW_DETAILS = true;
+		        	replaceContentView("activity3", intent);
 				}
 				return false;
 			}
@@ -237,6 +242,39 @@ public class WineListTab extends Activity {
 		});
 		
 	}
+
+
+	public void replaceContentView(String id, Intent newIntent) {
+	    View view = ((ActivityGroup) ((Activity) mContext).getParent())
+	            .getLocalActivityManager()
+	            .startActivity(id,
+	                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+	            .getDecorView();
+	    ((Activity) mContext).setContentView(view);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		if (Constants.SHOW_DETAILS) {
+		    Log.e("back", "pressed accepted");
+		    Constants.LIST_ACTIVITY = 0;
+		    Constants.SHOW_DETAILS = false;
+		    Intent intent = new Intent(WineListTab.this, WineListTab.class);
+		    replaceContentView("activity1", intent);
+		    //TabBarExample ParentActivity;
+		    //ParentActivity = (TabBarExample) this.getParent();
+		    //ParentActivity.getTabHost().setCurrentTab(0);
+	  	}
+		else
+		{
+			finish();
+		}
+		return;
+	}
+	
+	
 	
 	//Convert pixel to dip 
 	public int GetDipsFromPixel(float pixels)

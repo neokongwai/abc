@@ -7,7 +7,7 @@ import android.widget.Toast;
  
 public class LocationWebView extends Activity {
  
-	private static String product_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/product_info/";
+	private static String product_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/shop_info/";
 	private WebView webView;
  
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class LocationWebView extends Activity {
         String url = product_url + id;
  
 		webView = (WebView) findViewById(R.id.webView1);
+		webView.getSettings().setJavaScriptEnabled(true);
 		webView.loadUrl(url);
 	}
 }

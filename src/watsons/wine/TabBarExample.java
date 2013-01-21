@@ -1,6 +1,7 @@
 package watsons.wine;
 
 import android.app.TabActivity;
+import watsons.wine.Constants;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,6 +50,9 @@ public class TabBarExample extends TabActivity {
 		setupTab(new ImageView(this),R.drawable.ic_tab_food,FoodTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_events,EventsTab.class);
 		setupTab(new ImageView(this),R.drawable.ic_tab_location,LocationTab.class);
+		
+		
+		mTabHost.setCurrentTab(Constants.LIST_ACTIVITY);
 		/*//firstTabSpec.setIndicator("", this.getResources().getDrawable(R.drawable.ic_tab_winelist)).setContent(
 		//		new Intent(this, FirstTab.class));
 		secondTabSpec.setIndicator("", this.getResources().getDrawable(R.drawable.ic_tab_cellar)).setContent(
@@ -84,5 +88,10 @@ public class TabBarExample extends TabActivity {
 		ImageView iv = (ImageView) view.findViewById(R.id.tabsImage);
 		iv.setImageResource(drawable);
 		return view;
+	}
+	
+	public TabHost getTabHost()
+	{
+		return mTabHost;
 	}
 }

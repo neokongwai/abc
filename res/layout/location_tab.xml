@@ -10,7 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/title_location" />
+        android:src="@drawable/title_location" 
+        android:layout_marginTop="-1dp"/>
 
     <com.google.android.maps.MapView
         xmlns:android="http://schemas.android.com/apk/res/android"

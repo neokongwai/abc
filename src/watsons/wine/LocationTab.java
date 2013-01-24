@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.Toast;
 
 public class LocationTab extends MapActivity {
 	private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -98,9 +97,6 @@ public class LocationTab extends MapActivity {
             e.printStackTrace();
         }
         
-        Toast.makeText(this, Integer.toString(shopList.size()),
-				Toast.LENGTH_LONG).show();
-        
         for (int i=0;i<shopList.size();i++)
         {
         	double lat = Double.parseDouble(shopList.get(i).get(TAG_LAT));
@@ -119,9 +115,10 @@ public class LocationTab extends MapActivity {
 				protected boolean onBalloonTap(int index, OverlayItem item, MapView mapView) {			
 					Bundle bundle = new Bundle();
 			    	bundle.putInt("id", this.GetId());
-			    	Intent intent = new Intent(mapView.getContext(), LocationWebView.class);
-			    	intent.putExtras(bundle);
-			    	mapView.getContext().startActivity(intent);
+			    	Intent intent = new Intent(getParent(), LocationWebView.class);
+		        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+		        	intent.putExtras(bundle);
+		        	parentActivity.startChildActivity("LocationWebView", intent);
 					return true;
 				}
 			};

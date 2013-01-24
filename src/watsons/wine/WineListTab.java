@@ -62,8 +62,7 @@ public class WineListTab extends Activity {
 		
 		// Hashmap for ListView
 		final List<Map<String, String>> countryList = new ArrayList<Map<String, String>>();
-		final List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();
-		
+		final List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();	
  
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
@@ -202,7 +201,7 @@ public class WineListTab extends Activity {
 		//int width = getWindowManager().getDefaultDisplay().getWidth();
 		//listView.setIndicatorBounds(width-GetDipsFromPixel(16), width-GetDipsFromPixel(5));
 		listView.setAdapter(mAdapter);
-		listView.setDividerHeight(2);
+		listView.setDividerHeight(0);
 		listView.setOnChildClickListener(new OnChildClickListener() 
 		{
 	        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
@@ -212,14 +211,16 @@ public class WineListTab extends Activity {
 	        	bundle.putBoolean("country", false);
 	        	bundle.putString("id", provinceList.get(groupPosition).get(childPosition).get(TAG_ID));
 	        	bundle.putString("name", provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
-	        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
-	        	intent.putExtras(bundle);
-	        	//startActivityForResult(intent, 0);
+	        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
 	        	Constants.SHOW_DETAILS = true;
-	        	replaceContentView("activity3", intent);
+	        	Intent intent = new Intent(getParent(), WineListProduct.class);
+	        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	intent.putExtras(bundle);
+	        	parentActivity.startChildActivity("WineProductActivity", intent);
 	        	return true;
 	        }
 		});
+		
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
 			public boolean onGroupClick(ExpandableListView parent, View v,
@@ -231,11 +232,12 @@ public class WineListTab extends Activity {
 		        	bundle.putBoolean("country", true);
 		        	bundle.putString("id", countryList.get(groupPosition).get(TAG_ID));
 		        	bundle.putString("name", countryList.get(groupPosition).get(TAG_NAME));
-		        	Intent intent = new Intent(WineListTab.this, WineListProduct.class);
-		        	intent.putExtras(bundle);
-		        	//startActivityForResult(intent, 0);
+		        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
 		        	Constants.SHOW_DETAILS = true;
-		        	replaceContentView("activity3", intent);
+		        	Intent intent = new Intent(getParent(), WineListProduct.class);
+		        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+		        	intent.putExtras(bundle);
+		        	parentActivity.startChildActivity("WineProductActivity", intent);
 				}
 				return false;
 			}
@@ -254,21 +256,29 @@ public class WineListTab extends Activity {
 	            .getDecorView();
 	    ((Activity) mContext).setContentView(view);
 	}
-	
+	/*
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
+		
+		Activity current = ((ActivityGroup) ((Activity) mContext).getParent()).getLocalActivityManager().getActivity("WineListProduct");
+		current.finish();
+		/*
 		if (Constants.SHOW_DETAILS) {
-		    Log.e("back", "pressed accepted");
 		    Constants.LIST_ACTIVITY = 0;
 		    Constants.SHOW_DETAILS = false;
 		    Intent intent = new Intent(WineListTab.this, WineListTab.class);
-		    replaceContentView("activity1", intent);
-		    //TabBarExample ParentActivity;
-		    //ParentActivity = (TabBarExample) this.getParent();
-		    //ParentActivity.getTabHost().setCurrentTab(0);
+		    replaceContentView("WineListTab", intent);
 	  	}
+		else if (Constants.SHOW_PRODUCTS)
+		{
+			Constants.LIST_ACTIVITY = 0;
+			Constants.SHOW_DETAILS = true;
+			Constants.SHOW_PRODUCTS = false;
+			Intent intent = new Intent(WineListTab.this, WineListProduct.class);
+			replaceContentView("WineListProduct", intent);
+		}
 		else
 		{
 			finish();
@@ -276,6 +286,11 @@ public class WineListTab extends Activity {
 		return;
 	}
 	
+	@Override
+	public void onBackPressed() {
+		TabGroupView parentActivity = (TabGroupView)getParent();
+		parentActivity.onBackPressed();
+	}
 	
 	
 	//Convert pixel to dip 
@@ -285,5 +300,5 @@ public class WineListTab extends Activity {
 	        final float scale = getResources().getDisplayMetrics().density;
 	        // Convert the dps to pixels, based on density scale
 	        return (int) (pixels * scale + 0.5f);
-	} 
+	} */
 }

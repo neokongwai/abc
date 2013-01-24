@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
  
-public class ProductWebView extends Activity {
+public class WineProductWeb extends Activity {
  
 	private static String product_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/product_info/";
 	private WebView webView;

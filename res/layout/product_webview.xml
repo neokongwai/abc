@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/webView1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-/>
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/title_wine"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/DarkRed"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/title_wine" />
+
+    <WebView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

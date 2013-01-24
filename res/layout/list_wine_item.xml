@@ -2,7 +2,8 @@
     android:id="@+id/linearLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:background="@drawable/bg_wine_item_title">
 
     <TextView
         android:id="@+id/list_wineitem_text"

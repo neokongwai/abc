@@ -1,10 +1,11 @@
 package watsons.wine;
  
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.Toast;
  
+@SuppressLint("SetJavaScriptEnabled")
 public class LocationWebView extends Activity {
  
 	private static String product_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/shop_info/";
@@ -17,7 +18,6 @@ public class LocationWebView extends Activity {
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
         int id = bundle.getInt("id");
-        Toast.makeText(LocationWebView.this, Integer.toString(id), Toast.LENGTH_SHORT).show();
         String url = product_url + id;
  
 		webView = (WebView) findViewById(R.id.webView1);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 
 public class WatsonsWineActivity extends Activity {
@@ -12,15 +11,7 @@ public class WatsonsWineActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // remove title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
-        /* remove status bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                		WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        
-        
+           
         setContentView(R.layout.main);
         
         ImageView main_bg = (ImageView) findViewById(R.id.main_bg);
@@ -29,8 +20,8 @@ public class WatsonsWineActivity extends Activity {
 
             public void onClick(View v) {
             	// Perform action on click
-            	Intent myIntent = new Intent(v.getContext(), TabBarExample.class);
-                startActivityForResult(myIntent, 0);
+            	Intent myIntent = new Intent(v.getContext(), TabGroupView.class);
+                startActivity(myIntent);
             }
         });
     }

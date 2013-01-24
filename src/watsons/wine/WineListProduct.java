@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,10 +78,7 @@ public class WineListProduct extends Activity {
 		
 		// Hashmap for ListView
 		final List<Map<String, String>> productList = new ArrayList<Map<String, String>>();
- 
-		
-		
-		
+
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
  
@@ -89,16 +87,19 @@ public class WineListProduct extends Activity {
         Boolean country = bundle.getBoolean("country");
         String id = bundle.getString("id");
         String name = bundle.getString("name");
+     
         // Top TextView
      	TextView nameText = (TextView) findViewById(R.id.name_text);
-     	nameText.setText(name);
         
         if (country)
         {
+        	nameText.setText(name);
         	url = country_url+id;
         }
         else
         {
+        	String countryName = bundle.getString("country_name");
+        	nameText.setText(countryName+" | "+name);
         	url = province_url+id;
         }
         // getting JSON string from URL
@@ -159,7 +160,7 @@ public class WineListProduct extends Activity {
 		ListView listView = (ListView) findViewById(R.id.list_product);
 		listView.setVerticalFadingEdgeEnabled(false);
 		listView.setAdapter(adapter);
-		listView.setDividerHeight(2);
+		listView.setDividerHeight(0);
 		listView.setOnItemClickListener(new OnItemClickListener()
 		{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -168,13 +169,30 @@ public class WineListProduct extends Activity {
 				Bundle bundle = new Bundle();
 	        	bundle.putBoolean("country", false);
 	        	bundle.putString("id", productList.get(position).get(TAG_ID));
-	        	Intent intent = new Intent(WineListProduct.this, ProductWebView.class);
+	        	//Intent intent = new Intent(WineListProduct.this, ProductWebView.class);
+	        	//intent.putExtras(bundle);
+	        	Constants.SHOW_DETAILS = false;
+	        	Constants.SHOW_PRODUCTS = true;
+	        	Intent intent = new Intent(getParent(), WineProductWeb.class);
+	        	TabGroupBase parentActivity = (TabGroupBase)getParent();
 	        	intent.putExtras(bundle);
-	        	startActivityForResult(intent, 0);
+	        	parentActivity.startChildActivity("WineProductWeb", intent);
 			}
 		}
 		);
 	}
+	
+	/*
+	public void replaceContentView(String id, Intent newIntent) {
+	    View view = ((ActivityGroup) ((Activity) mContext).getParent())
+	            .getLocalActivityManager()
+	            .startActivity(id,
+	                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+	            .getDecorView();
+	    ((Activity) mContext).setContentView(view);
+	}
+	
+	
 	
 	//Convert pixel to dip 
 	public int GetDipsFromPixel(float pixels)
@@ -184,4 +202,5 @@ public class WineListProduct extends Activity {
 	        // Convert the dps to pixels, based on density scale
 	        return (int) (pixels * scale + 0.5f);
 	} 
+	*/
 }

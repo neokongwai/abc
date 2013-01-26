@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, WatsonsWineActivity!</string>
     <string name="app_name">WatsonsWine</string>
+    <string name="size_tag">Size:</string>
+    <string name="rating_tag">Rating:</string>
+    <string name="ori_price_tag">Regular Price:</string>
+    <string name="pro_price_tag">Offer Price:</string>
 
 </resources>

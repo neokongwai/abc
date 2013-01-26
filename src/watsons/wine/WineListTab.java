@@ -15,18 +15,15 @@ import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
@@ -34,7 +31,6 @@ public class WineListTab extends Activity {
 	// url to make request
     private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_countries";
     
- 
     // JSON Node names
     private static final String TAG_COUNTRIES = "countries";
     private static final String TAG_ID = "id";
@@ -123,19 +119,6 @@ public class WineListTab extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
-        /*
-        List<String> contryArr = new ArrayList<String>();
-        List<String> provinceArr = new ArrayList<String>();
-        for (int i = 0 ; i<contryList.size(); i++)
-        {
-        	contryArr.add(contryList.get(i).get(TAG_NAME));
-        	
-        }
-        for (int i = 0 ; i<provinceList.size() ; i++)
-        {
-        	//provinceArr.add(provinceList.get(i).get(TAG_NAME));
-        }*/
 
 		// Define a new Adapter
 		// First parameter - Context
@@ -198,8 +181,6 @@ public class WineListTab extends Activity {
 
 		// Assign adapter to ListView
 		ExpandableListView listView = (ExpandableListView) findViewById(R.id.list_wine);
-		//int width = getWindowManager().getDefaultDisplay().getWidth();
-		//listView.setIndicatorBounds(width-GetDipsFromPixel(16), width-GetDipsFromPixel(5));
 		listView.setAdapter(mAdapter);
 		listView.setDividerHeight(0);
 		listView.setOnChildClickListener(new OnChildClickListener() 
@@ -256,49 +237,5 @@ public class WineListTab extends Activity {
 	            .getDecorView();
 	    ((Activity) mContext).setContentView(view);
 	}
-	/*
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
-		
-		Activity current = ((ActivityGroup) ((Activity) mContext).getParent()).getLocalActivityManager().getActivity("WineListProduct");
-		current.finish();
-		/*
-		if (Constants.SHOW_DETAILS) {
-		    Constants.LIST_ACTIVITY = 0;
-		    Constants.SHOW_DETAILS = false;
-		    Intent intent = new Intent(WineListTab.this, WineListTab.class);
-		    replaceContentView("WineListTab", intent);
-	  	}
-		else if (Constants.SHOW_PRODUCTS)
-		{
-			Constants.LIST_ACTIVITY = 0;
-			Constants.SHOW_DETAILS = true;
-			Constants.SHOW_PRODUCTS = false;
-			Intent intent = new Intent(WineListTab.this, WineListProduct.class);
-			replaceContentView("WineListProduct", intent);
-		}
-		else
-		{
-			finish();
-		}
-		return;
-	}
 	
-	@Override
-	public void onBackPressed() {
-		TabGroupView parentActivity = (TabGroupView)getParent();
-		parentActivity.onBackPressed();
-	}
-	
-	
-	//Convert pixel to dip 
-	public int GetDipsFromPixel(float pixels)
-	{
-	        // Get the screen's density scale
-	        final float scale = getResources().getDisplayMetrics().density;
-	        // Convert the dps to pixels, based on density scale
-	        return (int) (pixels * scale + 0.5f);
-	} */
 }

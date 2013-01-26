@@ -3,7 +3,6 @@ package watsons.wine;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.Toast;
  
 public class WineProductWeb extends Activity {
  
@@ -20,7 +19,7 @@ public class WineProductWeb extends Activity {
         //Toast.makeText(ProductWebView.this, id, Toast.LENGTH_SHORT).show();
         String url = product_url + id;
  
-		webView = (WebView) findViewById(R.id.webView1);
+		webView = (WebView) findViewById(R.id.product_webview);
 		webView.loadUrl(url);
 	}
 }

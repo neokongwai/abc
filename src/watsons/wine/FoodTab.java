@@ -43,7 +43,6 @@ public class FoodTab extends Activity {
 		/* change food and wine top image*/
 		ImageView imageView_listwine = (ImageView) findViewById(R.id.list_wine);
 		String top_image_url = get_top_img_url();
-		System.out.println(top_image_url);
 		if(top_image_url != null) {
 			Drawable d = LoadImageFromWebOperations(top_image_url);
 			Bitmap bitmap = ((BitmapDrawable) d).getBitmap();

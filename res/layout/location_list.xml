@@ -23,7 +23,7 @@
         android:text="@string/hk"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <ListView
@@ -40,7 +40,7 @@
         android:text="@string/kl"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <ListView
@@ -57,7 +57,7 @@
         android:text="@string/nt"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <ListView
@@ -74,7 +74,7 @@
         android:text="@string/others"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <ListView

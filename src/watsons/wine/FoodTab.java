@@ -9,17 +9,18 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class FoodTab extends Activity {
 
@@ -36,12 +37,14 @@ public class FoodTab extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		/* Food & Wine Tab Content */
 		setContentView(R.layout.food_tab);
 		
 		/* change food and wine top image*/
 		ImageView imageView_listwine = (ImageView) findViewById(R.id.list_wine);
+		
+		/*
 		String top_image_url = get_top_img_url();
 		if(top_image_url != null) {
 			Drawable d = LoadImageFromWebOperations(top_image_url);
@@ -49,7 +52,9 @@ public class FoodTab extends Activity {
 			Drawable dx = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int)(320*480/320), (int)(220*480/320), true));
 			
 			imageView_listwine.setImageDrawable(dx);
-		}
+		}*/
+		// Use local src img to increase performance and reduce network usage
+		imageView_listwine.setImageResource(R.drawable.food_index1);
 
 		ListView listView = (ListView) findViewById(R.id.list_food);
 		icons = new int[] { 
@@ -68,7 +73,19 @@ public class FoodTab extends Activity {
 
 		listView.setAdapter(new IconTextAdapter(this,
 				android.R.layout.simple_list_item_1, names, icons));
-		listView.setDividerHeight(2);
+		//listView.setDividerHeight(2);
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) 
+			{
+				Bundle bundle = new Bundle();
+	        	Intent intent = new Intent(getParent(), FoodCuisineList.class);
+	        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	intent.putExtras(bundle);
+	        	parentActivity.startChildActivity("FoodCustineList", intent);
+			}
+		});
 
 	}
 
@@ -87,7 +104,7 @@ public class FoodTab extends Activity {
 			View rowview = convertView;
 			if (rowview == null) {
 				LayoutInflater inflater = getLayoutInflater();
-				rowview = inflater.inflate(R.layout.list_cuisine_item, parent, false);
+				rowview = inflater.inflate(R.layout.food_tab_cuisine_item, parent, false);
 			}
 			TextView Nmae = (TextView) rowview.findViewById(R.id.list_cuisine_name);
 			Nmae.setText(textname[position]);
@@ -127,4 +144,5 @@ public class FoodTab extends Activity {
         
         return return_url;
 	}
+	
 }

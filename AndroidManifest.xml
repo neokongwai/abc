@@ -30,6 +30,9 @@
         <activity android:name="watsons.wine.WineListTab" />
         <activity android:name="watsons.wine.CellarTab" />
         <activity android:name="watsons.wine.FoodTab" />
+        <activity android:name="watsons.wine.FoodCuisineList"/>
+        <activity android:name="watsons.wine.FoodDishList"/>
+        <activity android:name="watsons.wine.FoodDishWeb"/>
         <activity android:name="watsons.wine.EventsTab" />
         <activity android:name="watsons.wine.LocationTab" />
         <activity android:name="watsons.wine.LocationList" />

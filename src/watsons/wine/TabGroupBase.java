@@ -52,8 +52,14 @@ public class TabGroupBase extends ActivityGroup {
 	public void onBackPressed () {
 		int length = mIdList.size();
 		//if ( length > 1) {
+		if (mIdList.get(length-1).equals("FoodCuisineListAlter"))
+		{
 			Activity current = getLocalActivityManager().getActivity(mIdList.get(length-1));
 			current.finish();
+			length = mIdList.size();
+		}
+		Activity current = getLocalActivityManager().getActivity(mIdList.get(length-1));
+		current.finish();	
 		//}
 	}
 }

@@ -20,6 +20,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 public class LocationTab extends MapActivity {
 	private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -43,10 +47,17 @@ public class LocationTab extends MapActivity {
     
     JSONArray shops = null;
     final List<Map<String, String>> shopList = new ArrayList<Map<String, String>>();
+    final ArrayList<String> idList = new ArrayList<String>();
+    final ArrayList<String> nameList = new ArrayList<String>();
+    final ArrayList<String> districtList = new ArrayList<String>();
+    
     Context mContext = LocationTab.this;
     OverlayItem oli = null;
     MyItemizedOverlay miol = null;
-	
+    MapView mv = null;
+    MapController mc = null;
+    ImageView iv = null;
+    
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,14 +65,17 @@ public class LocationTab extends MapActivity {
 
 		/* Location Tab Content */
 		setContentView(R.layout.location_tab);
-
-		MapView mv = (MapView) findViewById(R.id.mapview);
+		
+		mv = (MapView) findViewById(R.id.mapview);
 	    mv.setBuiltInZoomControls(true);
 	    
-	    MapController mc = mv.getController();
+	    mc = mv.getController();
 	    mc.setZoom(INITIAL_ZOOM_LEVEL);
 		mc.setCenter(Central);
 		mv.getMapCenter();
+		
+		iv = (ImageView) findViewById(R.id.title_location_list_btn);
+		iv.setOnClickListener(list_btn_listner);
 		
 		List<Overlay> overlay = mv.getOverlays();
 			
@@ -79,6 +93,7 @@ public class LocationTab extends MapActivity {
                 
                 // creating new HashMap
                 LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+                
                 // adding each child node to HashMap key => value
                 map.put(TAG_ID, s.getString(TAG_ID));
                 map.put(TAG_NAME, s.getString(TAG_NAME));
@@ -86,10 +101,12 @@ public class LocationTab extends MapActivity {
                 map.put(TAG_ADDRESS, s.getString(TAG_ADDRESS));
                 map.put(TAG_LAT, s.getString(TAG_LAT));
                 map.put(TAG_LON, s.getString(TAG_LON));
-                map.put(TAG_TEL, s.getString(TAG_TEL));
-                map.put(TAG_FAX, s.getString(TAG_FAX));
-                map.put(TAG_OPEN_HR, s.getString(TAG_OPEN_HR));
-                
+                //map.put(TAG_TEL, s.getString(TAG_TEL));
+                //map.put(TAG_FAX, s.getString(TAG_FAX));
+                //map.put(TAG_OPEN_HR, s.getString(TAG_OPEN_HR));
+                idList.add(s.getString(TAG_ID));    
+                nameList.add(s.getString(TAG_NAME));
+                districtList.add(s.getString(TAG_DISTRICT));
                 // adding HashList to ArrayList
                 shopList.add(map);
             }
@@ -128,6 +145,20 @@ public class LocationTab extends MapActivity {
         
         mv.invalidate();
 	}
+
+	OnClickListener list_btn_listner = new OnClickListener() {
+	    public void onClick(View v) {
+	    	Bundle bundle = new Bundle();
+	    	bundle.putStringArrayList("idList", idList);
+	    	bundle.putStringArrayList("nameList", nameList);
+	    	bundle.putStringArrayList("districtList", districtList);
+	    	
+	    	Intent intent = new Intent(getParent(), LocationList.class);
+        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+        	intent.putExtras(bundle);
+        	parentActivity.startChildActivity("LocationList", intent);
+	    }
+	};
 
 	@Override
 	protected boolean isRouteDisplayed() {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lv_winetab"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/title_location_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/title_location" >
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/location_name_text_hk"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_wine_item_title"
+        android:gravity="center_vertical"
+        android:paddingLeft="10sp"
+        android:text="@string/hk"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Maroon"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/list_location_hk"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/location_name_text_kl"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_wine_item_title"
+        android:gravity="center_vertical"
+        android:paddingLeft="10sp"
+        android:text="@string/kl"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Maroon"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/list_location_kl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/location_name_text_nt"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_wine_item_title"
+        android:gravity="center_vertical"
+        android:paddingLeft="10sp"
+        android:text="@string/nt"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Maroon"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/list_location_nt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/location_name_text_others"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_wine_item_title"
+        android:gravity="center_vertical"
+        android:paddingLeft="10sp"
+        android:text="@string/others"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/Maroon"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/list_location_others"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -6,5 +6,9 @@
     <string name="rating_tag">Rating:</string>
     <string name="ori_price_tag">Regular Price:</string>
     <string name="pro_price_tag">Offer Price:</string>
+    <string name="hk">Hong Kong</string>
+    <string name="kl">Kowloon</string>
+    <string name="nt">New Territories</string>
+    <string name="others">Others</string>
 
 </resources>

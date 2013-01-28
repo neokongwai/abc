@@ -40,6 +40,13 @@ public class TabGroupBase extends ActivityGroup {
 		setContentView(newWindow.getDecorView());
 	}
 	
+	public void startChildActivityNotAddId(String Id, Intent intent) {
+		Window window = getLocalActivityManager().startActivity(Id,intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+		if (window != null) {
+			setContentView(window.getDecorView());
+		}
+	}
+	
 	public void startChildActivity(String Id, Intent intent) {
 		Window window = getLocalActivityManager().startActivity(Id,intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 		if (window != null) {

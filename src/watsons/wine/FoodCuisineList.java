@@ -19,13 +19,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -54,8 +57,10 @@ public class FoodCuisineList extends Activity {
     JSONArray regions_children = null;
     private ExpandableListAdapter mAdapter;
     Context mContext = FoodCuisineList.this;    
-    ImageView iv;
+    ImageView topImage;
     ExpandableListView listView;
+    ImageView refreshBtn;
+    RelativeLayout refreshAni;
 
     List<Integer> emptyList = new ArrayList<Integer>();
     
@@ -68,12 +73,23 @@ public class FoodCuisineList extends Activity {
 		/* Wine List Tab Content */
 		Constants.AT_FOOD_CUISINE = true;
 		
+		// Refresh Button
+		refreshAni = (RelativeLayout) findViewById(R.id.refresh_img);
+		refreshBtn = (ImageView) findViewById(R.id.refresh_btn);
+		refreshBtn.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				performRefresh();
+			}
+			
+		});
+		
 		/* change food and wine top image*/
-		iv = (ImageView) findViewById(R.id.food_top_image);
-		iv.setImageResource(R.drawable.food_index1);
+		topImage = (ImageView) findViewById(R.id.food_top_image);
+		topImage.setImageResource(R.drawable.food_index1);
 		if (Constants.FOOD_CUISINE == true)
 		{
-			iv.setVisibility(View.GONE);
+			topImage.setVisibility(View.GONE);
 		}
 			
 		
@@ -237,10 +253,12 @@ public class FoodCuisineList extends Activity {
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) 
 			{
-				if (iv.getVisibility() != View.GONE)
+				if (topImage.getVisibility() != View.GONE)
 				{
 					Constants.FOOD_CUISINE = true;
-					iv.setVisibility(View.GONE);
+					topImage.setVisibility(View.GONE);
+					refreshAni.setVisibility(View.INVISIBLE);
+					refreshBtn.setVisibility(View.INVISIBLE);
 				}
 				return false;
 			}
@@ -249,6 +267,28 @@ public class FoodCuisineList extends Activity {
 		});
 		
 	}
+	protected void performRefresh()
+	{
+		
+		refreshAni.setVisibility(View.VISIBLE);
+		refreshBtn.setVisibility(View.INVISIBLE);
+		Handler handler = new Handler(); 
+	    handler.postDelayed(new Runnable() { 
+	         public void run() { 
+	        	 onRestart();
+	         } 
+	    }, 500); 
+	}
+
+	@Override
+	protected void onRestart() {
+	    super.onRestart();
+	    Intent intent = new Intent(getParent(), FoodCuisineList.class);
+	    TabGroupBase parentActivity = (TabGroupBase)getParent();
+		parentActivity.startChildActivityNotAddId("FoodCuisineList", intent);
+	
+	}
+	
 	public static Bitmap loadBitmap(String url) throws IOException {
 		Bitmap bitmap = null;
 		try {
@@ -261,10 +301,11 @@ public class FoodCuisineList extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-	   if(iv.getVisibility() == View.GONE || Constants.FOOD_CUISINE == true)
+	   if(topImage.getVisibility() == View.GONE || Constants.FOOD_CUISINE == true)
 	   {
        		Constants.FOOD_CUISINE = false;
-			iv.setVisibility(View.VISIBLE);
+       		topImage.setVisibility(View.VISIBLE);
+       		refreshBtn.setVisibility(View.VISIBLE);
 			for (int i=0;i<cuisines.length();i++)
 			{
 				listView.collapseGroup(i);

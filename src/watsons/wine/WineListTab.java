@@ -15,6 +15,7 @@ import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
@@ -52,6 +54,8 @@ public class WineListTab extends Activity {
     private ExpandableListAdapter mAdapter;
     Context mContext = WineListTab.this;   
     EditText et;
+    ImageView iv;
+    RelativeLayout rl;
 
     List<Integer> emptyList = new ArrayList<Integer>();
     
@@ -83,6 +87,15 @@ public class WineListTab extends Activity {
 			public void onClick(View arg0) {
 				performSearch();
 			}
+		});
+		rl = (RelativeLayout) findViewById(R.id.refresh_img);
+		iv = (ImageView) findViewById(R.id.refresh_btn);
+		iv.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				performRefresh();
+			}
+			
 		});
 		
 		// Hashmap for ListView
@@ -258,10 +271,33 @@ public class WineListTab extends Activity {
 		});
 		
 	}
+	
+	protected void performRefresh()
+	{
+		
+		rl.setVisibility(View.VISIBLE);
+		iv.setVisibility(View.INVISIBLE);
+		Handler handler = new Handler(); 
+	    handler.postDelayed(new Runnable() { 
+	         public void run() { 
+	        	 onRestart();
+	         } 
+	    }, 500); 
+	}
 
+	@Override
+	protected void onRestart() {
+	    super.onRestart();
+	    Intent intent = new Intent(getParent(), WineListTab.class);
+	    TabGroupBase parentActivity = (TabGroupBase)getParent();
+		parentActivity.startChildActivityNotAddId("WineListTab", intent);
+	
+	}
 
 	protected void performSearch() {
 		String search_str = et.getText().toString();
+		if (search_str.equals(""))
+			return;
 		Bundle bundle = new Bundle();
 		bundle.putBoolean("search", true);
     	bundle.putString("search_str", search_str);

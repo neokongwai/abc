@@ -14,19 +14,24 @@ import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.view.inputmethod.EditorInfo;  
+import android.view.inputmethod.InputMethodManager;
 
 public class WineListTab extends Activity {
 	// url to make request
@@ -45,7 +50,8 @@ public class WineListTab extends Activity {
     JSONArray provinces = null;
     JSONArray provinces_children = null;
     private ExpandableListAdapter mAdapter;
-    Context mContext = WineListTab.this;    
+    Context mContext = WineListTab.this;   
+    EditText et;
 
     List<Integer> emptyList = new ArrayList<Integer>();
     
@@ -53,9 +59,31 @@ public class WineListTab extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.winelist_tab);
 		/* Wine List Tab Content */
+		// Search Bar Stuff
+		et = (EditText) findViewById(R.id.search_text);
+		et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		    @Override
+		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		        	InputMethodManager imm = 
+		                    (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+		                 imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+		            performSearch();
+		            return true;
+		        }
+		        return false;
+		    }
+		});
+		ImageButton ib = (ImageButton) findViewById(R.id.search_btn);
+		ib.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				performSearch();
+			}
+		});
 		
 		// Hashmap for ListView
 		final List<Map<String, String>> countryList = new ArrayList<Map<String, String>>();
@@ -191,6 +219,7 @@ public class WineListTab extends Activity {
 	        {
 	        	Bundle bundle = new Bundle();
 	        	bundle.putBoolean("country", false);
+	    		bundle.putBoolean("search", false);
 	        	bundle.putString("id", provinceList.get(groupPosition).get(childPosition).get(TAG_ID));
 	        	bundle.putString("name", provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
 	        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
@@ -212,6 +241,7 @@ public class WineListTab extends Activity {
 				{
 					Bundle bundle = new Bundle();
 		        	bundle.putBoolean("country", true);
+		    		bundle.putBoolean("search", false);
 		        	bundle.putString("id", countryList.get(groupPosition).get(TAG_ID));
 		        	bundle.putString("name", countryList.get(groupPosition).get(TAG_NAME));
 		        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
@@ -227,6 +257,19 @@ public class WineListTab extends Activity {
 			
 		});
 		
+	}
+
+
+	protected void performSearch() {
+		String search_str = et.getText().toString();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("search", true);
+    	bundle.putString("search_str", search_str);
+    	Constants.SHOW_DETAILS = true;
+    	Intent intent = new Intent(getParent(), WineListProduct.class);
+    	TabGroupBase parentActivity = (TabGroupBase)getParent();
+    	intent.putExtras(bundle);
+    	parentActivity.startChildActivity("WineProductActivity", intent);
 	}
 
 

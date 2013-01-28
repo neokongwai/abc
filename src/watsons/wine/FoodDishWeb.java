@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
  
 @SuppressLint("SetJavaScriptEnabled")
 public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Callback {

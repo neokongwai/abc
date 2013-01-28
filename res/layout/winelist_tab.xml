@@ -3,25 +3,52 @@
     android:id="@+id/lv_winetab"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/title_wine"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@color/DarkRed"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/title_wine" 
-        android:background="@color/DarkRed" />
+        android:src="@drawable/title_wine" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-2dp"
+        android:background="@drawable/bg_menu"
+        android:padding="4dip" >
+
+        <EditText
+            android:id="@+id/search_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/search_btn"
+            android:background="@android:drawable/editbox_background"
+            android:contentDescription="@string/app_name"
+            android:hint="@string/search_hint"
+            android:imeActionLabel="Search"
+            android:imeOptions="actionSearch"
+            android:singleLine="true" />
+
+        <ImageButton
+            android:id="@+id/search_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
 
     <ExpandableListView
         android:id="@+id/list_wine"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:cacheColorHint="#00000000" 
+        android:background="@color/WhiteSmoke"
+        android:cacheColorHint="#00000000"
         android:childDivider="#00000000"
-        android:groupIndicator="@null"
-        android:background="@color/WhiteSmoke">
+        android:groupIndicator="@null" >
     </ExpandableListView>
 
 </LinearLayout>

@@ -10,5 +10,6 @@
     <string name="kl">Kowloon</string>
     <string name="nt">New Territories</string>
     <string name="others">Others</string>
+    <string name="search_hint">Search Here</string>
 
 </resources>

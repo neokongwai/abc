@@ -28,7 +28,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
@@ -43,9 +42,9 @@ public class FoodCuisineList extends Activity {
     private static final String TAG_ICON = "icon";
     private static final String TAG_SPONSOR = "sponsor_img";
     private static final String TAG_USE_SPONSOR = "use_sponsor_img";
-    private static final String TAG_DELETED = "deleted";
+    //private static final String TAG_DELETED = "deleted";
     private static final String TAG_REGION = "regions";
-    private static final String TAG_CUISINE_ID = "cuisine_id";
+    //private static final String TAG_CUISINE_ID = "cuisine_id";
     
 
  

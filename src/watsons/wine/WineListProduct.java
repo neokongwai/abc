@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -29,12 +28,14 @@ import android.widget.TextView;
 
 public class WineListProduct extends Activity {
 	// url to make request
+	private static String search_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/search_products/";
     private static String country_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_country/";
     private static String province_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_province/";
     private static String url = "http://watsonswineiphone.pacim.com/index.php/api/list_products_by_location/10";;
  
     // JSON Node names
     private static final String TAG_PRODUCT = "products";
+    private static final String TAG_PRODUCT_LIST = "product_list";
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
     private static final String TAG_SIZE = "size";
@@ -82,32 +83,44 @@ public class WineListProduct extends Activity {
         // Creating JSON Parser instance
         JSONParser jParser = new JSONParser();
  
+        TextView nameText = (TextView) findViewById(R.id.name_text);
         // Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
-        Boolean country = bundle.getBoolean("country");
-        String id = bundle.getString("id");
-        String name = bundle.getString("name");
-     
-        // Top TextView
-     	TextView nameText = (TextView) findViewById(R.id.name_text);
-        
-        if (country)
+        Boolean search = bundle.getBoolean("search");
+        if (search)
         {
-        	nameText.setText(name);
-        	url = country_url+id;
+        	String str = bundle.getString("search_str");
+        	url = search_url + str;
+        	nameText.setText(str);
         }
         else
         {
-        	String countryName = bundle.getString("country_name");
-        	nameText.setText(countryName+" | "+name);
-        	url = province_url+id;
+	        Boolean country = bundle.getBoolean("country");
+	        String id = bundle.getString("id");
+	        String name = bundle.getString("name");
+	     
+	        // Top TextView
+	        if (country)
+	        {
+	        	nameText.setText(name);
+	        	url = country_url+id;
+	        }
+	        else
+	        {
+	        	String countryName = bundle.getString("country_name");
+	        	nameText.setText(countryName+" | "+name);
+	        	url = province_url+id;
+	        }
         }
         // getting JSON string from URL
         JSONObject json = jParser.getJSONFromUrl(url);
                 
         try {
             // Getting Array of Contacts
-        	products = json.getJSONArray(TAG_PRODUCT);
+        	if (search) 
+        		products = json.getJSONArray(TAG_PRODUCT_LIST);
+        	else
+        		products = json.getJSONArray(TAG_PRODUCT);
             // looping through All Contacts
             for(int i = 0; i < products.length(); i++){
                 JSONObject p = products.getJSONObject(i);

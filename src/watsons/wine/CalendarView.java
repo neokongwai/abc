@@ -1,22 +1,8 @@
-/*
- * Copyright (C) 2011 Chris Gao <chris@exina.net>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package watsons.wine;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -28,6 +14,7 @@ import android.util.AttributeSet;
 import android.util.MonthDisplayHelper;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class CalendarView extends ImageView {
     private static int WEEK_TOP_MARGIN = 74;
@@ -42,10 +29,16 @@ public class CalendarView extends ImageView {
 	private Calendar mRightNow = null;
     private Drawable mWeekTitle = null;
     private Cell mToday = null;
+    private Cell mAnotherday = null;
     private Cell[][] mCells = new Cell[6][7];
     private OnCellTouchListener mOnCellTouchListener = null;
     MonthDisplayHelper mHelper;
+    MonthDisplayHelper mTester;
     Drawable mDecoration = null;
+    Drawable mDecorationTest = null;
+    Drawable mCircle = null;
+    
+    private List<Integer> list = null;
     
 	public interface OnCellTouchListener {
     	public void onTouch(Cell cell);
@@ -61,7 +54,9 @@ public class CalendarView extends ImageView {
 
 	public CalendarView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		mDecoration = context.getResources().getDrawable(R.drawable.icon_circle);		
+		mDecoration = context.getResources().getDrawable(R.drawable.icon_circle);
+		mDecorationTest = context.getResources().getDrawable(R.drawable.icon_circle);
+		mCircle = context.getResources().getDrawable(R.drawable.icon_circle);
 		initCalendarView();
 	}
 	
@@ -83,7 +78,9 @@ public class CalendarView extends ImageView {
 		mWeekTitle = res.getDrawable(R.drawable.calendar_week);
 		
 		mHelper = new MonthDisplayHelper(mRightNow.get(Calendar.YEAR), mRightNow.get(Calendar.MONTH));
+		mTester = new MonthDisplayHelper(mRightNow.get(Calendar.YEAR), mRightNow.get(Calendar.JULY));
 
+		//goToday();
     }
 	
 	private void initCells() {
@@ -112,10 +109,19 @@ public class CalendarView extends ImageView {
 	    }
 
 	    Calendar today = Calendar.getInstance();
-	    int thisDay = 0;
+	    Calendar target = Calendar.getInstance();
+	    target.set(2013, 1, 3);
+	    int thisDay = 0, anotherDay = 0;
 	    mToday = null;
+	    mAnotherday = null;
 	    if(mHelper.getYear()==today.get(Calendar.YEAR) && mHelper.getMonth()==today.get(Calendar.MONTH)) {
+	    	System.out.println("Year:"+String.valueOf(mHelper.getYear())+"   Month:"+String.valueOf(mHelper.getMonth()));
 	    	thisDay = today.get(Calendar.DAY_OF_MONTH);
+	    	System.out.println("Day:"+String.valueOf(today.get(Calendar.DAY_OF_MONTH)));
+	    }
+	    if(mHelper.getYear()==target.get(Calendar.YEAR) && mHelper.getMonth()==target.get(Calendar.MONTH)) {
+	    	anotherDay = target.get(Calendar.DAY_OF_MONTH);
+	    	System.out.println("TargetDay:"+String.valueOf(target.get(Calendar.DAY_OF_MONTH)));
 	    }
 		// build cells
 		Rect Bound = new Rect(CELL_MARGIN_LEFT, CELL_MARGIN_TOP, CELL_WIDTH+CELL_MARGIN_LEFT, CELL_HEIGH+CELL_MARGIN_TOP);
@@ -136,6 +142,10 @@ public class CalendarView extends ImageView {
 				if(tmp[week][day].day==thisDay && tmp[week][day].thisMonth) {
 					mToday = mCells[week][day];
 					mDecoration.setBounds(mToday.getBound());
+				}
+				if(tmp[week][day].day==anotherDay && tmp[week][day].thisMonth) {
+					mAnotherday = mCells[week][day];
+					mDecorationTest.setBounds(mAnotherday.getBound());
 				}
 			}
 			Bound.offset(0, CELL_HEIGH); // move to next row and first column
@@ -170,12 +180,16 @@ public class CalendarView extends ImageView {
     public void nextMonth() {
     	mHelper.nextMonth();
     	initCells();
+    	if (list!=null)
+    		drawDate();
     	invalidate();
     }
     
     public void previousMonth() {
     	mHelper.previousMonth();
     	initCells();
+    	if (list!=null)
+    		drawDate();
     	invalidate();
     }
     
@@ -233,6 +247,14 @@ public class CalendarView extends ImageView {
 		if(mDecoration!=null && mToday!=null) {
 			mDecoration.draw(canvas);
 		}
+		if(mDecorationTest!=null && mAnotherday!=null)
+		{
+			mDecorationTest.draw(canvas);
+		}
+		if(mCircle!=null)
+		{
+			mCircle.draw(canvas);
+		}
 	}
 	
 	public class GrayCell extends Cell {
@@ -249,5 +271,43 @@ public class CalendarView extends ImageView {
 		}			
 		
 	}
-
+	
+	public void drawDate(List<Integer> dateList)
+	{
+		list = dateList;
+		if (list != null)
+			drawDate();
+		invalidate();
+	}
+	
+	public void drawDate()
+	{
+		int year,month,day,num;
+		num = list.size()/3;
+		for (int k=0; k<num;k++)
+		{
+			year = list.get(k*3);
+			month = list.get(k*3+1);
+			day = list.get(k*3+2);
+			if(year == getYear() && month == getMonth()+1)
+			{
+				for(int i=0;i<6;i++)
+				{
+					for(int j=0;j<7;j++)
+					{
+						if (mCells[i][j] != null)
+						{
+							if (day == mCells[i][j].getDayOfMonth())
+								mCircle.setBounds(mCells[i][j].getBound());
+						}
+					}
+				}
+				
+			}
+		}
+		//System.out.println("first cell day:"+String.valueOf(mCells[0][0].getDayOfMonth()));
+		//System.out.println("year:"+String.valueOf(getYear()));
+		//System.out.println("month:"+String.valueOf(getMonth()));
+		
+	}
 }

@@ -1,8 +1,10 @@
 package watsons.wine;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -11,6 +13,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -19,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class EventsTab extends Activity implements
-		CalendarView.OnCellTouchListener {
+		CalendarView.OnCellTouchListener,CalendarView.OnDrawableTouchListener {
 	
 	// url to make request
     private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_events/";
@@ -43,6 +46,7 @@ public class EventsTab extends Activity implements
 	
 	public static final String MIME_TYPE = "vnd.android.cursor.dir/vnd.exina.android.calendar.date";
 	CalendarView mView = null;
+	TextView mTextView = null;
 	TextView mHit;
 	Handler mHandler = new Handler();
 
@@ -89,34 +93,41 @@ public class EventsTab extends Activity implements
         	{
         		String date,tmp;
         		int index;
-        		System.out.println(eventList.get(i).get(TAG_DATE));
         		
 	        	date = eventList.get(i).get(TAG_DATE);
 	        	tmp = date.substring(0, 4);
-	        	System.out.println(tmp);
 	        	dateList.add(Integer.parseInt(tmp));
 	        	index = date.indexOf("-");
 	        	date = date.substring(index+1);
 	        	index =  date.indexOf("-");
 	        	tmp = date.substring(0,index);
-	        	System.out.println(tmp);
 	        	dateList.add(Integer.parseInt(tmp));
 	        	date = date.substring(index+1);
 	        	dateList.add(Integer.parseInt(date));
-	        	System.out.println(date);
         	}
         }
         
+		
+		mTextView = (TextView) findViewById(R.id.calendar_text);
 		
 		
 		mView = (CalendarView) findViewById(R.id.calendar_view);
 
 		mView.setOnCellTouchListener(this);
+		mView.setOnDrawableTouchListener(this);
 		mHandler.post(new Runnable() {
 			public void run() {
 				mView.drawDate(dateList);
 			}
 		});
+		mHandler.postDelayed(new Runnable() {
+			public void run() {
+				String yearString = String.valueOf(mView.getYear());
+				new DateFormatSymbols();
+				String monthString = DateFormatSymbols.getInstance(new Locale("en","EN")).getMonths()[mView.getMonth()];
+				mTextView.setText(monthString+" "+yearString);
+			}
+		},100);
 	}
 
 	public void onTouch(Cell cell) {
@@ -125,6 +136,7 @@ public class EventsTab extends Activity implements
 		int month = mView.getMonth();
 		int day = cell.getDayOfMonth();
 		day = cell.getDayOfMonth();
+		/*
 		if (mView.firstDay(day))
 			mView.previousMonth();
 		else if (mView.lastDay(day))
@@ -140,7 +152,29 @@ public class EventsTab extends Activity implements
 								DateUtils.LENGTH_LONG) + " " + mView.getYear(),
 						Toast.LENGTH_SHORT).show();
 			}
-		});
+		});*/
 	}
 
+
+	public void onTouch(boolean left, boolean right) {
+		if (left)
+		{
+			mView.previousMonth();
+		}
+			
+		else if (right)
+		{
+			mView.nextMonth();
+		}
+		else 
+			return;
+		mHandler.post(new Runnable() {
+			public void run() {
+				String yearString = String.valueOf(mView.getYear());
+				String monthString = DateFormatSymbols.getInstance(new Locale("en","EN")).getMonths()[mView.getMonth()];
+				mTextView.setText(monthString+" "+yearString);
+			}
+		});
+	}
+	
 }

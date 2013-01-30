@@ -3,9 +3,8 @@
     android:id="@+id/lv_winetab"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:background="@color/FloralWhite"
-    >
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/title_events"
@@ -15,12 +14,29 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/title_events" />
 
-    <watsons.wine.CalendarView
-        android:id="@+id/calendar_view"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp" 
-        android:layout_gravity="center"/>
-    
+        android:gravity="center" >
+
+        
+
+        <watsons.wine.CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp"
+            android:id="@+id/calendar_text"
+            android:textColor="@color/Maroon"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </LinearLayout>

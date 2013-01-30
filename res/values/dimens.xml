@@ -2,9 +2,16 @@
 <resources>
 <dimen name="week_top_margin">49.3dp</dimen>
 <dimen name="week_left_margin">26.3dp</dimen>
+<dimen name="week_right_margin">235dp</dimen>
+<dimen name="week_title_left_margin">3dp</dimen>
+<dimen name="week_title_right_margin">24dp</dimen>
+<dimen name="btn_left_margin">20dp</dimen>
+<dimen name="btn_right_margin">30dp</dimen>
+<dimen name="btn_top_margin">-36dp</dimen>
+<dimen name="btn_bottom_margin">-16dp</dimen>
 <dimen name="cell_width">42.3dp</dimen>
 <dimen name="cell_heigh">41.8dp</dimen>
 <dimen name="cell_margin_top">61.3dp</dimen>
 <dimen name="cell_margin_left">26dp</dimen>
-<dimen name="cell_text_size">21.3dp</dimen>
+<dimen name="cell_text_size">22.3dp</dimen>
 </resources>

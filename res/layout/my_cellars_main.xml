@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000000" >
+    
+    <ScrollView  
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"  
+		> 
+    <LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:background="#000000" >
+    
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/title_cellar"  />
+    <ImageView 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:src="@drawable/bg_cellar_index"  />  
+        	
+    <RelativeLayout 
+       		android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        >
+    
+        <ImageView 
+            android:id="@+id/cellar_visit_table_top"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:src="@drawable/bg_cellar_visit_table_top"  />
+        
+        <ImageButton 
+            android:id="@+id/cellar_go_button"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_alignRight="@id/cellar_visit_table_top"
+        	android:layout_marginRight="20dip"
+        	android:layout_marginTop="5dip"
+        	android:background="@drawable/btn_go"  />
+        
+         <TextView 
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_centerHorizontal="true"
+        	android:layout_marginTop="20dip"
+        	android:textSize="20sp"
+        	android:text="Visity My Cellar" />
+    
+        
+    </RelativeLayout>
+        	
+    
+    
+    
+    <LinearLayout 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical"
+        	android:layout_gravity="center_horizontal"
+        	android:background="@drawable/bg_cellar_visit_table"  >
+        
+        <ImageView 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:src="@drawable/bg_cellar_line"  />	
+        
+        <TextView 
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="20dip"
+        	android:layout_marginTop="20dip"
+        	android:text="Last wine added:" />
+        
+        <TextView
+            android:id="@+id/cellar_last_added"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip"
+        	android:text="Clerc Milon Pauillac 5 eme Cru 2005" />
+        
+        <ImageView 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="10dip"
+        	android:src="@drawable/bg_cellar_line"  />
+        
+        <TextView 
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="20dip"
+        	android:layout_marginTop="10dip"
+        	android:text="Your favourite wine:" />
+        
+        <TextView 
+            android:id="@+id/cellar_favourite_wine"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip"
+        	android:text="Clerc Milon Pauillac 5 eme Cru 2006" />
+        
+        <ImageView 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_marginTop="10dip"
+        	android:src="@drawable/bg_cellar_line"  />
+        
+        <TextView 
+            android:id="@+id/cellar_total_wine"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip" />
+        
+        <TextView 
+            android:id="@+id/cellar_in_stock_wine"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip" />
+        
+        <TextView 
+            android:id="@+id/cellar_wish_wine"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip" />
+        
+        <TextView 
+            android:id="@+id/cellar_avg_wine"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_marginLeft="22dip"
+        	android:layout_marginTop="10dip" />
+        	
+    </LinearLayout>
+    
+    <ImageView 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_horizontal"
+        	android:src="@drawable/bg_cellar_visit_table_bottom"  />
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

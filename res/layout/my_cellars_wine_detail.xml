@@ -1,0 +1,381 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF" >
+    
+      <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/title_cellar"  />
+    
+    <LinearLayout  
+        android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+        android:paddingTop="13dp"   
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp"
+	    android:layout_height="wrap_content" >
+    
+	    <TextView 
+	        	android:id="@+id/cellar_added_date"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:textSize="10sp"
+	        	android:textStyle="bold"
+	        	android:text="Added: " />
+	    
+	    <View  android:layout_height="1dp"   
+         		android:layout_width="0dip"
+         		android:layout_weight="1"/>
+    
+	    <ImageButton 
+            android:id="@+id/cellar_facebook_icon"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="right"
+        	android:background="@drawable/icon_facebook"  />
+	    
+	    <View  android:layout_height="1dp"   
+         		android:layout_width="10dp"/>
+	    
+	    <ImageButton 
+            android:id="@+id/cellar_twitter_icon"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="right"
+        	android:background="@drawable/icon_twitter"  />
+	    
+	    <View  android:layout_height="1dp"   
+         		android:layout_width="10dp"/>
+	    
+	    <ImageButton 
+            android:id="@+id/cellar_email_icon"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="right"
+        	android:background="@drawable/icon_email"  />
+    
+    </LinearLayout>
+  
+     <LinearLayout  
+        android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+        android:paddingTop="5dp"   
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp" >
+	    
+	    <ImageView 
+	            android:id="@+id/cellar_wine_image"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:background="@drawable/bg_photo_container"  />
+	    
+	    <View  android:layout_height="1dp"   
+         		android:layout_width="10dp"/>
+	    
+	   <LinearLayout  
+	        android:orientation="vertical"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1" >
+		    <TextView 
+		        	android:id="@+id/cellar_wine_name"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon" />
+		    
+
+		    
+		     <LinearLayout  
+		        android:orientation="horizontal" 
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"	>
+			    
+	       		<ImageButton 
+		            android:id="@+id/cellar_in_stock_btn"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_gravity="bottom"
+		        	android:background="@drawable/icon_tick_form"  />
+	       		
+			    <View  android:layout_height="1dp"   
+	         		android:layout_width="5dp"/>
+			    <TextView 
+			            android:layout_width="wrap_content"
+			        	android:layout_height="wrap_content"
+			        	android:layout_gravity="bottom"
+			        	android:textStyle="bold"
+		        		android:textColor="@color/Maroon"
+			        	android:text="In Stock" />
+			    
+			     <View  android:layout_height="1dp"   
+	         		android:layout_width="20dp"/>
+			    
+			    <ImageButton 
+		            android:id="@+id/cellar_wish_list_btn"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_gravity="bottom"
+		        	android:background="@drawable/icon_tick_form"  />
+			    <View  android:layout_height="1dp"   
+	         		android:layout_width="5dp"/>
+			    <TextView 
+			            android:layout_width="wrap_content"
+			        	android:layout_height="wrap_content"
+			        	android:layout_gravity="bottom"
+			        	android:textStyle="bold"
+		        		android:textColor="@color/Maroon"
+			        	android:text="Wish List" />
+		    </LinearLayout>
+		 </LinearLayout>
+    </LinearLayout>
+    
+     <RelativeLayout 
+         android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="5dp"   
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp" >
+         
+         <ImageButton 
+            android:id="@+id/cellar_details_tab"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/bg_cellar_table_wine_top"  />
+         
+         <TableLayout 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/bg_cellar_table"
+        	android:layout_below="@id/cellar_details_tab"
+        	android:paddingLeft="15dp"
+	    	android:paddingRight="15dp"  >
+		     
+              <TableRow
+		        android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip"  >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Region:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_region"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Vintage:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_vintage"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Grape:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_grape"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow4"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Colour:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_colour"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow5"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Body:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_body"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow6"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Sweetness:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_sweetness"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow7"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Size:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_size"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow8"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Price:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_price"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+		    
+            <TableRow
+		        android:id="@+id/tableRow9"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip" >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Quantility:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_quantity"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+             
+		 </TableLayout>
+		 
+         <TableLayout 
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/bg_cellar_table"
+        	android:layout_below="@id/cellar_details_tab"
+        	android:paddingLeft="15dp"
+	    	android:paddingRight="15dp"  >
+		     
+              <TableRow
+		        android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:padding="5dip"  >
+		 
+		        <TextView
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:textStyle="bold"
+	        		android:textColor="@color/Maroon"
+		        	android:text="Region:" />
+		 
+		        <TextView
+		            android:id="@+id/cellar_table_region"
+		            android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content" />
+		        
+		    </TableRow>
+	    </TableLayout>
+         
+     </RelativeLayout>
+     <LinearLayout
+         android:layout_width="fill_parent"   
+	    android:paddingLeft="15dp"
+	    android:paddingRight="15dp"
+	    android:layout_height="wrap_content" 
+          >
+ 		<ImageButton 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:background="@drawable/bg_cellar_table_bottom"  />
+ 	</LinearLayout>
+</LinearLayout>

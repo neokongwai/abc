@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:layout_width="fill_parent"   
+	        android:orientation="vertical"
+	        android:layout_height="wrap_content"  >
+	<ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/DarkRed"
+        android:src="@drawable/title_message" />        
+    
+	<LinearLayout   
+	    	android:id="@+id/nofify_detail_title_bar"
+	        android:layout_width="fill_parent"   
+	        android:orientation="horizontal"
+	        android:layout_height="wrap_content"   
+	        android:paddingBottom="3dip"   
+	        android:paddingLeft="10dip"
+	        android:background="@drawable/bg_cellar_list">  
+	        <TextView   
+	                android:id="@+id/detailTitle"
+	                android:layout_height="wrap_content"   
+	                android:layout_width= "0dip"
+	                android:textSize="24sp"
+	                android:textStyle="bold"
+	                android:textColor="@color/Maroon"
+	                android:layout_weight="100">  
+	        </TextView>  
+	        <TextView
+	            	android:id="@+id/detailDate"   
+	                android:layout_height="wrap_content"   
+	                android:layout_width="wrap_content" 
+	                android:textColor="@color/Maroon"  
+	                >  
+	        </TextView>  
+	</LinearLayout>
+	
+	<TextView   
+         android:id="@+id/detailBody"
+         android:layout_height="wrap_content" 
+         android:layout_width="fill_parent"
+     />  
+	
+</LinearLayout>

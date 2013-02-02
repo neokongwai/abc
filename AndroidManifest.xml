@@ -6,6 +6,18 @@
 
     <uses-sdk android:minSdkVersion="9" />
 	<uses-permission android:name="android.permission.INTERNET"/>
+	
+	<permission android:name="watsons.wine.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="watsons.wine.permission.C2D_MESSAGE" />
+	<!-- App receives GCM messages. -->
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<!-- GCM connects to Google Services. -->
+	<uses-permission android:name="android.permission.INTERNET" /> 
+	<!-- GCM requires a Google account. -->
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<!-- Keeps the processor from sleeping when a message is received. -->
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,6 +34,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+		  <intent-filter>
+		    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+		    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+		    <category android:name="watsons.wine" />
+		  </intent-filter>
+		</receiver>
+		<service android:name="watsons.wine.GCMIntentService" />
         <activity android:name="watsons.wine.TabGroupView" />
         <activity android:name="watsons.wine.TabGroupWine" />
         <activity android:name="watsons.wine.TabGroupCellar" />
@@ -41,6 +61,28 @@
         <activity android:name="watsons.wine.WineListProduct" />
         <activity android:name="watsons.wine.WineProductWeb" />
         <activity android:name="watsons.wine.LocationWebView" />
+        
+        
+        <activity 
+            android:name="watsons.wine.notification.NotificationMainActivity" 
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="watsons.wine.notification.NotificationDetailActivity" 
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity 
+            android:name="watsons.wine.mycellars.MyCellarsMainActivity" 
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity 
+            android:name="watsons.wine.mycellars.MyCellarsListIemsActivity" 
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity 
+            android:name="watsons.wine.mycellars.MyCellarsWineDetail" 
+            android:screenOrientation="portrait" >
+        </activity>
         
     </application>
 </manifest>

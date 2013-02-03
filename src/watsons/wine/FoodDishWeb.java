@@ -30,6 +30,7 @@ public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Ca
 		webView = (WebView) findViewById(R.id.food_dish_webview);
 		webView.loadUrl(url);
 		webView.setOnTouchListener(this);
+		webView.addJavascriptInterface(new WebAppInterface(this), "Android");
 		WebSettings websetting = webView.getSettings();
 		websetting.setJavaScriptEnabled(true);
 	}

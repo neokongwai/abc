@@ -21,7 +21,8 @@ public class EventsWebView extends Activity {
         String url = event_url + date;
  
 		webView = (WebView) findViewById(R.id.events_webview);
-		webView.getSettings().setJavaScriptEnabled(true);
 		webView.loadUrl(url);
+		webView.getSettings().setJavaScriptEnabled(true);
+		
 	}
 }

@@ -168,11 +168,25 @@ public class EventsTab extends Activity implements
 	public void onTouch(Cell cell) {
 
 		int year = mView.getYear();
-		int month = mView.getMonth();
+		int month = mView.getMonth() + 1;
 		int day = cell.getDayOfMonth();
 		boolean tmp = cell.IsEvent();
 		if (tmp) {
-			String str = String.valueOf(year)+String.valueOf(month)+String.valueOf(day);
+			String month_str = null;
+			if(month<10) {
+				month_str = "0"+String.valueOf(month);
+			}else {
+				month_str = String.valueOf(month);
+			}
+			
+			String day_str = null;
+			if(day<10) {
+				day_str = "0"+String.valueOf(day);
+			}else {
+				day_str = String.valueOf(day);
+			}
+			
+			String str = String.valueOf(year)+month_str+day_str;
 			System.out.println(str);
 			Bundle bundle = new Bundle();
         	bundle.putString("date", str);

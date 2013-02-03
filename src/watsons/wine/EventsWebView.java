@@ -13,14 +13,14 @@ public class EventsWebView extends Activity {
  
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.location_web);
+		setContentView(R.layout.events_web);
 		
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
         String date = bundle.getString("date");
         String url = event_url + date;
  
-		webView = (WebView) findViewById(R.id.location_webview);
+		webView = (WebView) findViewById(R.id.events_webview);
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.loadUrl(url);
 	}

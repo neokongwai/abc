@@ -55,6 +55,7 @@
         <activity android:name="watsons.wine.FoodDishList"/>
         <activity android:name="watsons.wine.FoodDishWeb"/>
         <activity android:name="watsons.wine.EventsTab" />
+        <activity android:name="watsons.wine.EventsWebView" />
         <activity android:name="watsons.wine.LocationTab" />
         <activity android:name="watsons.wine.LocationList" />
         <activity android:name="watsons.wine.CalendarActivity" />

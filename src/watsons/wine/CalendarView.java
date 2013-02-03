@@ -177,7 +177,6 @@ public class CalendarView extends ImageView {
 	
     public void setTimeInMillis(long milliseconds) {
     	mRightNow.setTimeInMillis(milliseconds);
-    	System.out.println("What is this????");
     	if (list!=null)
     		drawDate();
     	initCells();
@@ -287,7 +286,6 @@ public class CalendarView extends ImageView {
 		mWeekTitle.draw(canvas);
 		mBtnLeft.draw(canvas);
 		mBtnRight.draw(canvas);
-		System.out.println("Drawing...................");
 		// draw cells
 		for(Cell[] week : mCells) {
 			for(Cell day : week) {

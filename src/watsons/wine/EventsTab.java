@@ -169,13 +169,17 @@ public class EventsTab extends Activity implements
 
 		int year = mView.getYear();
 		int month = mView.getMonth();
+		int day = cell.getDayOfMonth();
 		boolean tmp = cell.IsEvent();
 		if (tmp) {
-			Toast.makeText(
-					EventsTab.this,
-					DateUtils.getMonthString(mView.getMonth(),
-							DateUtils.LENGTH_LONG) + " " + mView.getYear(),
-					Toast.LENGTH_SHORT).show();
+			String str = String.valueOf(year)+String.valueOf(month)+String.valueOf(day);
+			System.out.println(str);
+			Bundle bundle = new Bundle();
+        	bundle.putString("date", str);
+			Intent intent = new Intent(getParent(), EventsWebView.class);
+        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+        	intent.putExtras(bundle);
+        	parentActivity.startChildActivity("EventsWebView", intent);
 		}
 	}
 

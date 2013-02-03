@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -58,6 +59,9 @@ public class WineListTab extends Activity {
     RelativeLayout rl;
 
     List<Integer> emptyList = new ArrayList<Integer>();
+
+	private JSONObject json;
+	private SharedPreferences sharedPreferences;
     
 	/** Called when the activity is first created. */
 	@Override
@@ -88,6 +92,8 @@ public class WineListTab extends Activity {
 				performSearch();
 			}
 		});
+		
+		// Refresh Button
 		rl = (RelativeLayout) findViewById(R.id.refresh_img);
 		iv = (ImageView) findViewById(R.id.refresh_btn);
 		iv.setOnClickListener(new OnClickListener(){
@@ -102,11 +108,26 @@ public class WineListTab extends Activity {
 		final List<Map<String, String>> countryList = new ArrayList<Map<String, String>>();
 		final List<List<Map<String, String>>> provinceList = new ArrayList<List<Map<String, String>>>();	
  
-        // Creating JSON Parser instance
-        JSONParser jParser = new JSONParser();
- 
-        // getting JSON string from URL
-        JSONObject json = jParser.getJSONFromUrl(url);
+		sharedPreferences = getPreferences(MODE_PRIVATE);
+		String strJson = sharedPreferences.getString("json_wine", null);
+		if(strJson != null)
+		{
+			try {
+				json = new JSONObject(strJson);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		else
+		{
+	        // Creating JSON Parser instance
+	        JSONParser jParser = new JSONParser(); 
+	        // getting JSON string from URL
+	        json = jParser.getJSONFromUrl(url);
+		    SharedPreferences.Editor editor = sharedPreferences.edit();
+		    editor.putString("json_wine", json.toString());
+		    editor.commit();
+		}
                 
         try {
             // Getting Array of Contacts
@@ -274,9 +295,12 @@ public class WineListTab extends Activity {
 	
 	protected void performRefresh()
 	{
-		
 		rl.setVisibility(View.VISIBLE);
 		iv.setVisibility(View.INVISIBLE);
+		//SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.remove("json_wine");
+		editor.commit();
 		Handler handler = new Handler(); 
 	    handler.postDelayed(new Runnable() { 
 	         public void run() { 
@@ -318,4 +342,5 @@ public class WineListTab extends Activity {
 	    ((Activity) mContext).setContentView(view);
 	}
 	
+
 }

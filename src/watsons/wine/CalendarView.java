@@ -1,6 +1,5 @@
 package watsons.wine;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,13 +10,9 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.MonthDisplayHelper;
 import android.view.MotionEvent;
-import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class CalendarView extends ImageView {
     private static int WEEK_TOP_MARGIN;// = 74;
@@ -182,6 +177,9 @@ public class CalendarView extends ImageView {
 	
     public void setTimeInMillis(long milliseconds) {
     	mRightNow.setTimeInMillis(milliseconds);
+    	System.out.println("What is this????");
+    	if (list!=null)
+    		drawDate();
     	initCells();
     	this.invalidate();
     }
@@ -208,6 +206,11 @@ public class CalendarView extends ImageView {
     	if (list!=null)
     		drawDate();
     	invalidate();
+    }
+    
+    public boolean hitDay(int year, int month, int day)
+    {
+    	return (getYear()==year && this.getMonth()==month );
     }
     
     public boolean firstDay(int day) {
@@ -256,6 +259,11 @@ public class CalendarView extends ImageView {
 	    	for(Cell[] week : mCells) {
 				for(Cell day : week) {
 					if(day.hitTest((int)event.getX(), (int)event.getY())) {
+						invalidate();
+						System.out.print("Day:");
+						System.out.println(day.mDayOfMonth);
+						System.out.print("hittest:");
+						System.out.println(day.mEvent);
 						mOnCellTouchListener.onTouch(day);
 					}						
 				}
@@ -279,7 +287,7 @@ public class CalendarView extends ImageView {
 		mWeekTitle.draw(canvas);
 		mBtnLeft.draw(canvas);
 		mBtnRight.draw(canvas);
-		
+		System.out.println("Drawing...................");
 		// draw cells
 		for(Cell[] week : mCells) {
 			for(Cell day : week) {
@@ -337,20 +345,12 @@ public class CalendarView extends ImageView {
 			day = list.get(k*3+2);
 			if(year == getYear() && month == getMonth()+1)
 			{
-				for(int i=0;i<6;i++)
-				{
-					for(int j=0;j<7;j++)
-					{
-						if (mCells[i][j] != null)
-						{
-							if (mCells[i][j].IsThisMonth() && day == mCells[i][j].getDayOfMonth())
-							{
-								mCells[i][j].setCircle();
-							}
-						}
+				for(Cell[] cweek : mCells) {
+					for(Cell cday : cweek) {
+						if(cday.IsThisMonth() && day == cday.getDayOfMonth())
+							cday.setEvent();
 					}
 				}
-				
 			}
 		}
 		

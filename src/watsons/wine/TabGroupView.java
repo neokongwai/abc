@@ -35,8 +35,11 @@ public class TabGroupView extends TabActivity {
 		setupTab(new ImageView(this),R.drawable.ic_tab_food,TabGroupFood.class,"tab3");
 		setupTab(new ImageView(this),R.drawable.ic_tab_events,TabGroupEvents.class,"tab4");
 		setupTab(new ImageView(this),R.drawable.ic_tab_location,TabGroupLocation.class,"tab5");
-		//mTabHost.setCurrentTab(1);
-
+		
+		// Set Current Tab
+		Bundle bundle = this.getIntent().getExtras();
+        int index = bundle.getInt("index");
+		mTabHost.setCurrentTab(index);
 	}
 	
 	private void setupTab(final View view, final int drawable, Class<?> tab_class, String tag) {

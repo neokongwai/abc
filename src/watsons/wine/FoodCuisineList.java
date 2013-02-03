@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -48,8 +49,6 @@ public class FoodCuisineList extends Activity {
     //private static final String TAG_DELETED = "deleted";
     private static final String TAG_REGION = "regions";
     //private static final String TAG_CUISINE_ID = "cuisine_id";
-    
-
  
     // contacts JSONArray
     JSONArray cuisines = null;
@@ -63,6 +62,8 @@ public class FoodCuisineList extends Activity {
     RelativeLayout refreshAni;
 
     List<Integer> emptyList = new ArrayList<Integer>();
+    private SharedPreferences sharedPreferences;
+    private JSONObject json;
     
 	/** Called when the activity is first created. */
 	@Override
@@ -97,11 +98,26 @@ public class FoodCuisineList extends Activity {
 		final List<Map<String, String>> cuisineList = new ArrayList<Map<String, String>>();
 		final List<List<Map<String, String>>> regionList = new ArrayList<List<Map<String, String>>>();	
  
-        // Creating JSON Parser instance
-        JSONParser jParser = new JSONParser();
- 
-        // getting JSON string from URL
-        JSONObject json = jParser.getJSONFromUrl(url);
+		sharedPreferences = getPreferences(MODE_PRIVATE);
+		String strJson = sharedPreferences.getString("json_food", null);
+		if(strJson != null)
+		{
+			try {
+				json = new JSONObject(strJson);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+		}
+		else
+		{
+	        // Creating JSON Parser instance
+	        JSONParser jParser = new JSONParser(); 
+	        // getting JSON string from URL
+	        json = jParser.getJSONFromUrl(url);
+		    SharedPreferences.Editor editor = sharedPreferences.edit();
+		    editor.putString("json_food", json.toString());
+		    editor.commit();
+		}
                 
         try {
             // Getting Array of Contacts
@@ -269,9 +285,11 @@ public class FoodCuisineList extends Activity {
 	}
 	protected void performRefresh()
 	{
-		
 		refreshAni.setVisibility(View.VISIBLE);
 		refreshBtn.setVisibility(View.INVISIBLE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.remove("json_food");
+		editor.commit();
 		Handler handler = new Handler(); 
 	    handler.postDelayed(new Runnable() { 
 	         public void run() { 

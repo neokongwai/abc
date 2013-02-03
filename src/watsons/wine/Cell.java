@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2011 Chris Gao <chris@exina.net>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package watsons.wine;
 
 import android.content.Context;
@@ -21,9 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 public class Cell {
 	private static final String TAG = "Cell";
@@ -47,12 +29,11 @@ public class Cell {
 		dx = (int) mPaint.measureText(String.valueOf(mDayOfMonth)) / 2;
 		dy = (int) (-mPaint.ascent() + mPaint.descent()) / 2;
 		mCircle = context.getResources().getDrawable(R.drawable.icon_circle);
-		
 	}
 	
-	public Cell(Context c,int dayOfMon, Rect rect, float textSize) {
-		this(c,dayOfMon, rect, textSize, false);
-	}
+	//public Cell(Context c,int dayOfMon, Rect rect, float textSize) {
+	//	this(c,dayOfMon, rect, textSize, false);
+	//}
 	
 	protected void draw(Canvas canvas) {
 		canvas.drawText(String.valueOf(mDayOfMonth), mBound.centerX() - dx, mBound.centerY() + dy, mPaint);
@@ -60,7 +41,10 @@ public class Cell {
 	
 	protected void drawCircle(Canvas canvas) {
 		if (mEvent)
+		{
+			mCircle.setBounds(mBound);
 			mCircle.draw(canvas);
+		}
 	}
 	
 	public int getDayOfMonth() {
@@ -75,11 +59,15 @@ public class Cell {
 		return mBound;
 	}
 	
-	public void setCircle() {
-		 mEvent = true;
-		 mCircle.setBounds(mBound);
-		 return;
+	public void setEvent()
+	{
+		mEvent = true;
 	}
+	
+	//public void setCircle() {
+	//	 mCircle.setBounds(mBound);
+	//	 return;
+	//}
 	
 	public boolean IsEvent()
 	{

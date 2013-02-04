@@ -2,6 +2,8 @@ package watsons.wine;
  
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
  
 public class WineProductWeb extends Activity implements OnTouchListener, Handler.Callback {
  
@@ -29,6 +32,27 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
  
 		webView = (WebView) findViewById(R.id.product_webview);
 		webView.loadUrl(url);
+		webView.setWebViewClient(new WebViewClient() {
+			public void onPageFinished(WebView view, String url) {
+				System.out.println("xxx");
+			}
+			
+			@Override
+		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+		    	System.out.println("url=>>>>"+url);
+		    	System.out.println(Uri.parse(url).getHost());
+		        if (Uri.parse(url).getHost().equals("fb.com")) {
+		            // This is my web site, so do not override; let my WebView load the page
+		            
+		        	webView.requestFocus(View.FOCUS_DOWN);
+		        	return false;
+		        }
+		        // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+		        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		        startActivity(intent);
+		        return true;
+		    }
+		});
 		webView.setOnTouchListener(this);
 		webView.addJavascriptInterface(new WebAppInterface(this), "Android");
 		WebSettings websetting = webView.getSettings();
@@ -45,5 +69,8 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private class MyWebViewClient extends WebViewClient {
 	}
 }

@@ -4,6 +4,8 @@ import watsons.wine.utilities.WatsonWineDB;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.widget.Toast;
 
 public class WebAppInterface extends Activity {
@@ -19,6 +21,30 @@ public class WebAppInterface extends Activity {
     public void showToast(String toast) {
         Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
         
+    }
+    
+    public void sendTwitter(String wineName, String prd_id, String tasting_note) {
+    	String message1 = "I've added " + wineName + "into my wish list. Let's have a wine gathering and try together.";
+    	String message2 = "";
+    	String message3 = "";
+    	
+    	if(!prd_id.isEmpty()) {
+    		message2 = "\n" + "https://www.watsonswine.com/WebShop/BrowseProductDetail.do?prdid=" + prd_id;
+    	}
+    	if(!tasting_note.isEmpty()) {
+    		message3 = "\n" + "Tasting note: " + tasting_note;
+    	}
+    	
+    	final String message = message1 + message2 + message3;
+    	
+    	Runnable runnable = new Runnable() {
+    		public void run() {
+    			String url = "https://twitter.com/intent/tweet?text="+message;
+    			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    			mContext.startActivity(intent);
+    		}
+    	};
+    	runOnUiThread(runnable);
     }
     
     public void sendmail(String wineName, String prd_id, String tasting_note) {

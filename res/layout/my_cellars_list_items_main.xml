@@ -3,11 +3,42 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/title_cellar" />
     
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <ImageView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/title_cellar" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_back_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/btn_back" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_add_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dip"
+	        android:background="@drawable/btn_plus" />
+	    
+	    <ImageButton
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toLeftOf="@id/cellar_add_button"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dip"
+	        android:background="@drawable/btn_search_small" />
+	    
+    </RelativeLayout>
     <LinearLayout 
         android:orientation="horizontal"
 	    android:layout_width="fill_parent"

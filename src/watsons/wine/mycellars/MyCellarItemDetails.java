@@ -169,6 +169,13 @@ public class MyCellarItemDetails {
 		resultString.add(getWineCreateDate());//17
 		resultString.add(getWineModifyDate());//18
 		resultString.add(getWineUpToCms());//19
+		for(int i=0; i<resultString.size(); i++){
+			if (resultString.get(i) == null){
+				resultString.set(i, "-");
+			}else if(resultString.get(i).isEmpty()){
+				resultString.set(i, "-");
+			}
+		}
 		return resultString;
 		
 	}

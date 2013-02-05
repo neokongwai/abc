@@ -4,6 +4,7 @@ import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
 import watsons.wine.R;
 import watsons.wine.TabGroupBase;
+import watsons.wine.utilities.WatsonWineDB;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,9 +26,9 @@ public class MyCellarsMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_cellars_main);
         //**********test*************
-       // WatsonWineDB temp = new WatsonWineDB();
-       // temp.createOrOpenMyCellarTable(this);
-       // temp.addToMyCellerFromWineList(this, "wineName", "region", "vintage", "grape", "colour", "body", "sweetness", "size",0.9, "note", "wineImage");
+        //WatsonWineDB temp = new WatsonWineDB();
+        //temp.createOrOpenMyCellarTable(this);
+        //temp.addToMyCellerFromWineList(this, "wineName", "region", "vintage", "grape", "colour", "body", "sweetness", "size",0.9, "note", "-");
         //**********test*************
         openDatabase();
         Cursor cursor = getCursor();

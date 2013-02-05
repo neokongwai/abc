@@ -15,7 +15,6 @@
          android:id="@+id/cellarWineImage"  
          android:layout_height="68dp"   
          android:layout_width="68dp"
-         android:background="@drawable/ic_launcher"
      />    
     <View  android:layout_height="1dp"   
          android:layout_width="10dp"/>

@@ -1,10 +1,14 @@
 package watsons.wine.mycellars;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import watsons.wine.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,23 +65,38 @@ public class CellarsListItemsAdapter extends BaseAdapter {
 			holder.itemView.add((ImageView) convertView.findViewById(R.id.cellarWineImage_3));
 			holder.itemView.add((ImageView) convertView.findViewById(R.id.cellarWineImage_4));
 			holder.itemView.add((ImageView) convertView.findViewById(R.id.cellarWineImage_5));
+			
+			holder.itemName.setText(itemDetailsrrayList.get(position).getWineName());
+			holder.itemStatus.setText(itemDetailsrrayList.get(position).getWineStatus().equals("Y")? "In Stock":"Wish List");
+			int favour = Integer.valueOf(itemDetailsrrayList.get(position).getWinefavourite());
+			for (int i=0; i <favour; i++) {
+				holder.itemView.get(i).setBackgroundDrawable(context.getResources().getDrawable(R.drawable.icon_wine_glass_full));
+			}
+			for (int i=favour; i <6; i++) {
+				holder.itemView.get(i).setBackgroundDrawable(context.getResources().getDrawable(R.drawable.icon_wine_glass));
+			}
+			
+			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+			if (itemDetailsrrayList.get(position).getWineImage().equals("-") || itemDetailsrrayList.get(position).getWineImage() == null) {
+				Log.i("osmand", "setResources");
+				holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_camera));
+			} else {
+				File imgFile = new File(cache_image_path+itemDetailsrrayList.get(position).getWineImage());
+				if (imgFile.exists()) {
+					holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_small));
+					Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					holder.itemImageView.setImageBitmap(myBitmap);
+					//holder.newsImage.setBackgroundDrawable(new BitmapDrawable(myBitmap));
+					Log.i("osmand", "setImageBitmap");
+				}
+			}
 
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.itemName.setText(itemDetailsrrayList.get(position).getWineName());
-		holder.itemStatus.setText(itemDetailsrrayList.get(position).getWineStatus().equals("Y")? "In Stock":"Wish List");
-		int favour = Integer.valueOf(itemDetailsrrayList.get(position).getWinefavourite());
-		for (int i=0; i <favour; i++) {
-			holder.itemView.get(i).setBackgroundDrawable(context.getResources().getDrawable(R.drawable.icon_wine_glass_full));
-		}
-		for (int i=favour; i <6; i++) {
-			holder.itemView.get(i).setBackgroundDrawable(context.getResources().getDrawable(R.drawable.icon_wine_glass));
-		}
 		
-
 		return convertView;
 	}
 

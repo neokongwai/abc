@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
 import watsons.wine.R;
+import watsons.wine.TabGroupBase;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,119 +31,6 @@ public class MyCellarsListIemsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_cellars_list_items_main);
-        
-        openDatabase();
-        Cursor cursor = getCursor();
-        results = new ArrayList<MyCellarItemDetails>();
-        
-        while(cursor.moveToNext()){
-        	results.add(GetSearchResults(cursor));
-
-        }
-        
-        ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
-  
-        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results));
-        list.setOnItemClickListener(new OnItemClickListener() {
-	    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				Log.i("Osmands", "position = "+position);
-	    		Log.i("Osmands", "results.get(position).getId() = "+results.get(position).getId());
-	    		Log.i("Osmands", "results.get(position).getWineStatus() = "+results.get(position).getWineStatus());
-	    		Intent intent = null;
-				Bundle b = new Bundle();
-				b.putStringArrayList("wineDetail", results.get(position).getAllToStringArray());
-				intent = new Intent(getApplicationContext(), MyCellarsWineDetail.class);
-				intent.putExtras(b);
-	    		startActivity(intent);
-	    		finish();
-	    	}
-    	});
-        
-        ImageButton instock_bn = (ImageButton) findViewById (R.id.cellar_instock_button);
-        instock_bn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_instock));
-				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_all));
-				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_winelist));
-				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.GONE);
-				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.GONE);
-				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.VISIBLE);
-				instock_results_list = new ArrayList<MyCellarItemDetails>();
-		        for (int i=0; i<results.size(); i++) {
-		            if (results.get(i).getWineStatus().equals("Y")) {
-		            	instock_results_list.add(results.get(i));
-		            }
-		        }
-		        ListView list = (ListView) findViewById(R.id.cellars_instock_list_View);  
-		  
-		        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, instock_results_list)); 
-		        list.setOnItemClickListener(new OnItemClickListener() {
-			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-						Log.i("Osmands", "position = "+position);
-			    		Log.i("Osmands", "instock_results_list.get(position).getId() = "+instock_results_list.get(position).getId());
-			    		Log.i("Osmands", "instock_results_list.get(position).getWineStatus() = "+instock_results_list.get(position).getWineStatus());
-			    	}
-		    	});
-			}
-        	
-        });
-        ImageButton all_bn = (ImageButton) findViewById (R.id.cellar_all_button);
-        all_bn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_instock));
-				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_all));
-				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_winelist));
-				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.VISIBLE);
-				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.GONE);
-				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.GONE);
-				ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
-				  
-			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results)); 
-			    list.setOnItemClickListener(new OnItemClickListener() {
-			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-						Log.i("Osmands", "position = "+position);
-			    		Log.i("Osmands", "results.get(position).getId() = "+results.get(position).getId());
-			    		Log.i("Osmands", "results.get(position).getWineStatus() = "+results.get(position).getWineStatus());
-			    	}
-		    	});
-			}
-        	
-        });
-        
-        ImageButton wish_bn = (ImageButton) findViewById (R.id.cellar_wish_button);
-        wish_bn.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_instock));
-				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_all));
-				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_winelist));
-				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.GONE);
-				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.GONE);
-				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.VISIBLE);
-				wish_results_list = new ArrayList<MyCellarItemDetails>();
-		        for (int i=0; i<results.size(); i++) {
-		            if (results.get(i).getWineStatus().equals("N")) {
-		            	wish_results_list.add(results.get(i));
-		            }
-		        }
-				ListView list = (ListView) findViewById(R.id.cellars_wish_list_View);  
-				  
-			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, wish_results_list)); 
-			    list.setOnItemClickListener(new OnItemClickListener() {
-			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-						Log.i("Osmands", "position = "+position);
-			    		Log.i("Osmands", "wish_results_list.get(position).getId() = "+wish_results_list.get(position).getId());
-			    		Log.i("Osmands", "wish_results_list.get(position).getWineStatus() = "+wish_results_list.get(position).getWineStatus());
-			    	}
-		    	});
-			}
-        	
-        });
        
     }
     private MyCellarItemDetails GetSearchResults(Cursor cursor) {
@@ -182,6 +70,169 @@ public class MyCellarsListIemsActivity extends Activity {
         startManagingCursor(cursor);
 
         return cursor;
+    }
+    
+    @Override
+	protected void onResume(){
+    	super.onResume();
+    	openDatabase();
+        Cursor cursor = getCursor();
+        results = new ArrayList<MyCellarItemDetails>();
+        
+        while(cursor.moveToNext()){
+        	results.add(GetSearchResults(cursor));
+
+        }
+        
+        ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
+  
+        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results));
+        list.setOnItemClickListener(new OnItemClickListener() {
+	    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+				Log.i("Osmands", "position = "+position);
+	    		Log.i("Osmands", "results.get(position).getId() = "+results.get(position).getId());
+	    		Log.i("Osmands", "results.get(position).getWineStatus() = "+results.get(position).getWineStatus());
+	    		Intent intent = null;
+				Bundle b = new Bundle();
+				b.putStringArrayList("wineDetail", results.get(position).getAllToStringArray());
+				
+				intent = new Intent(getParent(), MyCellarsWineDetail.class);
+				intent.putExtras(b);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsList", intent);
+	    	}
+    	});
+        
+        ImageButton back_bn = (ImageButton) findViewById (R.id.cellar_back_button);
+        back_bn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+        });
+        
+        ImageButton instock_bn = (ImageButton) findViewById (R.id.cellar_instock_button);
+        instock_bn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_instock));
+				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_all));
+				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_winelist));
+				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.GONE);
+				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.GONE);
+				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.VISIBLE);
+				instock_results_list = new ArrayList<MyCellarItemDetails>();
+		        for (int i=0; i<results.size(); i++) {
+		            if (results.get(i).getWineStatus().equals("Y")) {
+		            	instock_results_list.add(results.get(i));
+		            }
+		        }
+		        ListView list = (ListView) findViewById(R.id.cellars_instock_list_View);  
+		  
+		        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, instock_results_list)); 
+		        list.setOnItemClickListener(new OnItemClickListener() {
+			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+						Log.i("Osmands", "position = "+position);
+			    		Log.i("Osmands", "instock_results_list.get(position).getId() = "+instock_results_list.get(position).getId());
+			    		Log.i("Osmands", "instock_results_list.get(position).getWineStatus() = "+instock_results_list.get(position).getWineStatus());
+			    		Intent intent = null;
+						Bundle b = new Bundle();
+						b.putStringArrayList("wineDetail", instock_results_list.get(position).getAllToStringArray());
+						
+						intent = new Intent(getParent(), MyCellarsWineDetail.class);
+						intent.putExtras(b);
+						TabGroupBase parentActivity = (TabGroupBase)getParent();
+			        	parentActivity.startChildActivity("MyCellarsList", intent);
+			    	}
+		    	});
+			}
+        	
+        });
+        ImageButton all_bn = (ImageButton) findViewById (R.id.cellar_all_button);
+        all_bn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_instock));
+				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_all));
+				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_winelist));
+				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.VISIBLE);
+				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.GONE);
+				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.GONE);
+				ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
+				  
+			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results)); 
+			    list.setOnItemClickListener(new OnItemClickListener() {
+			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+						Log.i("Osmands", "position = "+position);
+			    		Log.i("Osmands", "results.get(position).getId() = "+results.get(position).getId());
+			    		Log.i("Osmands", "results.get(position).getWineStatus() = "+results.get(position).getWineStatus());
+			    		Intent intent = null;
+						Bundle b = new Bundle();
+						b.putStringArrayList("wineDetail", results.get(position).getAllToStringArray());
+						
+						intent = new Intent(getParent(), MyCellarsWineDetail.class);
+						intent.putExtras(b);
+						TabGroupBase parentActivity = (TabGroupBase)getParent();
+			        	parentActivity.startChildActivity("MyCellarsList", intent);
+			    	}
+		    	});
+			}
+        	
+        });
+        
+        ImageButton wish_bn = (ImageButton) findViewById (R.id.cellar_wish_button);
+        wish_bn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				((ImageButton) findViewById (R.id.cellar_instock_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_instock));
+				((ImageButton) findViewById (R.id.cellar_all_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_off_all));
+				((ImageButton) findViewById (R.id.cellar_wish_button)).setBackgroundDrawable(getResources().getDrawable(R.drawable.menu_cellar_on_winelist));
+				((ListView) findViewById (R.id.cellars_all_list_View)).setVisibility(View.GONE);
+				((ListView) findViewById (R.id.cellars_instock_list_View)).setVisibility(View.GONE);
+				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.VISIBLE);
+				wish_results_list = new ArrayList<MyCellarItemDetails>();
+		        for (int i=0; i<results.size(); i++) {
+		            if (results.get(i).getWineStatus().equals("N")) {
+		            	wish_results_list.add(results.get(i));
+		            }
+		        }
+				ListView list = (ListView) findViewById(R.id.cellars_wish_list_View);  
+				  
+			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, wish_results_list)); 
+			    list.setOnItemClickListener(new OnItemClickListener() {
+			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+						Log.i("Osmands", "position = "+position);
+			    		Log.i("Osmands", "wish_results_list.get(position).getId() = "+wish_results_list.get(position).getId());
+			    		Log.i("Osmands", "wish_results_list.get(position).getWineStatus() = "+wish_results_list.get(position).getWineStatus());
+			    		Intent intent = null;
+						Bundle b = new Bundle();
+						b.putStringArrayList("wineDetail", wish_results_list.get(position).getAllToStringArray());
+						
+						intent = new Intent(getParent(), MyCellarsWineDetail.class);
+						intent.putExtras(b);
+						TabGroupBase parentActivity = (TabGroupBase)getParent();
+			        	parentActivity.startChildActivity("MyCellarsList", intent);
+			    	}
+		    	});
+			}
+        	
+        });
+        
+        ((ImageButton)findViewById(R.id.cellar_add_button)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = null;
+				intent = new Intent(MyCellarsListIemsActivity.this, MyCellarsUpdateItemsActivity.class);
+				startActivity(intent);
+				
+			}
+        	
+        });
     }
     
     @Override

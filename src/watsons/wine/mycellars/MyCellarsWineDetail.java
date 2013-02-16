@@ -2,9 +2,12 @@ package watsons.wine.mycellars;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
+import com.facebook.android.DialogError;
+import com.facebook.android.FacebookError;
 
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelScrollListener;
@@ -12,6 +15,10 @@ import kankan.wheel.widget.WheelView;
 import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import watsons.wine.R;
 import watsons.wine.TabGroupBase;
+import watsons.wine.utilities.BaseDialogListener;
+import watsons.wine.utilities.CommonUtilities;
+import watsons.wine.utilities.TwitterApp;
+import watsons.wine.utilities.TwitterApp.TwDialogListener;
 import watsons.wine.utilities.WatsonWineDB;
 
 import android.R.id;
@@ -19,14 +26,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LocalActivityManager;
 import android.app.AlertDialog.Builder;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -42,6 +56,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.content.pm.ResolveInfo;
 
 public class MyCellarsWineDetail extends Activity{
 	
@@ -181,7 +197,97 @@ public class MyCellarsWineDetail extends Activity{
         	
         });
         
-        ImageButton back_btn = (ImageButton) findViewById(R.id.cellar_details_back_button);
+        ImageButton email_btn = (ImageButton) findViewById(R.id.cellar_email_icon);
+        email_btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(Intent.ACTION_SEND);
+				i.setType("message/rfc822");
+				//i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
+				i.putExtra(Intent.EXTRA_SUBJECT, "My testing note");
+				i.putExtra(Intent.EXTRA_TEXT   , "I've tasted "+wineDetail.get(1)+" recently and here is my tasting note to share: "+wineDetail.get(14));
+				try {
+				    startActivity(Intent.createChooser(i, "Send mail..."));
+				} catch (android.content.ActivityNotFoundException ex) {
+				    Toast.makeText(MyCellarsWineDetail.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+				}
+				
+			}
+        	
+        	
+        });
+        
+        ImageButton twitter_btn = (ImageButton) findViewById(R.id.cellar_twitter_icon);
+        twitter_btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				final TwitterApp mTwitter = new TwitterApp(MyCellarsWineDetail.this.getParent(), CommonUtilities.twitter_consumer_key,CommonUtilities.twitter_secret_key);
+				mTwitter.setListener(mTwLoginDialogListener);
+				if (mTwitter.hasAccessToken()) {
+					
+					new Thread() {
+			            @Override
+			            public void run() {
+			                int what = 0;
+			 
+			                try {
+			                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" recently."+"https://www.watsonswine.com");
+			                    mHandler.sendMessage(mHandler.obtainMessage(0));
+			                } catch (Exception e) {
+			                	Log.e("Osmands", "Twitter updateStatus error = "+e);
+			                    if (e.getMessage().toString().contains("duplicate")) {
+			                    	mHandler.sendMessage(mHandler.obtainMessage(2));
+			                    } else {
+			                    	mHandler.sendMessage(mHandler.obtainMessage(1));
+			                    }
+			                }
+			 
+			                
+			            }
+			        }.start();
+					
+					/*try {
+	                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" recently."+"https://www.watsonswine.com");
+	                } catch (Exception e) {
+	                    Log.i("Osmands", "Twitter updateStatus error = "+e);
+	                }*/
+					/*try{
+					    Intent intent = new Intent(Intent.ACTION_SEND);
+					    intent.putExtra(Intent.EXTRA_TEXT, "I've tasted "+wineDetail.get(1)+" recently."+"https://www.watsonswine.com");
+					    intent.setType("text/plain");
+					    final PackageManager pm = MyCellarsWineDetail.this.getParent().getPackageManager();
+					    final List activityList = pm.queryIntentActivities(intent, 0);
+					        int len =  activityList.size();
+					    for (int i = 0; i < len; i++) {
+					        final ResolveInfo app = (ResolveInfo) activityList.get(i);
+					        if ("com.twitter.android.PostActivity".equals(app.activityInfo.name)) {
+					            final ActivityInfo activity=app.activityInfo;
+					            final ComponentName name=new ComponentName(activity.applicationInfo.packageName, activity.name);
+					            intent=new Intent(Intent.ACTION_SEND);
+					            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+					            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					            intent.setComponent(name);
+					            intent.putExtra(Intent.EXTRA_TEXT, "I've tasted "+wineDetail.get(1)+" recently."+"https://www.watsonswine.com");
+					            MyCellarsWineDetail.this.getParent().startActivity(intent);
+					            break;
+					        }
+					    }
+					}
+					catch(final ActivityNotFoundException e) {
+					    Log.i("Osmands", "no twitter native",e );
+					}*/
+		        } else {
+		 
+		            mTwitter.authorize();
+		        }
+			}
+        	
+        	
+        });
+        
+     /*   ImageButton back_btn = (ImageButton) findViewById(R.id.cellar_details_back_button);
         back_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -192,7 +298,7 @@ public class MyCellarsWineDetail extends Activity{
         	
         	
         });
-        
+       */ 
         ImageButton delete_btn = (ImageButton) findViewById(R.id.cellar_delete_button);
         delete_btn.setOnClickListener(new OnClickListener(){
 
@@ -221,8 +327,80 @@ public class MyCellarsWineDetail extends Activity{
         	
         	
         });
+        
+        ImageButton facebook_btn = (ImageButton) findViewById(R.id.cellar_facebook_icon);
+        facebook_btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				Bundle params = new Bundle();
+				params.putString("description", "I've tasted "+wineDetail.get(1)+" recently and here is my tasting note to share: "+wineDetail.get(14));
+				params.putString("name", wineDetail.get(1));
+				if (!wineDetail.get(4).equals("-") && wineDetail.get(4) != null) {
+					params.putString("picture", "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/uploads/wine/"+wineDetail.get(4));
+				}
+				params.putString("link", "https://www.watsonswine.com");
+				CommonUtilities.facebook.dialog(MyCellarsWineDetail.this.getParent(), "feed", params, new UpdateStatusListener());
+				
+			}
+        	
+        	
+        });
        
     }
+    
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            String text = "";
+            switch(msg.what){
+	            case 0: text = "Posted to Twitter"; break;
+	            case 1: text = "Post to Twitter failed"; break;
+	            case 2: text = "Posting Failed because of duplicate message"; break;
+            }
+ 
+            Toast.makeText(MyCellarsWineDetail.this.getParent(), text, Toast.LENGTH_SHORT).show();
+        }
+    };
+    
+    public class UpdateStatusListener extends BaseDialogListener {
+	    @Override
+	    public void onComplete(Bundle values) {
+	        final String postId = values.getString("post_id");
+	        if (postId != null) {
+	        } else {
+	        }
+	    }
+
+	    @Override
+	    public void onFacebookError(FacebookError error) {
+	       // JWMessageDialog.show("error",NewsOffersDetailsActivity.this, "Facebook Error: " + error.getMessage(), NewsOffersDetailsActivity.this);
+	    	Log.i("Osmands", "Facebook Error: " + error.getMessage());
+	    }
+
+	    @Override
+	    public void onCancel() {
+	    }
+
+		@Override
+		public void onError(DialogError e) {
+			// TODO Auto-generated method stub
+		}
+	}
+    
+    private final TwDialogListener mTwLoginDialogListener = new TwDialogListener() {
+        @Override
+        public void onComplete(String value) {
+            Log.i("Osmands", "Twitter onComplete = "+value);
+        }
+ 
+        @Override
+        public void onError(String value) {
+ 
+            //Toast.makeText(TestPost.this, "Twitter connection failed", Toast.LENGTH_LONG).show();
+        	Log.i("Osmands", "Twitter onError = "+value);
+        }
+    };
     
     
     @Override
@@ -275,7 +453,7 @@ public class MyCellarsWineDetail extends Activity{
 		}
 		
 		if (wineDetail.get(4).equals("-") || wineDetail.get(4) == null) {
-			((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
+			((ImageView) findViewById (R.id.cellar_details_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
 		} else {
 			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 			File imgFile = new File(cache_image_path+wineDetail.get(4));

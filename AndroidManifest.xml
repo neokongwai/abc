@@ -95,6 +95,10 @@
             android:name="watsons.wine.mycellars.MyCellarsUpdateItemsActivity" 
             android:screenOrientation="portrait" >
         </activity>
-        
+        <activity 
+            android:name="watsons.wine.mycellars.MyCellarsSearchMain" 
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name="watsons.wine.TabGroupNotification" />
     </application>
 </manifest>

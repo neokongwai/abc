@@ -47,12 +47,14 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		icon_food = (ImageView) findViewById(R.id.icon_food);
 		icon_events = (ImageView) findViewById(R.id.icon_events);
 		icon_location = (ImageView) findViewById(R.id.icon_location);
+		icon_inbox = (ImageView) findViewById(R.id.icon_inbox);
 
 		icon_wine.setOnClickListener(this);
 		icon_cellar.setOnClickListener(this);
 		icon_food.setOnClickListener(this);
 		icon_events.setOnClickListener(this);
 		icon_location.setOnClickListener(this);
+		icon_inbox.setOnClickListener(this);
 	}
 
 	@Override
@@ -86,6 +88,9 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		case R.id.icon_location:
 			intent.putExtra("index", 4);
 			break;
+		case R.id.icon_inbox:
+		    intent.putExtra("index", 5);
+		    break;
 		}
 		startActivity(intent);
 

@@ -14,7 +14,7 @@
 	        android:layout_height="wrap_content"
 	        android:src="@drawable/title_cellar" />
 	    
-	    <ImageButton
+	  <!--   <ImageButton
 	        android:id="@+id/cellar_details_back_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_marginLeft="5dip"
 	        android:background="@drawable/btn_back" />
-	    
+	    --> 
 	    <ImageButton
 	        android:id="@+id/cellar_edit_button"
 	        android:layout_width="wrap_content"

@@ -12,6 +12,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.w3c.dom.Text;
+
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelScrollListener;
 import kankan.wheel.widget.WheelView;
@@ -19,6 +21,7 @@ import kankan.wheel.widget.adapters.ArrayWheelAdapter;
 import kankan.wheel.widget.adapters.NumericWheelAdapter;
 import watsons.wine.R;
 import watsons.wine.TabGroupBase;
+import watsons.wine.utilities.CommonUtilities;
 import watsons.wine.utilities.WatsonWineDB;
 
 import android.app.Activity;
@@ -33,19 +36,24 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -70,7 +78,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	int[] details_table_view_id = new int[]{R.id.tableRow0, R.id.tableRow1, R.id.tableRow2, R.id.tableRow3, R.id.tableRow4, R.id.tableRow5, R.id.tableRow6, R.id.tableRow7, R.id.tableRow8, R.id.tableRow9};
 	HashMap<Integer, String> display_details_output_id_map;
 	HashMap<Integer, String> display_output_id_map;
-	int[] details_table_view_output_id = new int[]{R.id.tableRow0_1, R.id.tableRow1_1, R.id.tableRow2_1, R.id.tableRow3_1, R.id.tableRow4_1, R.id.tableRow5_1, R.id.tableRow7_1, R.id.tableRow8_1, R.id.tableRow9_1};
+	int[] details_table_view_output_id = new int[]{R.id.tableRow0_1, R.id.tableRow1_1, R.id.tableRow2_1, R.id.tableRow3_1, R.id.tableRow4_1, R.id.tableRow5_1,R.id.tableRow6_1, R.id.tableRow7_1, R.id.tableRow8_1, R.id.tableRow9_1};
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +119,12 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("OFF");
 		((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
 		
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+		
 		//For add mode init, set wineImage = "-"
 		myCellarsTO.setWineImage("-");
 
@@ -120,9 +134,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
   			mode = "edit";
   			wineDetail = bundle.getStringArrayList("wineDetail");
   			mapBundleToMyCellarsTO(wineDetail);
-  			
+  			((TextView) findViewById(R.id.cellar_added_date_update)).setText("Added: "+wineDetail.get(17));
+  			((ImageView)findViewById(R.id.cellar_update_wine_title)).setImageResource(R.drawable.title_edit);
   		}
-        
+  		
   		//********go to selection view************
   		TableRow temp = (TableRow)findViewById(R.id.tableRow0);
         temp.setOnClickListener(this);
@@ -143,6 +158,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
         
       //********not go to selection view************
         temp = (TableRow)findViewById(R.id.tableRow4);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow6);
         temp.setOnClickListener(this);
         temp = (TableRow)findViewById(R.id.tableRow7);
         temp.setOnClickListener(this);
@@ -224,6 +241,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "save onClick()");
 				if (!myCellarsTO.getWineName().equals("-")) {
 					setMyCellarsTO(R.id.tableRow4_1, -1);
+					setMyCellarsTO(R.id.tableRow6_1, -1);
 					setMyCellarsTO(R.id.tableRow7_1, -1);
 					setMyCellarsTO(R.id.tableRow13_1, -1);
 					WatsonWineDB db = new WatsonWineDB();
@@ -246,10 +264,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 								myCellarsTO.getUp_to_cms());
 					}
 					if (result){
-						getAlertDialog("Changes saved").show();
+						getSuccessAlertDialog("Changes saved").show();
 					}
 				} else {
-					getAlertDialog("Error\nPlease give this wine a name.").show();
+					getErrorAlertDialog("Error\nPlease give this wine a name.").show();
 				}
 			}
         	
@@ -299,6 +317,21 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
                 			TableRow temp = (TableRow)findViewById(R.id.tableRow7_1);
 		                	 temp.setVisibility(View.GONE);
                 		}
+	                	
+	                	if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().toString().equals("ON") ||
+	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).getTag().toString().equals("ON") ||
+	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().toString().equals("ON") ||
+	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().toString().equals("ON") ||
+	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().toString().equals("ON") ) {
+	                		display_details_output_id_map.put(R.id.tableRow6_1, "true");
+	                		TableRow temp = (TableRow)findViewById(R.id.tableRow6_1);
+		                	 temp.setVisibility(View.VISIBLE);
+                		} else {
+                			display_details_output_id_map.put(R.id.tableRow6_1, "false");
+                			TableRow temp = (TableRow)findViewById(R.id.tableRow6_1);
+		                	 temp.setVisibility(View.GONE);
+                		}
+	                	
 	                	 TableRow temp = (TableRow)findViewById(R.id.tableRow10);
 	                	 temp.setVisibility(View.GONE);
 	                	 temp = (TableRow)findViewById(R.id.tableRow11);
@@ -416,7 +449,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
        
     }
     
-    private AlertDialog getAlertDialog(String message){
+    private AlertDialog getSuccessAlertDialog(String message){
 
         Builder builder = new AlertDialog.Builder(MyCellarsUpdateItemsActivity.this);
 
@@ -428,6 +461,25 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 
             public void onClick(DialogInterface dialog, int which) {
             	finish();
+            }
+
+        });
+
+        return builder.create();
+
+    }
+    
+    private AlertDialog getErrorAlertDialog(String message){
+
+        Builder builder = new AlertDialog.Builder(MyCellarsUpdateItemsActivity.this);
+
+        builder.setMessage(message);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            @Override
+
+            public void onClick(DialogInterface dialog, int which) {
             }
 
         });
@@ -483,8 +535,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                
 	                String newimagename = randomGenerator.nextInt()+".jpg";
 	                String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+	                new File(cache_image_path).mkdirs();
 	                File f = new File(cache_image_path+ newimagename);
 	                try {
+	                	//f.mkdirs();
 	                    f.createNewFile();
 	                } catch (IOException e) {
 	                    // TODO Auto-generated catch block
@@ -541,6 +595,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                
 		                String newimagename = randomGenerator.nextInt()+".jpg";
 		                String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+		                new File(cache_image_path).mkdirs();
 		                File f = new File(cache_image_path+ newimagename);
 		                try {
 		                    f.createNewFile();
@@ -616,8 +671,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
     private void initWheel(int id, String[] wheel_data )
 
     {
-    	((WheelView) findViewById(R.id.wheel)).setVisibility(View.VISIBLE);
-		 ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+    	//((WheelView) findViewById(R.id.wheel)).setVisibility(View.VISIBLE);
+		// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+    	((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.VISIBLE);
+    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
         WheelView wheel = (WheelView) findViewById(id);
         wheel.setViewAdapter(new ArrayWheelAdapter(this, wheel_data));
         wheel.setVisibleItems(2);
@@ -630,8 +687,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
     private void initDateWheel()
 
     {
-    	((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-		 ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.VISIBLE);
+    	//((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+		// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.VISIBLE);
+    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.VISIBLE);
     	final WheelView year = (WheelView) findViewById(R.id.wheel_year);
 		year.setViewAdapter(new NumericWheelAdapter(this, 1901, 2100));
         year.setCyclic(true);
@@ -715,16 +774,40 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		//LayoutInflater mInflater = getLayoutInflater();
         //View layout = mInflater.inflate(R.layout.my_cellars_selection, null);
 		if (whellMenuNumber == 1) {
-			((EditText) findViewById(R.id.cellars_input_text)).setText(wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()]);
+			String Region = "Region";
+			if (getWheel(R.id.wheel).getCurrentItem() == 1 || getWheel(R.id.wheel).getCurrentItem() == 10) {
+				Region = "Bordeaux";
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 2 && getWheel(R.id.wheel).getCurrentItem() <= 9) {
+				Region = "Bordeaux, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];	
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 11 && getWheel(R.id.wheel).getCurrentItem() <= 20) {
+				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			} else if (getWheel(R.id.wheel).getCurrentItem() == 20 || getWheel(R.id.wheel).getCurrentItem() == 31) {
+				Region = "Australia";
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 21 || getWheel(R.id.wheel).getCurrentItem() <= 30) {
+				Region = "Australia, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 32 || getWheel(R.id.wheel).getCurrentItem() <= 36) {
+				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			} else if (getWheel(R.id.wheel).getCurrentItem() == 37 || getWheel(R.id.wheel).getCurrentItem() == 41) {
+				Region = "Champagne";
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 38 || getWheel(R.id.wheel).getCurrentItem() <= 40) {
+				Region = "Champagne, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			} else if (getWheel(R.id.wheel).getCurrentItem() >= 42 || getWheel(R.id.wheel).getCurrentItem() <= 50) {
+				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			} else if (getWheel(R.id.wheel).getCurrentItem() == 51 || getWheel(R.id.wheel).getCurrentItem() == 55) {
+				Region = "Accessories";
+			}  else if (getWheel(R.id.wheel).getCurrentItem() >= 52 || getWheel(R.id.wheel).getCurrentItem() <= 54) {
+				Region = "Accessories, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			}
+			((EditText) findViewById(R.id.cellars_input_text)).setText(Region);
 		}
 		if (whellMenuNumber == 2) {
-			((EditText) findViewById(R.id.cellars_input_text)).setText(wheelMenuVintage[getWheel(R.id.wheel).getCurrentItem()]);
+			((EditText) findViewById(R.id.cellars_input_text)).setText(CommonUtilities.wheelMenuVintage[getWheel(R.id.wheel).getCurrentItem()]);
 		}
 		if (whellMenuNumber == 3) {
-			((EditText) findViewById(R.id.cellars_input_text)).setText(wheelMenuGrape[getWheel(R.id.wheel).getCurrentItem()]);
+			((EditText) findViewById(R.id.cellars_input_text)).setText(CommonUtilities.wheelMenuGrape[getWheel(R.id.wheel).getCurrentItem()]);
 		}
 		if (whellMenuNumber == 5) {
-			((EditText) findViewById(R.id.cellars_input_text)).setText(wheelMenuBody[getWheel(R.id.wheel).getCurrentItem()]);
+			((EditText) findViewById(R.id.cellars_input_text)).setText(CommonUtilities.wheelMenuBody[getWheel(R.id.wheel).getCurrentItem()]);
 		}
 
 	}
@@ -733,38 +816,12 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
      {
          return (WheelView) findViewById(id);
      }
+	 
     
-    /*protected void onActivityResult(int requestCode, int resultCode,Intent data)
-    {
-    	super.onActivityResult(requestCode, resultCode, data);
-    	Log.i("Osmands", "onActivityResult result code = "+resultCode);
-		switch (resultCode)
-		{
-			case RESULT_OK:
-				default:
-			Log.i("Osmands", "onActivityResult result code = "+resultCode);
-			Bundle b = data.getExtras();
-			String input = b.getString("input");
-			String who = b.getString("who");
-			if (who.equals("name")){
-				TableRow temp = (TableRow)findViewById(R.id.tableRow1_1);
-				temp.setVisibility(View.VISIBLE);
-				((TextView)findViewById(R.id.cellar_table_region_1)).setText(input);
-			}
-		}
-	}*/
-
-    
-    
-    @Override
-    protected void onDestroy() {
-    	Log.v("Osmands", "onDestroy()");
-        super.onDestroy();
-    }
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() != R.id.tableRow4 && v.getId() != R.id.tableRow13 && v.getId() != R.id.tableRow7) {
+		if(v.getId() != R.id.tableRow4 && v.getId() != R.id.tableRow6 && v.getId() != R.id.tableRow13 && v.getId() != R.id.tableRow7) {
 			((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.GONE);
 			((ScrollView)findViewById(R.id.cellar_details_home)).setVisibility(View.GONE);
 			((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.GONE);
@@ -774,55 +831,77 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		switch(v.getId()) {
 			case R.id.tableRow0:
 				 ((TextView) findViewById(R.id.cellar_selection_title)).setText("Name");
-				 ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-				 ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_name_1)).getText().toString());
+				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+				// ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
 				 row = R.id.tableRow0_1;
 				 output_row = R.id.cellar_table_name_1;
 				 break;
 			case R.id.tableRow1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Region");
-				initWheel(R.id.wheel, wheelMenuRegion);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_region_1)).getText().toString());
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuRegion);
 				row = R.id.tableRow1_1;
 				output_row = R.id.cellar_table_region_1;
 				whellMenuNumber = 1;
 				break;
 			case R.id.tableRow2:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Vintage");
-				initWheel(R.id.wheel, wheelMenuVintage);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_vintage_1)).getText().toString());
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuVintage);
 				row = R.id.tableRow2_1;
 				output_row = R.id.cellar_table_vintage_1;
 				whellMenuNumber = 2;
 				break;
 			case R.id.tableRow3:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Grape");
-				initWheel(R.id.wheel, wheelMenuGrape);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_grape_1)).getText().toString());
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuGrape);
 				row = R.id.tableRow3_1;
 				output_row = R.id.cellar_table_grape_1;
 				whellMenuNumber = 3;
 				break;
 			case R.id.tableRow5:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Body");
-				initWheel(R.id.wheel, wheelMenuBody);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_body_1)).getText().toString());
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuBody);
 				row = R.id.tableRow5_1;
 				output_row = R.id.cellar_table_body_1;
 				whellMenuNumber = 5;
 				break;
 			case R.id.tableRow8:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Price");
-				 ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-				 ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_NUMBER);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_price_1)).getText().toString());
+				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+				// ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
 				 row = R.id.tableRow8_1;
 				 output_row = R.id.cellar_table_price_1;
 				 break;
 			case R.id.tableRow9:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Quantity");
-				 ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-				 ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_NUMBER);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_quantity_1)).getText().toString());
+				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+				// ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
 				 row = R.id.tableRow9_1;
 				 output_row = R.id.cellar_table_quantity_1;
 				 break;
 			case R.id.tableRow10:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Testing Date");
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_NULL);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_testing_date_1)).getText().toString());
 				 initDateWheel();
 				 row = R.id.tableRow10_1;
 				 output_row = R.id.cellar_table_testing_date_1;
@@ -831,22 +910,35 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 ((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.VISIBLE);
 				 row = R.id.tableRow4_1;
 				 break;
+			case R.id.tableRow6:
+				 ((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.VISIBLE);
+				 row = R.id.tableRow6_1;
+				 break;
 			case R.id.tableRow7:
 				 ((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.VISIBLE);
 				 row = R.id.tableRow7_1;
 				 break;
 			case R.id.tableRow11:
 				 ((TableRow)findViewById(R.id.tableRow11_1)).setVisibility(View.VISIBLE);
-				 ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-				 ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_occasion_1)).getText().toString());
+				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+				// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
 				 ((EditText)findViewById(R.id.cellars_input_text)).setMinLines(5);
 				 row = R.id.tableRow11_1;
 				 output_row = R.id.cellar_table_occasion_1;
 				 break;
 			case R.id.tableRow12:
 				 ((TableRow)findViewById(R.id.tableRow12_1)).setVisibility(View.VISIBLE);
-				 ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
-				 ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_note_1)).getText().toString());
+				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
+				// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
+				 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
+		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
+				 
 				 ((EditText)findViewById(R.id.cellars_input_text)).setMinLines(5);
 				 row = R.id.tableRow12_1;
 				 output_row = R.id.cellar_table_note_1;
@@ -863,11 +955,15 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		setColorButtonDisplay();
 		setRatingButtonDisplay();
 		setSizeButtonDisplay();
+		setSweetnessDisplay();
+		
 		ImageButton done_btn = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_done_button);
         done_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
+				InputMethodManager imm = (InputMethodManager) getSystemService(MyCellarsUpdateItemsActivity.this.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(((EditText) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellars_input_text)).getWindowToken(), 0);
 				String input = ((EditText) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellars_input_text)).getText().toString();
 				TableRow temp = (TableRow)findViewById(row);
 				temp.setVisibility(View.VISIBLE);
@@ -894,6 +990,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			@Override
 			public void onClick(View v) {
 				((EditText) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellars_input_text)).setText("");
+				InputMethodManager imm = (InputMethodManager) getSystemService(MyCellarsUpdateItemsActivity.this.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(((EditText) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellars_input_text)).getWindowToken(), 0);
 				 ((EditText)findViewById(R.id.cellars_input_text)).setMinLines(1);
 				 ((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.VISIBLE);
 				((ScrollView)findViewById(R.id.cellar_details_home)).setVisibility(View.VISIBLE);
@@ -1124,8 +1222,28 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			case R.id.tableRow5_1:
 				myCellarsTO.setBody(temp);
 				break;
-			case R.id.tableRow6:
-				myCellarsTO.setSweetness(temp);
+			case R.id.tableRow6_1:
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().equals("ON")){
+					myCellarsTO.setSweetness("Brut");
+					 break;	
+				}
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).getTag().equals("ON")){
+					myCellarsTO.setSweetness("Dry");
+					 break;	
+				}
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().equals("ON")){
+					myCellarsTO.setSweetness("Off Dry");
+					 break;	
+				}
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().equals("ON")){
+					myCellarsTO.setSweetness("Medium Dry");
+					 break;	
+				}
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().equals("ON")){
+					myCellarsTO.setSweetness("Sweet");
+					 break;	
+				}
+				myCellarsTO.setColour("-");
 				 break;
 			case R.id.tableRow7_1:
 				if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).getTag().toString().equals("ON")) {
@@ -1190,6 +1308,71 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 break;
 				
 		}
+	}
+	
+	public void setSweetnessDisplay(){
+		
+		SeekBar mSeekBar = (SeekBar)findViewById(R.id.cellar_seek_bar);
+		mSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
+			int current_position;
+			@Override
+			public void onProgressChanged(SeekBar arg0, int position, boolean arg2) {
+				current_position = position;
+				
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekbar) {
+				if(current_position>=0 && current_position <25) {
+					seekbar.setProgress(0);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("ON");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+				}
+				if(current_position>=25 && current_position <50) {
+					seekbar.setProgress(25);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("ON");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+				}
+				if(current_position>=50 && current_position <75) {
+					seekbar.setProgress(50);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("ON");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+				}
+				if(current_position>=75 && current_position <100) {
+					seekbar.setProgress(75);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("ON");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+				}
+				if(current_position >=100) {
+					seekbar.setProgress(100);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("ON");
+				}
+				
+			}
+			
+		});
 	}
 	
 	public void setColorButtonDisplay(){
@@ -1401,7 +1584,12 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
-					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setImageResource(R.drawable.icon_wine_glass);
@@ -1417,6 +1605,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass);
@@ -1433,6 +1626,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass_full);
@@ -1449,6 +1647,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("OFF");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass_full);
@@ -1465,6 +1668,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass_full);
@@ -1481,6 +1689,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_5)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_4)).setTag("ON");
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_3)).setTag("ON");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_0)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_1)).setImageResource(R.drawable.icon_wine_glass_full);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_rating_2)).setImageResource(R.drawable.icon_wine_glass_full);
@@ -1491,4 +1704,22 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
         	
         });
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+		// InputMethodManager imm = (InputMethodManager) getSystemService(MyCellarsUpdateItemsActivity.this.INPUT_METHOD_SERVICE);
+	    if (keyCode == KeyEvent.KEYCODE_BACK
+	            && ((LinearLayout)findViewById(R.id.cellar_selection_layout)).isShown()) {
+	        Log.d("Osmands", "onKeyDown && cellar_selection_layout is show ");
+	        ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_cancel_button)).performClick();
+	        return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+    protected void onDestroy() {
+    	Log.v("Osmands", "onDestroy()");
+        super.onDestroy();
+    }
 }

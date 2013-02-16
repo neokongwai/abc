@@ -5,6 +5,45 @@
     android:layout_height="fill_parent"
     android:background="#000000" >
     
+     <RelativeLayout
+        android:id="@+id/cellar_details_header" 
+      	android:layout_width="fill_parent"
+   		android:layout_height="wrap_content">
+   		
+	    <ImageView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/title_cellar" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_home_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/btn_home" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_mail_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/cellar_home_button"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/btn_email" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_refersh_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginRight="10dip"
+	        android:background="@drawable/btn_referesh" />
+	    
+    </RelativeLayout>
+    
     <ScrollView  
 		android:layout_height="wrap_content"
 		android:layout_width="fill_parent"  
@@ -15,10 +54,7 @@
 	    android:layout_height="fill_parent"
 	    android:background="#000000" >
     
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/title_cellar"  />
+    
     <ImageView 
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"

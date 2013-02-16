@@ -17,11 +17,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class MyCellarsListIemsActivity extends Activity {
-	
+	String mode = "normal";
+	String searchText = null;
+	String searchRegion = null;
+	 String searchBody = null;
+	 String searchVintage = null;
+	 String searchGrape = null;
+	 String searchColour = null;
+	 String searchSize = null;
+	 String searchPrice = null;
+	 String searchSweetness = null;
+	 String searchPriceFrom = null;
+	 String searchPriceTo = null;
 	DBHelper dbhelper;
 	ArrayList<MyCellarItemDetails> results = null;
 	ArrayList<MyCellarItemDetails> instock_results_list = null;
@@ -31,7 +43,23 @@ public class MyCellarsListIemsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_cellars_list_items_main);
-       
+        Bundle bundle = getIntent().getExtras();
+        if (bundle!=null){
+        	mode = "search";
+        	searchText = bundle.getString("searchText");
+        	Log.i("Osmands", "searchText.isEmpty() = "+searchText.isEmpty());
+        	if (searchText.isEmpty()) {
+        		  searchRegion = bundle.getString("searchRegion");
+    		      searchBody = bundle.getString("searchBody");
+        		  searchVintage = bundle.getString("searchVintage");
+        		  searchGrape = bundle.getString("searchGrape");
+        		  searchColour = bundle.getString("searchColour");
+        		  searchSize = bundle.getString("searchSize");
+        		  searchPriceFrom = bundle.getString("searchPriceFrom");
+        		  searchPriceTo = bundle.getString("searchPriceTo");
+        		  searchSweetness = bundle.getString("searchSweetness");
+        	}
+        }
     }
     private MyCellarItemDetails GetSearchResults(Cursor cursor) {
 		Log.i("Osmands", "GetSearchResults");
@@ -72,17 +100,197 @@ public class MyCellarsListIemsActivity extends Activity {
         return cursor;
     }
     
+    private Cursor getCursor(String searchText){
+      SQLiteDatabase db = dbhelper.getReadableDatabase();
+      Cursor cursor = db.query(DbConstants.MY_CELLAR_TABLE_NAME, null, "LOWER("+DbConstants.MY_CELLAR_WINE_NAME+") LIKE LOWER('%"+ searchText+"%')", null, null, null, null);
+      startManagingCursor(cursor);
+      return cursor;
+    }
+    
+    private Cursor getCursor(int searchPriceFrom, int searchPriceTo){
+        SQLiteDatabase db = dbhelper.getReadableDatabase();
+        Cursor cursor = db.query(DbConstants.MY_CELLAR_TABLE_NAME, null, "("+DbConstants.MY_CELLAR_PRICE+" <= "+searchPriceTo+" OR "+searchPriceTo+" = 5001) AND "+DbConstants.MY_CELLAR_PRICE+" >= "+searchPriceFrom , null, null, null, null);
+        startManagingCursor(cursor);
+        return cursor;
+      }
+    
     @Override
 	protected void onResume(){
     	super.onResume();
     	openDatabase();
-        Cursor cursor = getCursor();
+    	Cursor cursor = null;
+    	if (mode.equals("normal")) {
+    		cursor = getCursor();
+    	} else {
+    		if (!searchText.isEmpty()) {
+    			cursor = getCursor(searchText);
+    		} else {
+    			if (searchPriceFrom.equals("Price")) {
+    				cursor = getCursor();
+    			} else {
+    				cursor = getCursor(Integer.valueOf(searchPriceFrom),Integer.valueOf(searchPriceTo));
+    			}
+    		}
+    		
+    		((LinearLayout)findViewById(R.id.cellar_all_instock_wish_bar)).setVisibility(View.GONE);
+    		((ImageButton)findViewById(R.id.cellar_add_button)).setVisibility(View.GONE);
+    		((ImageButton)findViewById(R.id.cellar_search_button)).setVisibility(View.GONE);
+    	}
         results = new ArrayList<MyCellarItemDetails>();
         
         while(cursor.moveToNext()){
         	results.add(GetSearchResults(cursor));
-
         }
+        
+        if (mode.equals("search") && searchText.isEmpty()) {
+        	ArrayList<MyCellarItemDetails> temp = new ArrayList<MyCellarItemDetails>();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchRegion = "+searchRegion);
+				if (searchRegion.equals("Region")) {
+					Log.i("Osmands", "searchRegion.equals= region");
+					include = true;
+				} else if (results.get(i).getWineRegion().equals(searchRegion)) {
+					Log.i("Osmands", "results.get(i).getWineRegion() = "+results.get(i).getWineRegion());
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchVintage = "+searchVintage);
+				if (!searchVintage.equals("Vintage")) {
+					if (searchVintage.equals("<1990")) {
+						Log.i("Osmands", "searchVintage<1990");
+						int resultVintage = 0;
+						try{
+							resultVintage = Integer.valueOf(results.get(i).getWineVintage().toString());
+						} catch(NumberFormatException e) {
+							Log.i("Osmands", "NumberFormatException = "+e);
+							if (results.get(i).getWineVintage().toString().equals("<1990")) {
+								include = true;
+							}
+							resultVintage = 2999;
+						}
+						if (resultVintage < 1990){
+							include = true;
+						} 
+						
+					} else  {
+						Log.i("Osmands", "searchVintage>1990");
+						int resultVintage = 0;
+						try{
+							resultVintage = Integer.valueOf(results.get(i).getWineVintage().toString());
+						} catch(NumberFormatException e) {
+							Log.i("Osmands", "NumberFormatException = "+e);
+							resultVintage = 2999;
+						}
+						if (resultVintage == Integer.valueOf(searchVintage)){
+							include = true;
+						} 
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchGrape = "+searchGrape);
+				if (!searchGrape.equals("Grape")) {
+					if (results.get(i).getWineGrape().contains(searchGrape)){
+						include = true;
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchBody = "+searchBody);
+				if (!searchBody.equals("Body")) {
+					if (results.get(i).getWineBody().contains(searchBody)){
+						include = true;
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchColour = "+searchColour);
+				if (!searchColour.equals("Colour")) {
+					if (results.get(i).getWineColour().contains(searchColour)){
+						include = true;
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchSize = "+searchSize);
+				if (!searchSize.equals("Size")) {
+					if (results.get(i).getWineSize().contains(searchSize)){
+						include = true;
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+			for (int i =0; i<results.size(); i++){
+				boolean include = false;
+				Log.i("Osmands", "searchSweetness = "+searchSweetness);
+				if (!searchSweetness.equals("Sweetness")) {
+					if (results.get(i).getWineSweetness().contains(searchSweetness)){
+						include = true;
+					}
+				} else {
+					include = true;
+				}
+				if (include) {
+					temp.add(results.get(i));
+				}
+			}
+			results.clear();
+			results.addAll(temp);
+			temp.clear();
+        }
+        
         
         ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
   
@@ -103,7 +311,7 @@ public class MyCellarsListIemsActivity extends Activity {
 	    	}
     	});
         
-        ImageButton back_bn = (ImageButton) findViewById (R.id.cellar_back_button);
+     /*   ImageButton back_bn = (ImageButton) findViewById (R.id.cellar_back_button);
         back_bn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -111,7 +319,7 @@ public class MyCellarsListIemsActivity extends Activity {
 				finish();
 			}
         });
-        
+       */ 
         ImageButton instock_bn = (ImageButton) findViewById (R.id.cellar_instock_button);
         instock_bn.setOnClickListener(new OnClickListener(){
 
@@ -215,7 +423,7 @@ public class MyCellarsListIemsActivity extends Activity {
 						intent = new Intent(getParent(), MyCellarsWineDetail.class);
 						intent.putExtras(b);
 						TabGroupBase parentActivity = (TabGroupBase)getParent();
-			        	parentActivity.startChildActivity("MyCellarsList", intent);
+			        	parentActivity.startChildActivity("MyCellarsListAdd", intent);
 			    	}
 		    	});
 			}
@@ -229,6 +437,19 @@ public class MyCellarsListIemsActivity extends Activity {
 				Intent intent = null;
 				intent = new Intent(MyCellarsListIemsActivity.this, MyCellarsUpdateItemsActivity.class);
 				startActivity(intent);
+				
+			}
+        	
+        });
+        
+        ((ImageButton)findViewById(R.id.cellar_search_button)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = null;
+				intent = new Intent(getParent(), MyCellarsSearchMain.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsListSearch", intent);
 				
 			}
         	

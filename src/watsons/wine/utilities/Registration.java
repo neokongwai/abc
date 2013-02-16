@@ -32,7 +32,7 @@ public class Registration {
 	          GCMRegistrar.register(context, SENDER_ID);
 	        } else {
 	        	Log.v("Osmands", "regId = "+regId);
-	        	GCMRegistrar.unregister(context);
+	        	//GCMRegistrar.unregister(context);
 	        	 // Device is already registered on GCM, check server.
 	            if (GCMRegistrar.isRegisteredOnServer(context)) {
 	                // Skips registration.

@@ -12,7 +12,7 @@
 	        android:layout_height="wrap_content"
 	        android:src="@drawable/title_cellar" />
 	    
-	    <ImageButton
+	 <!--    <ImageButton
 	        android:id="@+id/cellar_back_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_marginLeft="5dip"
 	        android:background="@drawable/btn_back" />
-	    
+	    -->
 	    <ImageButton
 	        android:id="@+id/cellar_add_button"
 	        android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
 	        android:background="@drawable/btn_plus" />
 	    
 	    <ImageButton
+	        android:id="@+id/cellar_search_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_toLeftOf="@id/cellar_add_button"
@@ -40,6 +41,7 @@
 	    
     </RelativeLayout>
     <LinearLayout 
+        android:id="@+id/cellar_all_instock_wish_bar"
         android:orientation="horizontal"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" >

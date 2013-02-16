@@ -10,9 +10,10 @@
       	android:layout_width="fill_parent"
    		android:layout_height="wrap_content">
 	    <ImageView
+	        android:id="@+id/cellar_update_wine_title"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:src="@drawable/title_cellar" />
+	        android:src="@drawable/title_add" />
 	    
 	    <ImageButton
 	        android:id="@+id/cellar_cancel_update_button"
@@ -57,43 +58,14 @@
 	    android:layout_height="wrap_content" >
     
 	    <TextView 
-	        	android:id="@+id/cellar_added_date"
+	        	android:id="@+id/cellar_added_date_update"
 	            android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
 	        	android:textSize="10sp"
 	        	android:textStyle="bold"
 	        	android:text="Added: " />
-	    
-	    <View  android:layout_height="1dp"   
-         		android:layout_width="0dip"
-         		android:layout_weight="1"/>
     
-	    <ImageButton 
-            android:id="@+id/cellar_facebook_icon"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="right"
-        	android:background="@drawable/icon_facebook"  />
-	    
-	    <View  android:layout_height="1dp"   
-         		android:layout_width="10dp"/>
-	    
-	    <ImageButton 
-            android:id="@+id/cellar_twitter_icon"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="right"
-        	android:background="@drawable/icon_twitter"  />
-	    
-	    <View  android:layout_height="1dp"   
-         		android:layout_width="10dp"/>
-	    
-	    <ImageButton 
-            android:id="@+id/cellar_email_icon"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="right"
-        	android:background="@drawable/icon_email"  />
+
     
     </LinearLayout>
   
@@ -214,7 +186,6 @@
 		        	android:layout_weight="1"/>
 		        
 		        <ImageView
-		            android:id="@+id/cellar_table_region"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
 		        	android:background="@drawable/arrow_cellar_right"
@@ -257,7 +228,6 @@
 		        	android:layout_weight="1" />
 		 
 		        <ImageView
-		            android:id="@+id/cellar_table_region"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
 		        	android:background="@drawable/arrow_cellar_right"
@@ -317,9 +287,9 @@
 		 
 		        <TextView
 		            android:id="@+id/cellar_table_vintage_1"
-		            android:layout_width="wrap_content"
+		            android:layout_width="fill_parent"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -358,9 +328,9 @@
 		 
 		        <TextView
 		            android:id="@+id/cellar_table_grape_1"
-		            android:layout_width="wrap_content"
+		            android:layout_width="fill_parent"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -497,7 +467,7 @@
 		    
             <TableRow
 		        android:id="@+id/tableRow5_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -506,7 +476,7 @@
 		            android:id="@+id/cellar_table_body_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -527,7 +497,7 @@
 		        	android:layout_height="wrap_content"
 		        	android:textStyle="bold"
 	        		android:textColor="@color/Maroon"
-		        	android:text="Sweetness:"
+		        	android:text="Sweetness"
 		        	android:layout_weight="1" />
 
 		         <ImageView
@@ -539,6 +509,72 @@
 		        
 		    </TableRow>
 		    
+            <TableRow
+		        android:id="@+id/tableRow6_1"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:visibility="gone"
+		         >
+		         
+                <LinearLayout 
+		            android:id="@+id/cellar_table_sweetness_1"
+		            android:orientation="vertical"
+		            android:layout_width="0dip"
+		        	android:layout_height="wrap_content"
+		        	android:layout_weight="1"
+		        >
+			        
+                    <LinearLayout 
+			            android:orientation="horizontal"
+			            android:layout_width="fill_parent"
+			        	android:layout_height="wrap_content"
+			        >
+			 
+				        <ImageView
+				            android:id="@+id/cellar_table_sweetness_brut"
+				            android:layout_width="wrap_content"
+				        	android:layout_height="wrap_content"
+				        	 />
+				        <ImageView
+				            android:id="@+id/cellar_table_sweetness_dry"
+				            android:layout_width="wrap_content"
+				        	android:layout_height="wrap_content"
+				        	 />
+				        <ImageView
+				            android:id="@+id/cellar_table_sweetness_off_dry"
+				            android:layout_width="wrap_content"
+				        	android:layout_height="wrap_content"
+				        	 />
+				        <ImageView
+				            android:id="@+id/cellar_table_sweetness_med_dry"
+				            android:layout_width="wrap_content"
+				        	android:layout_height="wrap_content"
+				        	 />
+				        <ImageView
+				            android:id="@+id/cellar_table_sweetness_sweet"
+				            android:layout_width="wrap_content"
+				        	android:layout_height="wrap_content"
+				        	 />
+			        </LinearLayout>
+			        
+                   
+				        <SeekBar 
+				            android:id="@+id/cellar_seek_bar"
+					        android:layout_width="fill_parent"
+					        android:layout_height="wrap_content"
+					        android:layout_marginLeft="13dip"
+					        android:layout_marginRight="13dip"
+					        android:max="100"
+					        android:progress="50"
+					        
+					        />
+			        
+				        
+		        </LinearLayout>
+		    </TableRow>
+		    
+            
+            
             <ImageView
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
@@ -555,7 +591,7 @@
 		        	android:layout_height="wrap_content"
 		        	android:textStyle="bold"
 	        		android:textColor="@color/Maroon"
-		        	android:text="Size:"
+		        	android:text="Size"
 		        	android:layout_weight="1" />
 		 
 		          <ImageView
@@ -670,7 +706,7 @@
 		    
             <TableRow
 		        android:id="@+id/tableRow8_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -679,7 +715,7 @@
 		            android:id="@+id/cellar_table_price_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -714,7 +750,7 @@
 		    
             <TableRow
 		        android:id="@+id/tableRow9_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -723,7 +759,7 @@
 		            android:id="@+id/cellar_table_quantity_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -765,7 +801,7 @@
 		    
               <TableRow
 		        android:id="@+id/tableRow10_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -774,7 +810,7 @@
 		            android:id="@+id/cellar_table_testing_date_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -806,7 +842,7 @@
 		    
               <TableRow
 		        android:id="@+id/tableRow11_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -815,7 +851,7 @@
 		            android:id="@+id/cellar_table_occasion_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>
@@ -856,7 +892,7 @@
 		    
               <TableRow
 		        android:id="@+id/tableRow12_1"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
@@ -865,7 +901,7 @@
 		            android:id="@+id/cellar_table_note_1"
 		            android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_span="2"
+		        	
 	        		android:textColor="@color/Maroon" />
 		        
 		    </TableRow>

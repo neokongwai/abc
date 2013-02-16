@@ -4,6 +4,7 @@ import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
 import watsons.wine.R;
 import watsons.wine.TabGroupBase;
+import watsons.wine.notification.NotificationMainActivity;
 import watsons.wine.utilities.WatsonWineDB;
 
 import android.app.Activity;
@@ -47,6 +48,34 @@ public class MyCellarsMainActivity extends Activity {
             ((TextView) findViewById (R.id.cellar_avg_wine)).setText("You have average price per bottle is "+avg);
 
         }
+        
+        ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				finish();
+ 				
+ 			}
+     	   
+        });
+        
+        ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
+        mail_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
+ 				
+ 			}
+     	   
+        });
+        
+        
        ImageButton go_button = (ImageButton)findViewById(R.id.cellar_go_button);
        go_button.setOnClickListener(new OnClickListener(){
 

@@ -15,13 +15,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
 import watsons.wine.notification.ItemListBaseAdapter;
+import android.view.View.OnClickListener;
 import watsons.wine.R;
 import watsons.wine.R.id;
 import watsons.wine.R.layout;
@@ -76,6 +79,16 @@ public class NotificationMainActivity extends Activity {
 	    	}
     	});
        
+        ImageButton home_button = (ImageButton)findViewById(R.id.notification_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+    			public void onClick(View v) {
+    				
+    				finish();
+    				
+    			}
+     	   
+        });
     }
     
     /*protected void onActivityResult(int requestCode, int resultCode, Intent data){  
@@ -87,6 +100,8 @@ public class NotificationMainActivity extends Activity {
 				getCursor();
 		}  
 	} */
+    
+    
     
     private ItemDetails GetSearchResults(String id, String body, String date, String title, String read) {
 		Log.i("Osmands", "GetSearchResults");

@@ -19,6 +19,7 @@ import watsons.wine.notification.NotificationMainActivity;
 import watsons.wine.utilities.ServerUtilities;
 import watsons.wine.R;
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * IntentService responsible for handling GCM messages.
@@ -43,13 +44,13 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onUnregistered(Context context, String registrationId) {
         Log.i(TAG, "Device unregistered");
        // displayMessage(context, getString(R.string.gcm_unregistered));
-        /*if (GCMRegistrar.isRegisteredOnServer(context)) {
+        if (GCMRegistrar.isRegisteredOnServer(context)) {
             ServerUtilities.unregister(context, registrationId);
         } else {
             // This callback results from the call to unregister made on
             // ServerUtilities when the registration to the server failed.
             Log.i(TAG, "Ignoring unregister callback");
-        }*/
+        }
     }
 
     @Override
@@ -137,7 +138,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 		sampleDB.close();
         
-        Intent notificationIntent = new Intent(context, NotificationMainActivity.class);
+        //Intent notificationIntent = new Intent(context, NotificationMainActivity.class);
+		Intent notificationIntent = new Intent(context, TabGroupView.class);
+		notificationIntent.putExtra("index", 5);
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);

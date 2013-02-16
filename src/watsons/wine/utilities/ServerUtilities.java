@@ -98,14 +98,15 @@ public final class ServerUtilities {
     /**
      * Unregister this account/device pair within the server.
      */
-    static void unregister(final Context context, final String regId) {
+    public static void unregister(final Context context, final String regId) {
         Log.i(TAG, "unregistering device (regId = " + regId + ")");
-        String serverUrl = SERVER_URL + "/unregister";
+        String serverUrl = SERVER_URL + "/unregistration/";
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         try {
-            post(serverUrl, params);
+            post(serverUrl+regId, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
+            Log.i(TAG, "unregisted");
            // String message = context.getString(R.string.server_unregistered);
            // CommonUtilities.displayMessage(context, message);
         } catch (IOException e) {

@@ -1,5 +1,10 @@
 package watsons.wine;
  
+import com.facebook.android.DialogError;
+import com.facebook.android.FacebookError;
+
+import watsons.wine.utilities.BaseDialogListener;
+import watsons.wine.utilities.CommonUtilities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -26,7 +32,10 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
 		
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
-        String id = bundle.getString("id");
+        final String id = bundle.getString("id");
+        final String name = bundle.getString("name");
+        final String note = bundle.getString("note");
+        final String photo = bundle.getString("photo");
         //Toast.makeText(ProductWebView.this, id, Toast.LENGTH_SHORT).show();
         String url = product_url + id;
  
@@ -40,12 +49,20 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
 			@Override
 		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
 		    	System.out.println("url=>>>>"+url);
-		    	System.out.println(Uri.parse(url).getHost());
-		        if (Uri.parse(url).getHost().equals("fb.com")) {
+		    	System.out.println("Host Url=>>>>"+Uri.parse(url).getHost());
+		        if (Uri.parse(url).getHost().equals("watsonwine.bull-b.com")) {
 		            // This is my web site, so do not override; let my WebView load the page
-		            
+		        	System.out.println("Inside fb.com");
 		        	webView.requestFocus(View.FOCUS_DOWN);
-		        	return false;
+		        	Bundle params = new Bundle();
+		            params.putString("description", "I've tasted "+name+" recently and here is my tasting note to share: "+note);
+		            params.putString("name", name);
+		            if (!photo.equals("-") && photo != null) {
+		               params.putString("picture", "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/uploads/wine/"+photo);
+		            }
+		            params.putString("link", "https://www.watsonswine.com");
+		            CommonUtilities.facebook.dialog(WineProductWeb.this.getParent(), "feed", params, new UpdateStatusListener());
+		        	return true;
 		        }
 		        // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
 		        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -58,7 +75,30 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
 		WebSettings websetting = webView.getSettings();
 		websetting.setJavaScriptEnabled(true);
 	}
+	
+	public class UpdateStatusListener extends BaseDialogListener {
+	    @Override
+	    public void onComplete(Bundle values) {
+	        final String postId = values.getString("post_id");
+	        if (postId != null) {
+	        } else {
+	        }
+	    }
 
+	    @Override
+	    public void onFacebookError(FacebookError error) {
+	    Log.i("Osmands", "Facebook Error: " + error.getMessage());
+	    }
+
+	    @Override
+	    public void onCancel() {
+	    }
+	
+		@Override
+		public void onError(DialogError e) {
+		// TODO Auto-generated method stub
+		}
+	}
 	@Override
 	public boolean handleMessage(Message msg) {
 		// TODO Auto-generated method stub

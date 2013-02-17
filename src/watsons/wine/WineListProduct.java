@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 public class WineListProduct extends Activity {
@@ -46,7 +48,7 @@ public class WineListProduct extends Activity {
 //    private static final String TAG_GRAPE = "grape";
 //    private static final String TAG_BODY = "body";
 //    private static final String TAG_SWEETNESS = "sweetness";
-//    private static final String TAG_NOTE = "tasting_note";
+    private static final String TAG_NOTE = "tasting_note";
     private static final String TAG_RP	= "rp";
     private static final String TAG_WS	= "ws";
     private static final String TAG_JH	= "jh";
@@ -129,7 +131,7 @@ public class WineListProduct extends Activity {
                 LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
                 // adding each child node to HashMap key => value
                 map.put(TAG_ID, p.getString(TAG_ID));
-//                map.put(TAG_NAME, p.getString(TAG_NAME));
+                map.put(TAG_NAME, p.getString(TAG_NAME));
 //                map.put(TAG_SIZE, p.getString(TAG_SIZE));
 //                map.put(TAG_ORIGINAL_PRICE, p.getString(TAG_ORIGINAL_PRICE));
 //                map.put(TAG_PROMOTE_PRICE, p.getString(TAG_PROMOTE_PRICE));
@@ -138,11 +140,11 @@ public class WineListProduct extends Activity {
 //                map.put(TAG_GRAPE, p.getString(TAG_GRAPE));
 //                map.put(TAG_BODY, p.getString(TAG_BODY));
 //                map.put(TAG_SWEETNESS, p.getString(TAG_SWEETNESS));
-//                map.put(TAG_NOTE, p.getString(TAG_NOTE));
+                map.put(TAG_NOTE, p.getString(TAG_NOTE));
 //                map.put(TAG_RP, p.getString(TAG_RP));
 //                map.put(TAG_WS, p.getString(TAG_WS));
 //                map.put(TAG_JH, p.getString(TAG_JH));
-//                map.put(TAG_PHOTO, p.getString(TAG_PHOTO));
+                map.put(TAG_PHOTO, p.getString(TAG_PHOTO));
 //                map.put(TAG_IN_STOCK, p.getString(TAG_IN_STOCK));
 //                map.put(TAG_DELETED, p.getString(TAG_DELETED));
 //                map.put(TAG_RPDDEPT, p.getString(TAG_RPDDEPT));
@@ -170,34 +172,50 @@ public class WineListProduct extends Activity {
 			e.printStackTrace();
 		}   
 
-        
-		// Define a new Adapter
-		// First parameter - Context
-		// Second parameter - Layout for the row
-		// Third parameter - ID of the TextView to which the data is written
-		// Forth - the Array of data
-        WineAdapter adapter = new WineAdapter(this,R.layout.list_product_item,wineList);
-
-		// Assign adapter to ListView
-		ListView listView = (ListView) findViewById(R.id.list_product);
-		listView.setVerticalFadingEdgeEnabled(false);
-		listView.setAdapter(adapter);
-		listView.setDividerHeight(0);
-		listView.setOnItemClickListener(new OnItemClickListener()
-		{
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) 
+        if (wineList.size() == 0)
+        {
+        	List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        	Map<String, Object> map = new HashMap<String, Object>();
+        	map.put("text","No result matched");
+        	list.add(map);
+        	SimpleAdapter adapter = new SimpleAdapter(mContext,list, R.layout.list_location_item, new String[] {"text"}, new int[]{android.R.id.text1});
+        	ListView listView = (ListView) findViewById(R.id.list_product);
+			listView.setVerticalFadingEdgeEnabled(false);
+			listView.setAdapter(adapter);
+			listView.setDividerHeight(0);
+        }
+        else{
+			// Define a new Adapter
+			// First parameter - Context
+			// Second parameter - Layout for the row
+			// Third parameter - ID of the TextView to which the data is written
+			// Forth - the Array of data
+	        WineAdapter adapter = new WineAdapter(this,R.layout.list_product_item,wineList);
+	
+			// Assign adapter to ListView
+			ListView listView = (ListView) findViewById(R.id.list_product);
+			listView.setVerticalFadingEdgeEnabled(false);
+			listView.setAdapter(adapter);
+			listView.setDividerHeight(0);
+			listView.setOnItemClickListener(new OnItemClickListener()
 			{
-				Bundle bundle = new Bundle();
-	        	bundle.putBoolean("country", false);
-	        	bundle.putString("id", productList.get(position).get(TAG_ID));
-	        	Intent intent = new Intent(getParent(), WineProductWeb.class);
-	        	TabGroupBase parentActivity = (TabGroupBase)getParent();
-	        	intent.putExtras(bundle);
-	        	parentActivity.startChildActivity("WineProductWeb", intent);
+				public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+						long arg3) 
+				{
+					Bundle bundle = new Bundle();
+		        	bundle.putBoolean("country", false);
+		        	bundle.putString("id", productList.get(position).get(TAG_ID));
+		        	bundle.putString("name",productList.get(position).get(TAG_NAME));
+		        	bundle.putString("note",productList.get(position).get(TAG_NOTE));
+		        	bundle.putString("photo", TAG_PHOTO);
+		        	Intent intent = new Intent(getParent(), WineProductWeb.class);
+		        	TabGroupBase parentActivity = (TabGroupBase)getParent();
+		        	intent.putExtras(bundle);
+		        	parentActivity.startChildActivity("WineProductWeb", intent);
+				}
 			}
-		}
-		);
+			);
+        }
 	}
 	
 	public static Bitmap loadBitmap(String url) throws IOException {

@@ -85,6 +85,7 @@ public class MyCellarsListIemsActivity extends Activity {
 		item_details.setWineCreateDate(cursor.getString(i++));
 		item_details.setWineModifyDate(cursor.getString(i++));
 		item_details.setWineUpToCms(cursor.getString(i++));
+		item_details.setServerId(cursor.getString(i++));
 		return item_details;
 	}
     
@@ -300,6 +301,11 @@ public class MyCellarsListIemsActivity extends Activity {
 				Log.i("Osmands", "position = "+position);
 	    		Log.i("Osmands", "results.get(position).getId() = "+results.get(position).getId());
 	    		Log.i("Osmands", "results.get(position).getWineStatus() = "+results.get(position).getWineStatus());
+	    		Log.i("Osmands", "results.get(position).getServerId() = "+results.get(position).getServerId());
+	    		ArrayList<String> temp = results.get(position).getAllToStringArray();
+	    		for (int i =0; i<temp.size(); i++) {
+	    			Log.i("Osmands", "temp("+i+") = "+temp.get(i));
+	    		}
 	    		Intent intent = null;
 				Bundle b = new Bundle();
 				b.putStringArrayList("wineDetail", results.get(position).getAllToStringArray());

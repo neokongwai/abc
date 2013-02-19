@@ -24,6 +24,7 @@ public class MyCellarItemDetails {
     private String wineCreateDate;
     private String wineModifyDate;
     private String wineUpToCms;
+    private String serverId;
 	
 	public String getId() {
 		return id;
@@ -146,6 +147,13 @@ public class MyCellarItemDetails {
 		this.wineUpToCms = wineUpToCms;
 	}
 
+	public String getServerId() {
+		return serverId;
+	}
+	public void setServerId(String serverId) {
+		this.serverId = serverId;
+	}
+	
 	public ArrayList<String> getAllToStringArray(){
 		ArrayList<String> resultString = new ArrayList<String>();
 		
@@ -169,6 +177,7 @@ public class MyCellarItemDetails {
 		resultString.add(getWineCreateDate());//17
 		resultString.add(getWineModifyDate());//18
 		resultString.add(getWineUpToCms());//19
+		resultString.add(getServerId());//20
 		for(int i=0; i<resultString.size(); i++){
 			if (resultString.get(i) == null){
 				resultString.set(i, "-");
@@ -176,6 +185,7 @@ public class MyCellarItemDetails {
 				resultString.set(i, "-");
 			}
 		}
+		
 		return resultString;
 		
 	}

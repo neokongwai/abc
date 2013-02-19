@@ -12,7 +12,16 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import com.android.sqlite.DbConstants;
+
+import watsons.wine.utilities.Base64;
+import watsons.wine.utilities.DBConnecter;
 
 import kankan.wheel.widget.OnWheelChangedListener;
 import kankan.wheel.widget.OnWheelScrollListener;
@@ -30,10 +39,12 @@ import android.app.LocalActivityManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
@@ -53,6 +64,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -68,10 +80,6 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	int output_row;
 	int whellMenuNumber;
 	private boolean wheelScrolled = false;
-	String wheelMenuRegion[] = new String[]{"Region1", "Region2", "Region3", "Region4", "Region5", "Region6"};
-	String wheelMenuVintage[] = new String[]{"Vintage1", "Vintage2", "Vintage3", "Vintage4", "Vintage5", "Vintage6"};
-	String wheelMenuGrape[] = new String[]{"Grape1", "Grape2", "Grape3", "Grape4", "Grape5", "Grape6"};
-	String wheelMenuBody[] = new String[]{"Body1", "Body2", "Body3", "Body4", "Body5", "Body6"};
 	
 	MyCellarsTO myCellarsTO = null;
 	
@@ -247,6 +255,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 					WatsonWineDB db = new WatsonWineDB();
 					boolean result = false;
 					if (mode.equals("add")) {
+						Log.i("Osmands", "myCellarsTO.getColour() = "+myCellarsTO.getColour());
 						result = db.crateNewMyCellerRecord(MyCellarsUpdateItemsActivity.this, myCellarsTO.getWineName(),
 								myCellarsTO.getRegion(), myCellarsTO.getVintage(), myCellarsTO.getGrape(), 
 								myCellarsTO.getColour(), myCellarsTO.getBody(), myCellarsTO.getSweetness(),
@@ -254,6 +263,12 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 								myCellarsTO.getNote(), myCellarsTO.getRating(), myCellarsTO.getTasting_date(),
 								myCellarsTO.getOccasion(), myCellarsTO.getInstock(), myCellarsTO.getWineImage(), 
 								myCellarsTO.getUp_to_cms());
+								Log.i("Osmands", "mode.requals(add)");
+								if(CommonUtilities.isConnectedNetwork(MyCellarsUpdateItemsActivity.this)){
+									Log.i("Osmands", "isConnectedNetwork");
+									FileUploadTask fileuploadtask = new FileUploadTask();  
+						            fileuploadtask.execute("insert");
+								}
 					} else {
 						result = db.updateNewMyCellerRecord(MyCellarsUpdateItemsActivity.this, myCellarsTO.getId(), myCellarsTO.getWineName(),
 								myCellarsTO.getRegion(), myCellarsTO.getVintage(), myCellarsTO.getGrape(), 
@@ -262,6 +277,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 								myCellarsTO.getNote(), myCellarsTO.getRating(), myCellarsTO.getTasting_date(),
 								myCellarsTO.getOccasion(), myCellarsTO.getInstock(), myCellarsTO.getWineImage(), 
 								myCellarsTO.getUp_to_cms());
+								if(CommonUtilities.isConnectedNetwork(MyCellarsUpdateItemsActivity.this)){
+									Log.i("Osmands", "isConnectedNetwork");
+									FileUploadTask fileuploadtask = new FileUploadTask();  
+						            fileuploadtask.execute("update");
+								}
 					}
 					if (result){
 						getSuccessAlertDialog("Changes saved").show();
@@ -1067,6 +1087,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
        	 	temp.setVisibility(View.VISIBLE);
        	 ((TextView)findViewById(R.id.cellar_table_grape_1)).setText(wineDetail.get(7));
 		}
+		
 		myCellarsTO.setColour(wineDetail.get(8));
 		if (!wineDetail.get(8).equals("-")) {
 			display_details_output_id_map.put(R.id.tableRow4_1, "true");
@@ -1103,19 +1124,19 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			TableRow temp = (TableRow)findViewById(R.id.tableRow7_1);
        	 	temp.setVisibility(View.VISIBLE);
        	  //((TextView)findViewById(R.id.cellar_table_size_1)).setText(wineDetail.get(11));
-       	 	if (wineDetail.get(8).equals("37.5CL")) {
+       	 	if (wineDetail.get(11).equals("37.5CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setTag("ON");
 		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(R.drawable.icon_tick);
 	   	 	}
-	       	if (wineDetail.get(8).equals("75CL")) {
+	       	if (wineDetail.get(11).equals("75CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setTag("ON");
 		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(R.drawable.icon_tick);
 	   	 	}
-	       	if (wineDetail.get(8).equals("150CL")) {
+	       	if (wineDetail.get(11).equals("150CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setTag("ON");
 		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(R.drawable.icon_tick);
 	  	 	}
-	       	if (wineDetail.get(8).equals("Other")) {
+	       	if (wineDetail.get(11).equals("Others")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setTag("ON");
 		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(R.drawable.icon_tick);
 	  	 	}
@@ -1178,8 +1199,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			itemView.get(i).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_wine_glass));
 			itemView.get(i).setTag("OFF");
 		}
-		
-		
+		Log.i("Osmands", "mapBundleToMyCellarsTO server_id = "+wineDetail.get(20));
+		myCellarsTO.setServerId(wineDetail.get(20));
 	}
 	
 	public void setMyCellarsTO(int id, int get_output_id){
@@ -1243,7 +1264,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 					myCellarsTO.setSweetness("Sweet");
 					 break;	
 				}
-				myCellarsTO.setColour("-");
+				myCellarsTO.setSweetness("-");
 				 break;
 			case R.id.tableRow7_1:
 				if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).getTag().toString().equals("ON")) {
@@ -1721,5 +1742,134 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
     protected void onDestroy() {
     	Log.v("Osmands", "onDestroy()");
         super.onDestroy();
+    }
+	
+	class FileUploadTask extends AsyncTask<Object, Integer, Void> {  
+    	
+        @Override  
+        protected void onPreExecute() {    
+        	
+        }  
+  
+        @Override  
+        protected Void doInBackground(Object... arg0) {  
+        	Log.i("Osmands", "FileUploadTask doInBackground");
+        	Log.i("Osmands", "FileUploadTask arg0 = "+arg0[0].toString());
+        	String mode = arg0[0].toString();
+        	String URL = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/insert_mycellars_record.php";
+        	if (mode.equals("update")) {
+        		URL = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/update_mycellars_record.php";
+        	}
+        	String ba1 ="";
+        	if (!myCellarsTO.getWineImage().equals("-") && myCellarsTO.getWineImage() != null) {
+	        	String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+	        	String realImagePathFromURI = cache_image_path+myCellarsTO.getWineImage();
+	        	Log.i("Osmands", "FileUploadTask realImagePathFromURI = "+realImagePathFromURI);
+	        	BitmapFactory.Options options = new BitmapFactory.Options();
+	        	options.inJustDecodeBounds = false;
+	        	options.inSampleSize = 2;
+	        	Log.d("Osmands", "decode start");
+	        	Bitmap bitmapOrg = BitmapFactory.decodeFile(realImagePathFromURI, options);
+	        	Log.d("Osmands", "decode end");
+	
+	    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+	    		Log.d("Osmands", "compress start");
+	    		bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+	    		byte [] ba = bao.toByteArray();
+	    		ba1=Base64.encodeBytes(ba); 
+	    		Log.d("Osmands", "compress end");
+        	}
+	    		
+    		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+    		if (mode.equals("update")) {
+    			nameValuePairs.add(new BasicNameValuePair("id",myCellarsTO.getServerId()));
+    			Log.i("Osmands", "myCellarsTO.getServerId() ="+myCellarsTO.getServerId());
+    		}
+    		
+    		if (!myCellarsTO.getWineImage().equals("-") && myCellarsTO.getWineImage() != null) {
+    			nameValuePairs.add(new BasicNameValuePair("image",ba1));
+    			nameValuePairs.add(new BasicNameValuePair("image_name",myCellarsTO.getWineImage()));
+    		} else {
+    			nameValuePairs.add(new BasicNameValuePair("image_name","-"));
+    		}
+        	
+    		nameValuePairs.add(new BasicNameValuePair("name",myCellarsTO.getWineName())); 
+    		nameValuePairs.add(new BasicNameValuePair("region",myCellarsTO.getRegion())); 
+    		nameValuePairs.add(new BasicNameValuePair("size",myCellarsTO.getSize())); 
+    		nameValuePairs.add(new BasicNameValuePair("price",String.valueOf(myCellarsTO.getPrice()))); 
+    		nameValuePairs.add(new BasicNameValuePair("vintage",myCellarsTO.getVintage())); 
+    		nameValuePairs.add(new BasicNameValuePair("color",myCellarsTO.getColour())); 
+    		nameValuePairs.add(new BasicNameValuePair("grape",myCellarsTO.getGrape())); 
+    		nameValuePairs.add(new BasicNameValuePair("body",myCellarsTO.getBody())); 
+    		nameValuePairs.add(new BasicNameValuePair("sweetness",myCellarsTO.getSweetness())); 
+    		nameValuePairs.add(new BasicNameValuePair("rating",String.valueOf(myCellarsTO.getRating()))); 
+    		nameValuePairs.add(new BasicNameValuePair("tasting_note",myCellarsTO.getNote())); 
+    		nameValuePairs.add(new BasicNameValuePair("tasting_date",myCellarsTO.getTasting_date())); 
+    		nameValuePairs.add(new BasicNameValuePair("occasion",myCellarsTO.getOccasion())); 
+    		nameValuePairs.add(new BasicNameValuePair("in_stock",myCellarsTO.getInstock().equals("Y")? "1":"0")); 
+    		nameValuePairs.add(new BasicNameValuePair("quantity",String.valueOf(myCellarsTO.getQuantity())));
+
+    		DBConnecter connect = new DBConnecter();
+    		try {
+    			JSONArray jArray = connect.connection(URL, nameValuePairs);
+    			if (mode.equals("insert")) {
+	    			JSONObject json_data = null;
+	    			int server_mycellar_id = -1;
+	    			for (int i = 0; i < jArray.length(); i++) {
+	    				json_data = jArray.getJSONObject(i);
+	    				Log.i("Osmands", "json_data ="+json_data);
+	    				server_mycellar_id = json_data.getInt("max_id");
+	    				Log.i("Osmands", "server_mycellar_id ="+server_mycellar_id);
+	    			}
+	    			if (server_mycellar_id != -1) {
+	    				SQLiteDatabase sampleDB = MyCellarsUpdateItemsActivity.this.openOrCreateDatabase("watsonwine.db", MODE_PRIVATE, null);
+	    			    Cursor c = sampleDB.rawQuery("SELECT MAX(_id) FROM " +DbConstants.MY_CELLAR_TABLE_NAME, null);
+	    			    if (c != null ) {
+	    		        	Log.i("Osmands", "c != null  ");
+	    		            if  (c.moveToFirst()) {
+	    		                do {
+	    		                   // String id = c.getString(c.getColumnIndex("_id"));
+	    		                    int id = c.getInt(0);
+	    		                    Log.i("Osmands", "id = "+id);
+	    		                    try{   
+	    		                    	sampleDB.execSQL("UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set server_id = "+server_mycellar_id+", up_to_cms = 'Y' where _id = "+id+";");
+	    		                    	myCellarsTO.setServerId(String.valueOf(server_mycellar_id));
+	    		                    	Log.i("Osmands", "UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set server_id = "+server_mycellar_id+", up_to_cms = 'Y' where _id = "+id+";");
+	    		                    }catch(SQLException	e){
+	    		            			Log.e("Osmands", "UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set server_id = "+server_mycellar_id+", up_to_cms = 'Y' where _id = "+id+"; SQL error = "+e);
+	    		            		}
+	    		                }while (c.moveToNext());
+	    		            } 
+	    		        }
+	    			}
+    			} else {
+    				SQLiteDatabase sampleDB = MyCellarsUpdateItemsActivity.this.openOrCreateDatabase("watsonwine.db", MODE_PRIVATE, null);
+    				try{
+	    				sampleDB.execSQL("UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set up_to_cms = 'Y' where _id = "+myCellarsTO.getId()+";");
+	    				Log.i("Osmands", "UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set up_to_cms = 'Y' where _id = "+myCellarsTO.getId()+";");
+	    			}catch(SQLException	e){
+	        			Log.e("Osmands", "UPDATE " +DbConstants.MY_CELLAR_TABLE_NAME +" set up_to_cms = 'Y' where _id = "+myCellarsTO.getId()+"; SQL error = "+e);
+	        		}
+    			}
+    		}catch(Exception e){
+    			Log.e("Osmands", "Error in http connection "+e.toString());
+    			//Toast.makeText(getBaseContext(), "Can't upload the image, please try again leter!",
+    			//		Toast.LENGTH_LONG).show();
+    		} 		
+    		return null;
+        }  
+  
+        @Override  
+        protected void onProgressUpdate(Integer... progress) {  
+        }  
+  
+        @Override  
+        protected void onPostExecute(Void result) {  
+            try {    
+            } catch (Exception e) {  
+            }  
+        }  
+  
     }
 }

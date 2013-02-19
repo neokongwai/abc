@@ -316,6 +316,9 @@ public class MyCellarsWineDetail extends Activity{
 
 			@Override
 			public void onClick(View arg0) {
+				for(int i =0; i<wineDetail.size();i++) {
+					Log.i("Osmands", "wineDetail.get("+i+")"+wineDetail.get(i));
+				}
 				Bundle b = new Bundle();
 				b.putStringArrayList("wineDetail", wineDetail);
 				
@@ -495,6 +498,7 @@ public class MyCellarsWineDetail extends Activity{
 		item_details.setWineCreateDate(cursor.getString(i++));
 		item_details.setWineModifyDate(cursor.getString(i++));
 		item_details.setWineUpToCms(cursor.getString(i++));
+		item_details.setServerId(cursor.getString(i++));
 		return item_details;
 	}
     

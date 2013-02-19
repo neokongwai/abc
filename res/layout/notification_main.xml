@@ -32,7 +32,7 @@
 	        android:layout_marginLeft="5dip"
 	        android:background="@drawable/btn_email" />
 	    
-	    <ImageButton
+	  <!--    <ImageButton
 	        android:id="@+id/notification_refersh_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_marginRight="10dip"
 	        android:background="@drawable/btn_referesh" />
-	    
+	    -->
     </RelativeLayout>
 
     <ListView 

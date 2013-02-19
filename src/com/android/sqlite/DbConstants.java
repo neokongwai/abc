@@ -33,7 +33,8 @@ public interface DbConstants extends BaseColumns {
     public static final String MY_CELLAR_IMAGE = "image";
     public static final String MY_CELLAR_CREATE_DATE = "create_date";
     public static final String MY_CELLAR_MODIFY_DATE = "modify_date";
-    public static final String MY_CELLAR_UP_TO_CMS = "up_to_cms";//19
+    public static final String MY_CELLAR_UP_TO_CMS = "up_to_cms";
+    public static final String MY_CELLAR_SERVER_ID = "server_id";//20
     
      
 

@@ -19,6 +19,8 @@ import com.facebook.android.Facebook;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo.State;
 
 /**
  * Helper class providing methods and constants common to other classes in the
@@ -90,5 +92,19 @@ public final class CommonUtilities {
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
         context.sendBroadcast(intent);
+    }
+    
+    public static boolean isConnectedNetwork(Context context) {  
+        ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);  
+        State wifi = State.DISCONNECTED;
+        State mobile = State.DISCONNECTED;
+        if (conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI) != null) {
+        	wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();	
+        } 
+        if (conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null) {
+        	mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState();  
+        }
+        
+        return (wifi.equals(State.CONNECTED) || mobile.equals(State.CONNECTED));
     }
 }

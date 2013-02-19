@@ -20,6 +20,7 @@ public class MyCellarsTO {
 	String instock;
 	String wineImage;
 	String up_to_cms;
+	String serverId;
 	
 	public int getId() {
 		return id;
@@ -130,6 +131,12 @@ public class MyCellarsTO {
 		this.up_to_cms = up_to_cms;
 	}
 	
+	public String getServerId() {
+		return serverId;
+	}
+	public void setServerId(String serverId) {
+		this.serverId = serverId;
+	}
 	public void initMyCellarsTO(){
 		this.wineName = "-";
 		this.region = "-";
@@ -148,6 +155,7 @@ public class MyCellarsTO {
 		this.instock = "-";
 		this.wineImage = "-";
 		this.up_to_cms = "-";
+		this.serverId = "-1";
 	}
 	
 }

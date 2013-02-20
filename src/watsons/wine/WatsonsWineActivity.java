@@ -6,12 +6,18 @@ import watsons.wine.utilities.Registration;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 
 public class WatsonsWineActivity extends Activity implements OnClickListener {
 	/** Called when the activity is first created. */
@@ -26,6 +32,26 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 
 		setContentView(R.layout.main);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		int width = display.getWidth();
+		if (width == 720)
+		{
+			LinearLayout ll = (LinearLayout) findViewById(R.id.main_ll1);
+	        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)ll.getLayoutParams(); 
+	        lp.setMargins(0, 300, 0, 0);
+	        ll.setLayoutParams(lp);
+	        
+	        ll = (LinearLayout) findViewById(R.id.main_ll2);
+	        lp = (RelativeLayout.LayoutParams)ll.getLayoutParams();
+	        lp.setMargins(0, 80, 0, 0);
+	        ll.setLayoutParams(lp);
+	        
+	        ll = (LinearLayout) findViewById(R.id.main_ll3);
+	        lp = (RelativeLayout.LayoutParams)ll.getLayoutParams();
+	        lp.setMargins(0, 80, 0, 0);
+	        ll.setLayoutParams(lp);
+		}
 
 		// **********Create My Cellars Table*************
 		WatsonWineDB temp = new WatsonWineDB();

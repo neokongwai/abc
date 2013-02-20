@@ -49,7 +49,7 @@
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:apiKey="0HCfjn2ipt2YUmBSpWpn3nm2fRs8JpEVeRY65UA"
+        android:apiKey="@string/google_map_api_key"
         android:clickable="true" />
     
     <ListView 

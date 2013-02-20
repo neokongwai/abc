@@ -11,21 +11,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EventsTab extends Activity implements
 		CalendarView.OnCellTouchListener, CalendarView.OnDrawableTouchListener {
@@ -163,6 +161,31 @@ public class EventsTab extends Activity implements
 
 		mView.setOnCellTouchListener(this);
 
+		ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				finish();
+ 				
+ 			}
+     	   
+        });
+        
+        ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
+        mail_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
+ 				
+ 			}
+     	   
+        });
 	}
 
 	public void onTouch(Cell cell) {

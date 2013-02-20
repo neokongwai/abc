@@ -8,8 +8,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import watsons.wine.Constants;
 
+import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
 import android.app.ActivityGroup;
 import android.content.Context;
@@ -23,18 +23,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.view.inputmethod.EditorInfo;  
-import android.view.inputmethod.InputMethodManager;
 
 public class WineListTab extends Activity {
 	// url to make request
@@ -290,6 +290,32 @@ public class WineListTab extends Activity {
 			
 			
 		});
+		
+		ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				finish();
+ 				
+ 			}
+     	   
+        });
+        
+        ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
+        mail_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
+ 				
+ 			}
+     	   
+        });
 		
 	}
 	

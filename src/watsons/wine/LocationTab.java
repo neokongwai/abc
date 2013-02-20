@@ -9,21 +9,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import watsons.wine.notification.NotificationMainActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 
 public class LocationTab extends MapActivity {
 	private static final int INITIAL_ZOOM_LEVEL = 14;
@@ -144,6 +145,32 @@ public class LocationTab extends MapActivity {
         }
         
         mv.invalidate();
+        
+        ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				finish();
+ 				
+ 			}
+     	   
+        });
+        
+        ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
+        mail_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
+ 				
+ 			}
+     	   
+        });
 	}
 
 	OnClickListener list_btn_listner = new OnClickListener() {

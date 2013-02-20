@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,16 +25,17 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
 
 public class FoodCuisineList extends Activity {
 	// url to make request
@@ -281,6 +283,32 @@ public class FoodCuisineList extends Activity {
 			
 			
 		});
+		
+		ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
+        home_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				finish();
+ 				
+ 			}
+     	   
+        });
+        
+        ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
+        mail_button.setOnClickListener(new OnClickListener(){
+
+ 			@Override
+ 			public void onClick(View v) {
+ 				
+ 				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
+				TabGroupBase parentActivity = (TabGroupBase)getParent();
+	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
+ 				
+ 			}
+     	   
+        });
 		
 	}
 	protected void performRefresh()

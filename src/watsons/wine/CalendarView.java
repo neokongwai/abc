@@ -254,6 +254,7 @@ public class CalendarView extends ImageView {
     			mOnDrawableTouchListener.onTouch(false,true);
     		}
     	}
+
     	if(mOnCellTouchListener!=null){
 	    	for(Cell[] week : mCells) {
 				for(Cell day : week) {
@@ -325,11 +326,21 @@ public class CalendarView extends ImageView {
 	}
 	
 	public boolean hitPrevious(int x, int y) {
-		return mBtnLeft.getBounds().contains(x, y); 
+		Rect rect = mBtnLeft.copyBounds();
+		rect.bottom+=8;
+		rect.top-=8;
+		rect.right+=8;
+		rect.left-=8;
+		return rect.contains(x, y); 
 	}
 	
 	public boolean hitNext(int x, int y) {
-		return mBtnRight.getBounds().contains(x, y); 
+		Rect rect = mBtnRight.copyBounds();
+		rect.bottom+=8;
+		rect.top-=8;
+		rect.right+=8;
+		rect.left-=8;
+		return rect.contains(x, y); 
 	}
 	
 	public void drawDate()

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,10 @@ public class FoodCuisineList extends Activity {
     //private static final String TAG_DELETED = "deleted";
     private static final String TAG_REGION = "regions";
     //private static final String TAG_CUISINE_ID = "cuisine_id";
+    
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_SEPARATOR = 1;
+    private static final int TYPE_MAX_COUNT = TYPE_SEPARATOR + 1;
  
     // contacts JSONArray
     JSONArray cuisines = null;
@@ -66,6 +71,13 @@ public class FoodCuisineList extends Activity {
     List<Integer> emptyList = new ArrayList<Integer>();
     private SharedPreferences sharedPreferences;
     private JSONObject json;
+    
+    private TreeSet<ViewPos> mSeparatorsSet = new TreeSet<ViewPos>(); 
+    
+    public class ViewPos {
+        int gourp;
+        int child;
+    }
     
 	/** Called when the activity is first created. */
 	@Override
@@ -157,7 +169,15 @@ public class FoodCuisineList extends Activity {
 	                p_map.put(TAG_NAME, regions_name);
 	                children.add(p_map);
                 }
-                regionList.add(children);
+                if (use_sponsor.contains("1"))
+                {
+	                HashMap<String, String> p_map = new HashMap<String, String>();
+	                p_map.put(TAG_ID, "30");
+	                p_map.put(TAG_SPONSOR, sponsor);
+	                children.add(p_map);
+                }
+                
+	            regionList.add(children);
                 
                 // creating new HashMap
                 HashMap<String, String> map = new HashMap<String, String>();
@@ -234,18 +254,36 @@ public class FoodCuisineList extends Activity {
 				    boolean isLastChild, View convertView, ViewGroup parent) 
 			{
 				LayoutInflater li = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View view = li.inflate(R.layout.food_list_item_child, null);
-				TextView tv = (TextView) view.findViewById(R.id.list_fooditem_text_child);
-	            tv.setText(regionList.get(groupPosition).get(childPosition).get(TAG_NAME));
+				View view = null;
+				if(isLastChild && cuisineList.get(groupPosition).get(TAG_USE_SPONSOR).contains("1"))
+				{
+					view = li.inflate(R.layout.food_list_sponsor, null);
+					ImageView iv = (ImageView) view.findViewById(R.id.list_fooditem_sponsor);
+					String url = regionList.get(groupPosition).get(childPosition).get(TAG_SPONSOR);
+					System.out.println("sponsor:"+url);
+					try {
+						Bitmap photo = loadBitmap(url);
+						iv.setImageBitmap(photo);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				else
+				{
+					view = li.inflate(R.layout.food_list_item_child, null);
+					TextView tv = (TextView) view.findViewById(R.id.list_fooditem_text_child);
+					tv .setText(regionList.get(groupPosition).get(childPosition).get(TAG_NAME));
+				}
+				
 			    return view;
 			}
-			
+
 		 };
 
 		// Assign adapter to ListView
 		listView = (ExpandableListView) findViewById(R.id.list_food);
 		listView.setAdapter(mAdapter);
-		listView.setDividerHeight(0);
 		listView.setOnChildClickListener(new OnChildClickListener() 
 		{
 			
@@ -341,7 +379,9 @@ public class FoodCuisineList extends Activity {
 			bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return bitmap;
 	}
 	
@@ -360,4 +400,6 @@ public class FoodCuisineList extends Activity {
 	   else
 		   super.onBackPressed();
 	}
+	
+
 }

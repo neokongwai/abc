@@ -36,11 +36,18 @@ public class Wine {
     
     public static Bitmap loadBitmap(String url) throws IOException {
     	Bitmap bitmap = null;
-    	try {
+    	try 
+    	{
     		bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
-    	} catch (MalformedURLException e) {
+    	}
+    	catch (MalformedURLException e) 
+    	{
     		e.printStackTrace();
     	} 
+    	catch (IOException e)
+    	{
+    		e.printStackTrace();
+    	}
     	return bitmap;
     }
 }

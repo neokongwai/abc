@@ -69,8 +69,10 @@
         android:id="@+id/list_food"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:cacheColorHint="#00000000" 
-        android:childDivider="#00000000"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/Gainsboro"
+        android:childDivider="@color/Gainsboro"
+        android:dividerHeight="1dp"
         android:groupIndicator="@null"
         android:background="@color/WhiteSmoke">
     </ExpandableListView>

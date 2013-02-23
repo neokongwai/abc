@@ -27,7 +27,6 @@
         android:textColor="@color/Maroon"
         android:textSize="22sp"
         android:textStyle="bold" />
-
     <ImageView
         android:id="@+id/explist_indicator"
         android:layout_width="14dp"

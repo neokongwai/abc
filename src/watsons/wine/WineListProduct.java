@@ -224,7 +224,9 @@ public class WineListProduct extends Activity {
 			bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return bitmap;
 	}
 }

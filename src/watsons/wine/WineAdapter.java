@@ -92,6 +92,7 @@ public class WineAdapter extends ArrayAdapter<Wine>{
         }
         else
         {
+        	Log.d("vk", wine.name + "; jh="+ wine.rating_jh + "; rp=" +wine.rating_rp+ "; js="+ wine.rating_ws);
 	        if (wine.rating_rp != null &&  wine.rating_rp != "null")
 	        {
 	        	SpannableString tmp = new SpannableString("tmp " + wine.rating_rp);
@@ -114,7 +115,7 @@ public class WineAdapter extends ArrayAdapter<Wine>{
 	        {
 	        	holder.txtRatingWS.setVisibility(View.GONE);
 	        }
-	        if (wine.rating_jh != null && wine.rating_jh != "null")
+	        if ((wine.rating_jh != null) && (wine.rating_jh != "null"))
 	        {
 	        	 SpannableString tmp = new SpannableString("tmp " + wine.rating_ws);
 	        	 is = new ImageSpan(context, R.drawable.rating_jh);
@@ -123,11 +124,10 @@ public class WineAdapter extends ArrayAdapter<Wine>{
 	        }
 	        else
 	        {
+	        	Log.d("vk", "elsecase--->" +wine.name + "; "+ wine.rating_jh);
 	        	holder.txtRatingJH.setVisibility(View.GONE);
 	        }
         }
-     
-        
         return row;
     }
     

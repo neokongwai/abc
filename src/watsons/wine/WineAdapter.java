@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,15 +67,17 @@ public class WineAdapter extends ArrayAdapter<Wine>{
         	ll = (LinearLayout) row.findViewById(R.id.list_product_item_size_layout);
         	ll.setVisibility(View.GONE);
         }
-        if (wine.original_price != null && wine.original_price != "null")
-        	holder.txtOriPrice.setText(wine.original_price);
+        
+        if ((wine.original_price != null) && (wine.original_price !="null"))
+        	holder.txtOriPrice.setText("HK$" + wine.original_price);
         else
         {
         	ll = (LinearLayout) row.findViewById(R.id.list_product_item_ori_price_layout);
         	ll.setVisibility(View.GONE);
         }
-        if (wine.promote_price != null && wine.promote_price != "null")
-              holder.txtProPrice.setText(wine.promote_price);
+        if ((wine.promote_price != null) && !(wine.promote_price.equals("null"))) {
+        	holder.txtProPrice.setText("HK$" + wine.promote_price);
+        }
         else
         {
         	ll = (LinearLayout) row.findViewById(R.id.list_product_item_pro_price_layout);

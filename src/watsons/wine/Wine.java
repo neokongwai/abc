@@ -46,7 +46,7 @@ public class Wine {
     	} 
     	catch (IOException e)
     	{
-    		e.printStackTrace();
+    		//e.printStackTrace();
     	}
     	return bitmap;
     }

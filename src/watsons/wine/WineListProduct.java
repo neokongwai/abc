@@ -212,6 +212,9 @@ public class WineListProduct extends Activity {
 					products = json.getJSONArray(TAG_PRODUCT);
 				// looping through All Contacts
 				for (int i = 0; i < products.length(); i++) {
+					if(!pdia.isShowing()) {
+						break;
+					}
 					JSONObject p = products.getJSONObject(i);
 
 					// creating new HashMap

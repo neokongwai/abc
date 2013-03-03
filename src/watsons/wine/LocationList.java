@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -88,7 +90,7 @@ public class LocationList extends Activity {
         		R.layout.list_location_item, nameListNT);
         ArrayAdapter<String> adapter_others = new ArrayAdapter<String>(this,
         		R.layout.list_location_item, nameListOthers);
-        
+
         lv_hk.setAdapter(adapter_hk);
         lv_hk.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -102,6 +104,7 @@ public class LocationList extends Activity {
 	        	parentActivity.startChildActivity("LocationWebView", intent);
             }
         });
+        fixListViewHeight(lv_hk, adapter_hk);
         
         lv_kl.setAdapter(adapter_kl);
         lv_kl.setOnItemClickListener(new OnItemClickListener() {
@@ -116,6 +119,8 @@ public class LocationList extends Activity {
 	        	parentActivity.startChildActivity("LocationWebView", intent);
             }
         });
+        fixListViewHeight(lv_kl, adapter_kl);
+        
         lv_nt.setAdapter(adapter_nt);
         lv_nt.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -129,6 +134,8 @@ public class LocationList extends Activity {
 	        	parentActivity.startChildActivity("LocationWebView", intent);
             }
         });
+        fixListViewHeight(lv_nt, adapter_nt);
+        
         lv_others.setAdapter(adapter_others);
         lv_others.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -142,5 +149,25 @@ public class LocationList extends Activity {
 	        	parentActivity.startChildActivity("LocationWebView", intent);
             }
         });
+        fixListViewHeight(lv_others, adapter_others);
+        
+	}
+	
+	private void fixListViewHeight(ListView theListView,ArrayAdapter<String> theArrayAdapter) {
+        if(theArrayAdapter == null) {
+        	return;
+        }
+		
+		int totalHeight = 0;
+        for(int i=0; i<theArrayAdapter.getCount(); i++) {
+        	View listItem = theArrayAdapter.getView(i,  null, theListView);
+        	listItem.measure(0, 0);
+        	totalHeight += listItem.getMeasuredHeight();
+        }
+        
+        ViewGroup.LayoutParams params = theListView.getLayoutParams();
+        params.height = totalHeight + (theListView.getDividerHeight() * (theArrayAdapter.getCount()-1));
+        ((MarginLayoutParams)params).setMargins(10, 10, 10, 10);
+        theListView.setLayoutParams(params);
 	}
 }

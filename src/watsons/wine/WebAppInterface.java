@@ -48,7 +48,7 @@ public class WebAppInterface extends Activity {
     }
     
     public void sendmail(String wineName, String prd_id, String tasting_note) {
-    	String message1 = "I've added " + wineName + "into my wish list. Let's have a wine gathering and try together.";
+    	String message1 = "I've added " + wineName + " into my wish list. Let's have a wine gathering and try together.";
     	String message2 = "";
     	String message3 = "";
     	
@@ -56,13 +56,11 @@ public class WebAppInterface extends Activity {
     		message2 = "\n" + "https://www.watsonswine.com/WebShop/BrowseProductDetail.do?prdid=" + prd_id;
     	}
     	if(!tasting_note.isEmpty()) {
-    		message3 = "\n" + "Tasting note: " + tasting_note;
+    		message3 = "\n\n" + "Tasting note: " + tasting_note;
     	}
     	
     	final String message = message1 + message2 + message3;
-    	final String subject = "Share wine to you";
-    	
-    	System.out.println("msg"+message);
+    	final String subject = "My wine";
     	
     	Runnable runnable = new Runnable() {
     		public void run() {
@@ -116,7 +114,7 @@ public class WebAppInterface extends Activity {
     	
     	Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage);
     	if(return_bool) {
-    		this.showToast("Wine is added into your celler");
+    		this.showToast("Added to My Cellar");
     	}else {
     		this.showToast("Wine can't added into your celler");
     	}

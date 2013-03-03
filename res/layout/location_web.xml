@@ -4,13 +4,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/title_location"
+    <RelativeLayout
+        android:id="@+id/title_location_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/title_location" 
-        android:layout_marginTop="-1dp"/>
+        android:layout_marginTop="-1dp"
+        android:background="@drawable/title_location" >
+    </RelativeLayout>
 
     <WebView
         xmlns:android="http://schemas.android.com/apk/res/android"

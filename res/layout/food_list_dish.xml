@@ -6,13 +6,14 @@
     android:fadingEdge="none"
     android:orientation="vertical" >
 
-    <ImageView
+    <RelativeLayout 
         android:id="@+id/title_food"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/DarkRed"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/title_food" />
+        android:background="@drawable/title_food"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="-2dp"
+        />
 
     <LinearLayout 
          android:background="@drawable/bg_food_menu_title"

@@ -21,7 +21,7 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 
 	AsyncTask<Void, Void, Void> mRegisterTask;
 	ImageView icon_wine, icon_cellar, icon_food, icon_events, icon_location,
-			icon_inbox;
+			icon_inbox, icon_aboutus;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		icon_events = (ImageView) findViewById(R.id.icon_events);
 		icon_location = (ImageView) findViewById(R.id.icon_location);
 		icon_inbox = (ImageView) findViewById(R.id.icon_inbox);
+		icon_aboutus = (ImageView) findViewById(R.id.icon_aboutus);
 
 		icon_wine.setOnClickListener(this);
 		icon_cellar.setOnClickListener(this);
@@ -78,6 +79,7 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		icon_events.setOnClickListener(this);
 		icon_location.setOnClickListener(this);
 		icon_inbox.setOnClickListener(this);
+		icon_aboutus.setOnClickListener(this);
 	}
 
 	@Override
@@ -114,6 +116,8 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		case R.id.icon_inbox:
 		    intent.putExtra("index", 5);
 		    break;
+		case R.id.icon_aboutus:
+			intent = new Intent(v.getContext(), AboutUs.class);
 		}
 		startActivity(intent);
 

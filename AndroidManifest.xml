@@ -66,6 +66,7 @@
         <activity android:name="watsons.wine.WineListProduct" />
         <activity android:name="watsons.wine.WineProductWeb" />
         <activity android:name="watsons.wine.LocationWebView" />
+        <activity android:name="watsons.wine.AboutUs" />
         
         
         <activity 

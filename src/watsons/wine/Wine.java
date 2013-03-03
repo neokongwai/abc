@@ -17,6 +17,7 @@ public class Wine {
     public String rating_jh;
     public String original_price;
     public String promote_price;
+    public String url;
     public Wine(){
         super();
     }
@@ -24,7 +25,8 @@ public class Wine {
     public Wine(String url, String name, String size, String original_price, String promote_price, 
     		String rating_rp, String rating_ws, String rating_jh) throws IOException {
         super();
-        this.photo = loadBitmap(url);
+        this.url = url;
+        this.photo = null;//loadBitmap(url);
         this.name = name;
         this.size = size;
         this.original_price = original_price;
@@ -51,4 +53,3 @@ public class Wine {
     	return bitmap;
     }
 }
-

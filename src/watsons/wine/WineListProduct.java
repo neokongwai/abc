@@ -149,7 +149,7 @@ public class WineListProduct extends Activity {
 		
 	}
 
-	public static Bitmap loadBitmap(String url) throws IOException {
+	/*public static Bitmap loadBitmap(String url) throws IOException {
 		Bitmap bitmap = null;
 		try {
 			bitmap = BitmapFactory.decodeStream((InputStream) new URL(url)
@@ -160,7 +160,7 @@ public class WineListProduct extends Activity {
 			e.printStackTrace();
 		}
 		return bitmap;
-	}
+	}*/
 
 	private class JsonTask extends AsyncTask<String, Void, String> {
 		
@@ -212,9 +212,6 @@ public class WineListProduct extends Activity {
 					products = json.getJSONArray(TAG_PRODUCT);
 				// looping through All Contacts
 				for (int i = 0; i < products.length(); i++) {
-					if(!pdia.isShowing()) {
-						break;
-					}
 					JSONObject p = products.getJSONObject(i);
 
 					// creating new HashMap

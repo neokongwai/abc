@@ -1,9 +1,21 @@
 package watsons.wine;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+//import watsons.wine.WineListProduct.JsonTask;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
@@ -13,7 +25,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import java.net.URL;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class WineAdapter extends ArrayAdapter<Wine> {
 
@@ -72,8 +90,17 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		}
 
 		Wine wine = data.get(position);
-
-		holder.imgIcon.setImageBitmap(wine.photo);
+		
+		//Edit By Stark //
+		if(wine.photo == null)
+		{
+			new LoadImageTask().execute(holder.imgIcon, wine);
+		}
+		else {
+			holder.imgIcon.setImageBitmap(wine.photo);
+		}
+		//End //
+		
 		holder.txtName.setText(wine.name);
 		if (wine.size != null && wine.size != "")
 		{
@@ -143,6 +170,48 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 			}
 		}
 		return row;
+	}
+	
+	private class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
+	
+		private ImageView imv;
+        private Wine wine;
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();  
+			
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			super.onPostExecute(result);
+			
+			if(result != null && imv != null){
+                //imv.setVisibility(View.VISIBLE);
+                imv.setImageBitmap(result);
+            }else{
+                //imv.setVisibility(View.GONE);
+            }
+		}
+
+		protected Bitmap doInBackground(Object... params) {
+			imv = (ImageView)   params[0];
+			wine = (Wine) params[1];
+			try {
+				String url = wine.url;
+				Bitmap photo = Wine.loadBitmap(url);
+				wine.photo = photo;
+				return photo;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+
 	}
 
 	static class WineHolder {

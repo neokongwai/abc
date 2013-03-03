@@ -15,131 +15,148 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class WineAdapter extends ArrayAdapter<Wine>{
+public class WineAdapter extends ArrayAdapter<Wine> {
 
-    Context context; 
-    int layoutResourceId;    
-    ArrayList<Wine> data = null;
-    ImageSpan is;
-    LinearLayout ll;
-    
-    public WineAdapter(Context context, int layoutResourceId, ArrayList<Wine> data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
-        this.context = context;
-        this.data = data;
-    }
+	Context context;
+	int layoutResourceId;
+	ArrayList<Wine> data = null;
+	ImageSpan is;
+	LinearLayout ll;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        WineHolder holder = null;
-        
-        if(row == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
-            holder = new WineHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.list_product_item_image);
-            holder.txtName = (TextView)row.findViewById(R.id.list_product_item_name);
-            holder.txtSize = (TextView)row.findViewById(R.id.list_product_item_size_value);
-            holder.txtOriPrice = (TextView)row.findViewById(R.id.list_product_item_ori_price_value);
-            holder.txtProPrice = (TextView)row.findViewById(R.id.list_product_item_pro_price_value);
-            holder.txtRatingRP = (TextView)row.findViewById(R.id.list_product_item_rating_rp_value);
-            holder.txtRatingWS = (TextView)row.findViewById(R.id.list_product_item_rating_ws_value);
-            holder.txtRatingJH = (TextView)row.findViewById(R.id.list_product_item_rating_jh_value);
-            
-            row.setTag(holder);
-        }
-        else
-        {
-            holder = (WineHolder)row.getTag();
-        }
-        
-        Wine wine = data.get(position);
+	public WineAdapter(Context context, int layoutResourceId,
+			ArrayList<Wine> data) {
+		super(context, layoutResourceId, data);
+		this.layoutResourceId = layoutResourceId;
+		this.context = context;
+		this.data = data;
+	}
 
-        holder.imgIcon.setImageBitmap(wine.photo);
-        holder.txtName.setText(wine.name);
-        if (wine.size != null && wine.size != "")
-        	holder.txtSize.setText(wine.size);
-        else 
-        {
-        	ll = (LinearLayout) row.findViewById(R.id.list_product_item_size_layout);
-        	ll.setVisibility(View.GONE);
-        }
-        
-        if ((wine.original_price != null) && (wine.original_price !="null"))
-        	holder.txtOriPrice.setText("HK$" + wine.original_price);
-        else
-        {
-        	ll = (LinearLayout) row.findViewById(R.id.list_product_item_ori_price_layout);
-        	ll.setVisibility(View.GONE);
-        }
-        if ((wine.promote_price != null) && !(wine.promote_price.equals("null"))) {
-        	holder.txtProPrice.setText("HK$" + wine.promote_price);
-        }
-        else
-        {
-        	ll = (LinearLayout) row.findViewById(R.id.list_product_item_pro_price_layout);
-        	ll.setVisibility(View.GONE);
-        	holder.txtProPrice.setVisibility(View.GONE);
-        }
-        if ((wine.rating_rp == null && wine.rating_ws == null && wine.rating_jh == null) ||
-        		(wine.rating_rp == "null" && wine.rating_ws == "null" && wine.rating_jh == "null"))
-        {
-        	ll = (LinearLayout) row.findViewById(R.id.list_product_item_rating_layout);
-        	ll.setVisibility(View.GONE);
-        }
-        else
-        {
-        	Log.d("vk", wine.name + "; jh="+ wine.rating_jh + "; rp=" +wine.rating_rp+ "; js="+ wine.rating_ws);
-	        if (wine.rating_rp != null &&  wine.rating_rp != "null")
-	        {
-	        	SpannableString tmp = new SpannableString("tmp " + wine.rating_rp);
-	        	is = new ImageSpan(context, R.drawable.rating_rp);
-	        	tmp.setSpan(is, 0, 3, 0);
-	            holder.txtRatingRP.setText(tmp);
-	        }
-	        else
-	        {
-	        	holder.txtRatingRP.setVisibility(View.GONE);
-	        }
-	        if (wine.rating_ws != null && wine.rating_ws != "null")
-	        {
-	        	SpannableString tmp = new SpannableString("tmp " + wine.rating_ws);
-	        	is = new ImageSpan(context, R.drawable.rating_ws);
-	        	tmp.setSpan(is, 0, 3, 0);
-	            holder.txtRatingWS.setText(tmp);
-	        }
-	        else
-	        {
-	        	holder.txtRatingWS.setVisibility(View.GONE);
-	        }
-	        if ((wine.rating_jh != null) && (wine.rating_jh != "null"))
-	        {
-	        	 SpannableString tmp = new SpannableString("tmp " + wine.rating_ws);
-	        	 is = new ImageSpan(context, R.drawable.rating_jh);
-	        	 tmp.setSpan(is, 0, 3, 0);
-	             holder.txtRatingJH.setText(tmp);
-	        }
-	        else
-	        {
-	        	Log.d("vk", "elsecase--->" +wine.name + "; "+ wine.rating_jh);
-	        	holder.txtRatingJH.setVisibility(View.GONE);
-	        }
-        }
-        return row;
-    }
-    
-    static class WineHolder
-    {
-        ImageView imgIcon;
-        TextView txtName;
-        TextView txtSize;
-        TextView txtOriPrice;
-        TextView txtProPrice;
-        TextView txtRatingRP;
-        TextView txtRatingWS;
-        TextView txtRatingJH;
-    }
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View row = convertView;
+		WineHolder holder = null;
+		
+		if (row == null) {
+			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+			row = inflater.inflate(layoutResourceId, parent, false);
+			holder = new WineHolder();
+			holder.llOri = (LinearLayout) row
+					.findViewById(R.id.list_product_item_ori_price_layout);
+			holder.llPro = (LinearLayout) row
+					.findViewById(R.id.list_product_item_pro_price_layout);
+			holder.llRat = (LinearLayout) row
+					.findViewById(R.id.list_product_item_rating_layout);
+			holder.llSize = (LinearLayout) row
+					.findViewById(R.id.list_product_item_size_layout);
+			holder.imgIcon = (ImageView) row
+					.findViewById(R.id.list_product_item_image);
+			holder.txtName = (TextView) row
+					.findViewById(R.id.list_product_item_name);
+			holder.txtSize = (TextView) row
+					.findViewById(R.id.list_product_item_size_value);
+			holder.txtOriPrice = (TextView) row
+					.findViewById(R.id.list_product_item_ori_price_value);
+			holder.txtProPrice = (TextView) row
+					.findViewById(R.id.list_product_item_pro_price_value);
+			holder.txtRatingRP = (TextView) row
+					.findViewById(R.id.list_product_item_rating_rp_value);
+			holder.txtRatingWS = (TextView) row
+					.findViewById(R.id.list_product_item_rating_ws_value);
+			holder.txtRatingJH = (TextView) row
+					.findViewById(R.id.list_product_item_rating_jh_value);
+			
+			row.setTag(holder);
+			
+		} else {
+			holder = (WineHolder) row.getTag();
+		}
+
+		Wine wine = data.get(position);
+
+		holder.imgIcon.setImageBitmap(wine.photo);
+		holder.txtName.setText(wine.name);
+		if (wine.size != null && wine.size != "")
+		{
+			holder.txtSize.setText(wine.size);
+			holder.txtSize.setVisibility(View.VISIBLE);
+			holder.llSize.setVisibility(View.VISIBLE);
+		}
+		else {
+			holder.txtSize.setVisibility(View.GONE);
+			holder.llSize.setVisibility(View.GONE);
+		}
+
+		if ((wine.original_price != null) && (wine.original_price != "null")) {
+			holder.llOri.setVisibility(View.VISIBLE);
+			holder.txtOriPrice.setVisibility(View.VISIBLE);
+			holder.txtOriPrice.setText("HK$" + wine.original_price);
+		}
+		else {
+			holder.llOri.setVisibility(View.GONE);
+			holder.txtOriPrice.setVisibility(View.GONE);
+		}
+		if ((wine.promote_price != null)
+				&& !(wine.promote_price.equals("null"))) {
+			holder.txtProPrice.setText("HK$" + wine.promote_price);
+			holder.llPro.setVisibility(View.VISIBLE);
+			holder.txtProPrice.setVisibility(View.VISIBLE);
+		} else {
+			holder.llPro.setVisibility(View.GONE);
+			holder.txtProPrice.setVisibility(View.GONE);
+		}
+		if ((wine.rating_rp == null && wine.rating_ws == null && wine.rating_jh == null)
+				|| (wine.rating_rp == "null" && wine.rating_ws == "null" && wine.rating_jh == "null")) {
+			holder.llRat.setVisibility(View.GONE);
+		} else {
+			holder.llRat.setVisibility(View.VISIBLE);
+			//Log.d("vk", wine.name + "; jh=" + wine.rating_jh + "; rp="
+			//		+ wine.rating_rp + "; ws=" + wine.rating_ws);
+			if (wine.rating_rp != null && wine.rating_rp != "null") {
+				SpannableString tmp = new SpannableString("tmp "
+						+ wine.rating_rp);
+				is = new ImageSpan(context, R.drawable.rating_rp);
+				tmp.setSpan(is, 0, 3, 0);
+				holder.txtRatingRP.setText(tmp);
+				holder.txtRatingRP.setVisibility(View.VISIBLE);
+			} else {
+				holder.txtRatingRP.setVisibility(View.GONE);
+			}
+			if (wine.rating_ws != null && wine.rating_ws != "null") {
+				SpannableString tmp = new SpannableString("tmp "
+						+ wine.rating_ws);
+				is = new ImageSpan(context, R.drawable.rating_ws);
+				tmp.setSpan(is, 0, 3, 0);
+				holder.txtRatingWS.setText(tmp);
+				holder.txtRatingWS.setVisibility(View.VISIBLE);
+			} else {
+				holder.txtRatingWS.setVisibility(View.GONE);
+			}
+			if (wine.rating_jh != null && wine.rating_jh != "null") {
+				SpannableString tmp = new SpannableString("tmp "
+						+ wine.rating_jh);
+				is = new ImageSpan(context, R.drawable.rating_jh);
+				tmp.setSpan(is, 0, 3, 0);
+				holder.txtRatingJH.setText(tmp);
+				holder.txtRatingJH.setVisibility(View.VISIBLE);
+			} else {
+				holder.txtRatingJH.setVisibility(View.GONE);
+			}
+		}
+		return row;
+	}
+
+	static class WineHolder {
+		LinearLayout llOri;
+		LinearLayout llPro;
+		LinearLayout llRat;
+		LinearLayout llSize;
+		ImageView imgIcon;
+		TextView txtName;
+		TextView txtSize;
+		TextView txtOriPrice;
+		TextView txtProPrice;
+		TextView txtRatingRP;
+		TextView txtRatingWS;
+		TextView txtRatingJH;
+	}
 }

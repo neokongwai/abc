@@ -277,6 +277,9 @@ public class WineListTab extends Activity {
 	}
 
 	protected void performSearch() {
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+    	imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		
 		String search_str = et.getText().toString();
 		if (search_str.equals(""))
 			return;

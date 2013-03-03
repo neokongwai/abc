@@ -6,17 +6,14 @@ import watsons.wine.utilities.Registration;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
 public class WatsonsWineActivity extends Activity implements OnClickListener {
@@ -32,7 +29,7 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 
 		setContentView(R.layout.main);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
+		 
 		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
 		if (width == 720)

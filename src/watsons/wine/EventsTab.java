@@ -13,9 +13,11 @@ import org.json.JSONObject;
 
 import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -77,114 +79,43 @@ public class EventsTab extends Activity implements
 
 		});
 
-		// Share Preference for Json
-		sharedPreferences = getPreferences(MODE_PRIVATE);
-		String strJson = sharedPreferences.getString("json_events", null);
-		if (strJson != null) {
-			try {
-				json = new JSONObject(strJson);
-			} catch (JSONException e1) {
-				e1.printStackTrace();
-			}
-		} else {
-			// Creating JSON Parser instance
-			JSONParser jParser = new JSONParser();
-			// getting JSON string from URL
-			json = jParser.getJSONFromUrl(url);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("json_events", json.toString());
-			editor.commit();
-		}
-
-		try {
-			// Getting Array of Contacts
-			events = json.getJSONArray(TAG_EVENT);
-
-			// looping through All Contacts
-			for (int i = 0; i < events.length(); i++) {
-				JSONObject c = events.getJSONObject(i);
-
-				// Storing each json item in variable
-				String id = c.getString(TAG_ID);
-				String name = c.getString(TAG_NAME);
-				String date = c.getString(TAG_DATE);
-
-				HashMap<String, String> map = new HashMap<String, String>();
-				// adding each child node to HashMap key => value
-				map.put(TAG_ID, id);
-				map.put(TAG_NAME, name);
-				map.put(TAG_DATE, date);
-
-				// adding HashList to ArrayList
-				eventList.add(map);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		for (int i = 0; i < eventList.size(); i++) {
-			if (!eventList.get(i).get(TAG_DATE).equals("")) {
-				String date, tmp;
-				int index;
-
-				date = eventList.get(i).get(TAG_DATE);
-				tmp = date.substring(0, 4);
-				dateList.add(Integer.parseInt(tmp));
-				index = date.indexOf("-");
-				date = date.substring(index + 1);
-				index = date.indexOf("-");
-				tmp = date.substring(0, index);
-				dateList.add(Integer.parseInt(tmp));
-				date = date.substring(index + 1);
-				dateList.add(Integer.parseInt(date));
-			}
-		}
-
+		mView = (CalendarView) findViewById(R.id.calendar_view);
+		mView.setOnDrawableTouchListener(this);
+		mView.setOnCellTouchListener(this);
 		mTextView = (TextView) findViewById(R.id.calendar_text);
 
-		mView = (CalendarView) findViewById(R.id.calendar_view);
-
-		mView.setOnDrawableTouchListener(this);
 		mHandler.post(new Runnable() {
 			public void run() {
 				String yearString = String.valueOf(mView.getYear());
 				String monthString = DateFormatSymbols.getInstance(
 						new Locale("en", "EN")).getMonths()[mView.getMonth()];
 				mTextView.setText(monthString + " " + yearString);
+				new JsonTask().execute(url);
 			}
 		});
-		mHandler.postDelayed(new Runnable() {
+		
+		/*mHandler.postDelayed(new Runnable() {
 			public void run() {
 				mView.drawDate(dateList);
 			}
-		}, 500);
-
-		mView.setOnCellTouchListener(this);
+		}, 500);*/
 
 		ImageButton home_button = (ImageButton)findViewById(R.id.cellar_home_button);
         home_button.setOnClickListener(new OnClickListener(){
-
  			@Override
  			public void onClick(View v) {
- 				
  				finish();
- 				
  			}
-     	   
         });
         
         ImageButton mail_button = (ImageButton)findViewById(R.id.cellar_mail_button);
         mail_button.setOnClickListener(new OnClickListener(){
-
  			@Override
  			public void onClick(View v) {
- 				
  				Intent intent = new Intent(getParent(), NotificationMainActivity.class);
 				TabGroupBase parentActivity = (TabGroupBase)getParent();
 	        	parentActivity.startChildActivity("MyCellarsMainCallByMail", intent);
- 				
  			}
-     	   
         });
 	}
 
@@ -196,9 +127,12 @@ public class EventsTab extends Activity implements
 		boolean tmp = cell.IsEvent();
 		if (tmp) {
 			String month_str = null;
-			if(month<10) {
+			if (month<10) 
+			{
 				month_str = "0"+String.valueOf(month);
-			}else {
+			}
+			else 
+			{
 				month_str = String.valueOf(month);
 			}
 			
@@ -282,5 +216,94 @@ public class EventsTab extends Activity implements
 		TabGroupBase parentActivity = (TabGroupBase) getParent();
 		parentActivity.startChildActivityNotAddId("EventsTab", intent);
 
+	}
+	
+	private class JsonTask extends AsyncTask<String, Void, String> {
+		
+		ProgressDialog pdia;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdia = new ProgressDialog(getParent());
+			pdia.setMessage("Loading...");
+			pdia.show();
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			mView = (CalendarView) findViewById(R.id.calendar_view);
+			for (int i = 0; i < eventList.size(); i++) 
+			{
+				if (!eventList.get(i).get(TAG_DATE).equals("")) 
+				{
+					String date, tmp;
+					int index;
+					date = eventList.get(i).get(TAG_DATE);
+					tmp = date.substring(0, 4);
+					dateList.add(Integer.parseInt(tmp));
+					index = date.indexOf("-");
+					date = date.substring(index + 1);
+					index = date.indexOf("-");
+					tmp = date.substring(0, index);
+					dateList.add(Integer.parseInt(tmp));
+					date = date.substring(index + 1);
+					dateList.add(Integer.parseInt(date));
+				}
+			}
+			mView.drawDate(dateList);
+			pdia.dismiss();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// Share Preference for Json
+			sharedPreferences = getPreferences(MODE_PRIVATE);
+			String strJson = sharedPreferences.getString("json_events", null);
+			if (strJson != null) {
+				try {
+					json = new JSONObject(strJson);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				// Creating JSON Parser instance
+				JSONParser jParser = new JSONParser();
+				// getting JSON string from URL
+				json = jParser.getJSONFromUrl(url);
+				SharedPreferences.Editor editor = sharedPreferences.edit();
+				editor.putString("json_events", json.toString());
+				editor.commit();
+			}
+
+			try {
+				// Getting Array of Contacts
+				events = json.getJSONArray(TAG_EVENT);
+
+				// looping through All Contacts
+				for (int i = 0; i < events.length(); i++) {
+					JSONObject c = events.getJSONObject(i);
+
+					// Storing each json item in variable
+					String id = c.getString(TAG_ID);
+					String name = c.getString(TAG_NAME);
+					String date = c.getString(TAG_DATE);
+
+					HashMap<String, String> map = new HashMap<String, String>();
+					// adding each child node to HashMap key => value
+					map.put(TAG_ID, id);
+					map.put(TAG_NAME, name);
+					map.put(TAG_DATE, date);
+
+					// adding HashList to ArrayList
+					eventList.add(map);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			return "";
+		}
 	}
 }

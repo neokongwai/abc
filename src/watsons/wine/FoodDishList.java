@@ -14,14 +14,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,11 +40,15 @@ public class FoodDishList extends Activity {
  
     // contacts JSONArray
     JSONArray dishes = null;
-    Context mContext = FoodDishList.this;    
+    Context mContext = FoodDishList.this;
+    FoodDishAdapter adapter = null;
 
     List<Integer> emptyList = new ArrayList<Integer>();
     List<String> nameListEng = new ArrayList<String>();
     List<String> nameListChi = new ArrayList<String>();
+    
+    // Hashmap for ListView
+    List<Map<String, String>> dishList = new ArrayList<Map<String, String>>();
     
 	/** Called when the activity is first created. */
 	@Override
@@ -50,53 +57,17 @@ public class FoodDishList extends Activity {
 
 		setContentView(R.layout.food_list_dish);
 		/* Wine List Tab Content */
-		
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
         String dish_url = url + bundle.getString("id");
         
         TextView tv = (TextView)findViewById(R.id.title_dish_text);
         tv.setText(bundle.getString("name"));
-		
-		// Hashmap for ListView
-		final List<Map<String, String>> dishList = new ArrayList<Map<String, String>>();
- 
-        // Creating JSON Parser instance
-        JSONParser jParser = new JSONParser();
- 
-        // getting JSON string from URL
-        JSONObject json = jParser.getJSONFromUrl(dish_url);
-                
-        try {
-            // Getting Array of Contacts
-        	dishes = json.getJSONArray(TAG_LIST);
 
-            // looping through All Contacts
-            for(int i = 0; i < dishes.length(); i++){
-                JSONObject c = dishes.getJSONObject(i);
- 
-                // Storing each json item in variable
-                String id = c.getString(TAG_ID);
-                String name_en = c.getString(TAG_NAME_EN);
-                String name_chi = c.getString(TAG_NAME_CHI);
-                // creating new HashMap
-                HashMap<String, String> map = new HashMap<String, String>();
-                // adding each child node to HashMap key => value
-                map.put(TAG_ID, id);
-                map.put(TAG_NAME_EN, name_en);
-                map.put(TAG_NAME_CHI, name_chi);
- 
-                // adding HashList to ArrayList
-                nameListEng.add(name_en);
-                nameListChi.add(name_chi);
-                dishList.add(map);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        new JsonTask().execute(dish_url);
 
         ListView listView = (ListView)findViewById(R.id.list_food_dish);
-        FoodDishAdapter adapter = new FoodDishAdapter(this, nameListEng,nameListChi);
+        adapter = new FoodDishAdapter(this, nameListEng,nameListChi);
         listView.setAdapter(adapter);
 		listView.setDividerHeight(0);
 		listView.setOnItemClickListener(new OnItemClickListener() 
@@ -129,5 +100,65 @@ public class FoodDishList extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+	}
+	
+	private class JsonTask extends AsyncTask<String, Void, String> {
+
+		ProgressDialog pdia;
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			pdia = new ProgressDialog(getParent());
+			pdia.setMessage("Loading...");
+			pdia.show();
+
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			adapter.notifyDataSetChanged();
+			pdia.dismiss();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// Creating JSON Parser instance
+	        JSONParser jParser = new JSONParser();
+	 
+	        String dish_url = params[0];
+	        // getting JSON string from URL
+	        JSONObject json = jParser.getJSONFromUrl(dish_url);
+	                
+	        try {
+	            // Getting Array of Contacts
+	        	dishes = json.getJSONArray(TAG_LIST);
+
+	            // looping through All Contacts
+	            for(int i = 0; i < dishes.length(); i++){
+	                JSONObject c = dishes.getJSONObject(i);
+	 
+	                // Storing each json item in variable
+	                String id = c.getString(TAG_ID);
+	                String name_en = c.getString(TAG_NAME_EN);
+	                String name_chi = c.getString(TAG_NAME_CHI);
+	                // creating new HashMap
+	                HashMap<String, String> map = new HashMap<String, String>();
+	                // adding each child node to HashMap key => value
+	                map.put(TAG_ID, id);
+	                map.put(TAG_NAME_EN, name_en);
+	                map.put(TAG_NAME_CHI, name_chi);
+	 
+	                // adding HashList to ArrayList
+	                nameListEng.add(name_en);
+	                nameListChi.add(name_chi);
+	                dishList.add(map);
+	            }
+	        } catch (JSONException e) {
+	            e.printStackTrace();
+	        }
+			return null;
+		}
 	}
 }

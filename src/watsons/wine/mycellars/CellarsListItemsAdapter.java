@@ -27,14 +27,17 @@ public class CellarsListItemsAdapter extends BaseAdapter {
 	private LayoutInflater l_Inflater;
 	
 	private Context context;
+	
+	private boolean isDisplayStatus;
 
 	public void setImage(String url) {
 
 	}
 
-	public CellarsListItemsAdapter(Context context, ArrayList<MyCellarItemDetails> results) {
+	public CellarsListItemsAdapter(Context context, ArrayList<MyCellarItemDetails> results, boolean displayStatus) {
 		itemDetailsrrayList = results;
 		l_Inflater = LayoutInflater.from(context);
+		isDisplayStatus = displayStatus;
 		this.context = context;
 	}
 
@@ -53,28 +56,31 @@ public class CellarsListItemsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		Log.i("osmand", "getView position = "+position);
-		if (convertView == null) {
+		Log.i("osmand", "getView itemDetailsrrayList.get("+position+").getWineImage() = "+itemDetailsrrayList.get(position).getWineImage());
+		
+		//if (convertView == null) {
 			convertView = l_Inflater.inflate(R.layout.my_cellars_list_view,null);
 			holder = new ViewHolder();
-			
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		holder.itemImageView = (ImageView) convertView.findViewById(R.id.cellarWineImage);
-		String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
-		if (itemDetailsrrayList.get(position).getWineImage().equals("-") || itemDetailsrrayList.get(position).getWineImage() == null) {
-			Log.i("osmand", "setResources");
-			holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_camera));
-		} else {
-			File imgFile = new File(cache_image_path+itemDetailsrrayList.get(position).getWineImage());
-			if (imgFile.exists()) {
-				holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_small));
-				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-				holder.itemImageView.setImageBitmap(myBitmap);
-				//holder.newsImage.setBackgroundDrawable(new BitmapDrawable(myBitmap));
-				Log.i("osmand", "setImageBitmap");
+			holder.itemImageView = (ImageView) convertView.findViewById(R.id.cellarWineImage);
+			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+			if (itemDetailsrrayList.get(position).getWineImage().equals("-") || itemDetailsrrayList.get(position).getWineImage() == null || itemDetailsrrayList.get(position).getWineImage().isEmpty()) {
+				Log.i("osmand", "setResources");
+				//holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_camera));
+			} else {
+				File imgFile = new File(cache_image_path+itemDetailsrrayList.get(position).getWineImage());
+				if (imgFile.exists()) {
+					holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_small));
+					Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					holder.itemImageView.setImageBitmap(myBitmap);
+					//holder.newsImage.setBackgroundDrawable(new BitmapDrawable(myBitmap));
+					Log.i("osmand", "setImageBitmap");
+				}
 			}
-		}
+			
+		/*} else {
+			holder = (ViewHolder) convertView.getTag();
+		}*/
+		
 		
 		holder.itemName = (TextView) convertView.findViewById(R.id.cellarWineName);
 		holder.itemStatus = (TextView) convertView.findViewById(R.id.cellarWineStatus);
@@ -88,6 +94,8 @@ public class CellarsListItemsAdapter extends BaseAdapter {
 		
 		holder.itemName.setText(itemDetailsrrayList.get(position).getWineName());
 		holder.itemStatus.setText(itemDetailsrrayList.get(position).getWineStatus().equals("Y")? "In Stock":"Wish List");
+		((TextView) convertView.findViewById(R.id.cellarWineHeader)).setVisibility(isDisplayStatus? View.VISIBLE:View.INVISIBLE);
+		((TextView) convertView.findViewById(R.id.cellarWineStatus)).setVisibility(isDisplayStatus? View.VISIBLE:View.INVISIBLE);
 		int favour = Integer.valueOf(itemDetailsrrayList.get(position).getWinefavourite());
 		for (int i=0; i <favour; i++) {
 			holder.itemView.get(i).setBackgroundDrawable(context.getResources().getDrawable(R.drawable.icon_wine_glass_full));

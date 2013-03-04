@@ -84,7 +84,7 @@ public class MyCellarsWineDetail extends Activity{
         Bundle bundle = getIntent().getExtras();
         wineDetail = bundle.getStringArrayList("wineDetail");
         windID = Integer.valueOf(wineDetail.get(0));
-        ((TextView) findViewById(R.id.cellar_wine_name)).setText(wineDetail.get(1));
+      /*  ((TextView) findViewById(R.id.cellar_wine_name)).setText(wineDetail.get(1));
         ((TextView) findViewById(R.id.cellar_table_region)).setText(wineDetail.get(5));
         ((TextView) findViewById(R.id.cellar_table_vintage)).setText(wineDetail.get(6));
         ((TextView) findViewById(R.id.cellar_table_grape)).setText(wineDetail.get(7));
@@ -134,7 +134,7 @@ public class MyCellarsWineDetail extends Activity{
 			
 		}
         
-        ((TextView) findViewById(R.id.cellar_added_date)).setText("Added: "+wineDetail.get(17));
+        ((TextView) findViewById(R.id.cellar_added_date)).setText("Added: "+wineDetail.get(17).substring(0, wineDetail.get(17).length()-3));*/
        
         
         ImageButton tab = (ImageButton) findViewById(R.id.cellar_details_tab);
@@ -205,7 +205,7 @@ public class MyCellarsWineDetail extends Activity{
 				Intent i = new Intent(Intent.ACTION_SEND);
 				i.setType("message/rfc822");
 				//i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"recipient@example.com"});
-				i.putExtra(Intent.EXTRA_SUBJECT, "My testing note");
+				i.putExtra(Intent.EXTRA_SUBJECT, "My tasting note");
 				i.putExtra(Intent.EXTRA_TEXT   , "I've tasted "+wineDetail.get(1)+" recently and here is my tasting note to share: "+wineDetail.get(14));
 				try {
 				    startActivity(Intent.createChooser(i, "Send mail..."));
@@ -233,7 +233,7 @@ public class MyCellarsWineDetail extends Activity{
 			                int what = 0;
 			 
 			                try {
-			                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" recently."+"https://www.watsonswine.com");
+			                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" recently. "+"https://www.watsonswine.com");
 			                    mHandler.sendMessage(mHandler.obtainMessage(0));
 			                } catch (Exception e) {
 			                	Log.e("Osmands", "Twitter updateStatus error = "+e);
@@ -428,7 +428,13 @@ public class MyCellarsWineDetail extends Activity{
         ((TextView) findViewById(R.id.cellar_table_body)).setText(wineDetail.get(9));
         ((TextView) findViewById(R.id.cellar_table_sweetness)).setText(wineDetail.get(10));
         ((TextView) findViewById(R.id.cellar_table_size)).setText(wineDetail.get(11));
-        ((TextView) findViewById(R.id.cellar_table_price)).setText(wineDetail.get(12));
+        if(!wineDetail.get(12).isEmpty() && !wineDetail.get(12).equals("-")) {
+			java.text.DecimalFormat myformat=new java.text.DecimalFormat("0.00");
+			String temp = myformat.format(Double.valueOf(wineDetail.get(12)));
+			 ((TextView) findViewById(R.id.cellar_table_price)).setText("$"+temp);
+		} else {
+			 ((TextView) findViewById(R.id.cellar_table_price)).setText(wineDetail.get(12));
+		}
         ((TextView) findViewById(R.id.cellar_table_quantity)).setText(wineDetail.get(13));
         ((TextView) findViewById(R.id.cellar_table_testing_date)).setText(wineDetail.get(15));
         ((TextView) findViewById(R.id.cellar_table_occasion)).setText(wineDetail.get(16));
@@ -456,13 +462,15 @@ public class MyCellarsWineDetail extends Activity{
 		}
 		
 		if (wineDetail.get(4).equals("-") || wineDetail.get(4) == null) {
-			((ImageView) findViewById (R.id.cellar_details_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
+			//((ImageView) findViewById (R.id.cellar_details_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
+			((ImageView) findViewById (R.id.cellar_details_wine_image)).setBackgroundDrawable(MyCellarsWineDetail.this.getResources().getDrawable(R.drawable.bg_photo_container_camera));
 		} else {
 			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 			File imgFile = new File(cache_image_path+wineDetail.get(4));
 			if (imgFile.exists()) {
 				//holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_small));
 				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+				((ImageView) findViewById (R.id.cellar_details_wine_image)).setBackgroundDrawable(MyCellarsWineDetail.this.getResources().getDrawable(R.drawable.bg_photo_container));
 				((ImageView) findViewById (R.id.cellar_details_wine_image)).setImageBitmap(myBitmap);
 				//holder.newsImage.setBackgroundDrawable(new BitmapDrawable(myBitmap));
 				Log.i("osmand", "setImageBitmap");
@@ -470,7 +478,7 @@ public class MyCellarsWineDetail extends Activity{
 			
 		}
         
-        ((TextView) findViewById(R.id.cellar_added_date)).setText("Added: "+wineDetail.get(17));
+        ((TextView) findViewById(R.id.cellar_added_date)).setText("Added: "+wineDetail.get(17).substring(0, wineDetail.get(17).length()-3));
        
     }
     

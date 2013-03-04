@@ -33,7 +33,7 @@
 	        android:layout_marginLeft="5dip"
 	        android:background="@drawable/btn_email" />
 	    
-	    <ImageButton
+	<!--      <ImageButton
 	        android:id="@+id/cellar_refersh_button"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -41,6 +41,7 @@
 	        android:layout_centerVertical="true"
 	        android:layout_marginRight="10dip"
 	        android:background="@drawable/btn_referesh" />
+	 -->
 	    
     </RelativeLayout>
     
@@ -63,14 +64,16 @@
     <RelativeLayout 
        		android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
+        	android:gravity="center_horizontal"
         >
     
         <ImageView 
             android:id="@+id/cellar_visit_table_top"
-        	android:layout_width="fill_parent"
+        	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:layout_centerHorizontal="true"
         	android:layout_gravity="center_horizontal"
-        	android:src="@drawable/bg_cellar_visit_table_top"  />
+        	android:background="@drawable/bg_cellar_visit_table_top"  />
         
         <ImageButton 
             android:id="@+id/cellar_go_button"
@@ -82,13 +85,16 @@
         	android:background="@drawable/btn_go"  />
         
          <TextView 
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
-        	android:layout_centerHorizontal="true"
-        	android:layout_marginTop="20dip"
+        	android:gravity="center_horizontal"
+        	android:layout_alignParentBottom="true"
         	android:textSize="20sp"
-        	android:text="Visity My Cellar" />
+        	android:typeface="serif"
+        	android:text="Visit My Cellar"
+        	android:textColor="@color/Maroon" />
     
+         
         
     </RelativeLayout>
         	
@@ -117,11 +123,13 @@
         
         <TextView
             android:id="@+id/cellar_last_added"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_marginLeft="22dip"
+        	android:layout_marginRight="10dip"
         	android:layout_marginTop="10dip"
-        	android:text="Clerc Milon Pauillac 5 eme Cru 2005" />
+        	android:singleLine="false"
+        	android:textColor="@color/Maroon" />
         
         <ImageView 
         	android:layout_width="fill_parent"
@@ -139,11 +147,13 @@
         
         <TextView 
             android:id="@+id/cellar_favourite_wine"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:layout_marginLeft="22dip"
+        	android:layout_marginRight="10dip"
         	android:layout_marginTop="10dip"
-        	android:text="Clerc Milon Pauillac 5 eme Cru 2006" />
+        	android:singleLine="false"
+        	android:textColor="@color/Maroon"  />
         
         <ImageView 
         	android:layout_width="fill_parent"
@@ -152,41 +162,109 @@
         	android:layout_marginTop="10dip"
         	android:src="@drawable/bg_cellar_line"  />
         
-        <TextView 
-            android:id="@+id/cellar_total_wine"
-            android:layout_width="wrap_content"
+        <LinearLayout 
+        	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft="22dip"
-        	android:layout_marginTop="10dip" />
+        	android:orientation="horizontal"  >
         
-        <TextView 
-            android:id="@+id/cellar_in_stock_wine"
-            android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_marginLeft="22dip"
-        	android:layout_marginTop="10dip" />
+            <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginLeft="22dip"
+	        	android:layout_marginTop="10dip"
+	        	android:text="You have " />
         
-        <TextView 
-            android:id="@+id/cellar_wish_wine"
-            android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_marginLeft="22dip"
-        	android:layout_marginTop="10dip" />
+	        <TextView 
+	            android:id="@+id/cellar_total_wine"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:textColor="@color/Maroon" />
+	        
+	        <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:text=" wines in My Cellar" />
+        </LinearLayout>
         
-        <TextView 
-            android:id="@+id/cellar_avg_wine"
-            android:layout_width="wrap_content"
+        <LinearLayout 
+        	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:layout_marginLeft="22dip"
-        	android:layout_marginTop="10dip" />
+        	android:orientation="horizontal"  >
+        
+            <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginLeft="22dip"
+	        	android:layout_marginTop="10dip"
+	        	android:text="You have " />
+	        <TextView 
+	            android:id="@+id/cellar_in_stock_wine"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:textColor="@color/Maroon" />
+	        <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:text=" wines in Stock" />
+        
+        </LinearLayout>
+        
+         <LinearLayout 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"  >
+	        <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginLeft="22dip"
+	        	android:layout_marginTop="10dip"
+	        	android:text="You have " />
+	        
+	        <TextView 
+	            android:id="@+id/cellar_wish_wine"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:textColor="@color/Maroon" />
+	        
+	         <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:text=" wines in Wish List" />
+	        
+        </LinearLayout>
+        
+          <LinearLayout 
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:orientation="horizontal"  >
+	          <TextView 
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginLeft="22dip"
+	        	android:layout_marginTop="10dip"
+	        	android:text="Your average price per bottle is " />
+	          
+	        <TextView 
+	            android:id="@+id/cellar_avg_wine"
+	            android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:layout_marginTop="10dip"
+	        	android:textColor="@color/Maroon" />
+        </LinearLayout>
         	
     </LinearLayout>
     
     <ImageView 
-        	android:layout_width="fill_parent"
+        	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_gravity="center_horizontal"
-        	android:src="@drawable/bg_cellar_visit_table_bottom"  />
+        	android:background="@drawable/bg_cellar_visit_table_bottom"  />
     </LinearLayout>
 </ScrollView>
 </LinearLayout>

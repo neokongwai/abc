@@ -12,8 +12,10 @@ import org.json.JSONObject;
 import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
 import android.app.ActivityGroup;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -306,26 +308,53 @@ public class WineListTab extends Activity {
 	private class JsonTask extends AsyncTask<String, Void, String> {
 			
 			ProgressDialog pdia;
+			Boolean quitTask;
+			
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
 				pdia = new ProgressDialog(getParent());
 	            pdia.setMessage("Loading...");
+	            pdia.setCancelable(false);
 	            pdia.show();   
 				
+	            quitTask = false;
 			}
 	
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				mAdapter.notifyDataSetChanged();
-				pdia.dismiss();				
+				
+				pdia.dismiss();
+				
+				if (quitTask) {
+					
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+							WineListTab.this.getParent());
+					alertDialogBuilder.setTitle("Warnings!");
+					alertDialogBuilder
+							.setMessage("Cannot connect. Please check your network and try again later.")
+							.setCancelable(true)
+							.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									dialog.cancel();
+								}
+							});
+					AlertDialog alertDialog = alertDialogBuilder.create();
+					alertDialog.show();
+					
+					return;
+				}
+				mAdapter.notifyDataSetChanged();				
 			}
 
 			@Override
 			protected String doInBackground(String... arg0) {
 				sharedPreferences = getPreferences(MODE_PRIVATE);
 				String strJson = sharedPreferences.getString("json_wine", null);
+				
+				//Log.d("Stark Debug", "doInBackground - "+strJson);
+				
 				if(strJson != null)
 				{
 					try {
@@ -339,7 +368,15 @@ public class WineListTab extends Activity {
 			        // Creating JSON Parser instance
 			        JSONParser jParser = new JSONParser(); 
 			        // getting JSON string from URL
+			        
 			        json = jParser.getJSONFromUrl(url);
+			        
+			        if(json == null)
+			        {
+			        	quitTask = true;
+			        	return null;
+			        }
+						        
 				    SharedPreferences.Editor editor = sharedPreferences.edit();
 				    editor.putString("json_wine", json.toString());
 				    editor.commit();
@@ -395,7 +432,8 @@ public class WineListTab extends Activity {
 		                // adding HashList to ArrayList
 		                countryList.add(map);
 		            }
-		        } catch (JSONException e) {
+		        } 
+		        catch (JSONException e) {
 		            e.printStackTrace();
 		        }
 				// TODO Auto-generated method stub

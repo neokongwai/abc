@@ -39,13 +39,20 @@ public class MyCellarsMainActivity extends Activity {
             String favourite = cursor.getString(2);
             String in_stock = cursor.getString(3);
             String avg = cursor.getString(4) == null ? "0.00" : cursor.getString(4);
-            
+            java.text.DecimalFormat myformat=new java.text.DecimalFormat("0.00");
+			avg = myformat.format(Double.valueOf(avg));
+            String max = cursor.getString(5);
+            if (max == null || max.isEmpty()) {
+            	max = "0";
+            }
+            Log.i("Osmands", "max = "+ max);
+            Log.i("Osmands", "favourite = "+ favourite);
             ((TextView) findViewById (R.id.cellar_last_added)).setText(last_add);
-            ((TextView) findViewById (R.id.cellar_favourite_wine)).setText(favourite);
-            ((TextView) findViewById (R.id.cellar_total_wine)).setText("You have "+total+" wines in My Cellar");
-            ((TextView) findViewById (R.id.cellar_in_stock_wine)).setText("You have "+in_stock+" wines in stock");
-            ((TextView) findViewById (R.id.cellar_wish_wine)).setText("You have "+(Integer.valueOf(total) -Integer.valueOf(in_stock))+" wines in wish");
-            ((TextView) findViewById (R.id.cellar_avg_wine)).setText("You have average price per bottle is "+avg);
+            ((TextView) findViewById (R.id.cellar_favourite_wine)).setText(max.equals("0")? last_add :favourite);
+            ((TextView) findViewById (R.id.cellar_total_wine)).setText(total);
+            ((TextView) findViewById (R.id.cellar_in_stock_wine)).setText(in_stock);
+            ((TextView) findViewById (R.id.cellar_wish_wine)).setText(""+(Integer.valueOf(total) -Integer.valueOf(in_stock)));
+            ((TextView) findViewById (R.id.cellar_avg_wine)).setText("HK$"+avg);
 
         }
         
@@ -102,7 +109,7 @@ public class MyCellarsMainActivity extends Activity {
         Cursor cursor = db.rawQuery("SELECT COUNT(1), (SELECT b."+DbConstants.MY_CELLAR_WINE_NAME+" FROM "+DbConstants.MY_CELLAR_TABLE_NAME
         		+" b WHERE b._id = (SELECT MAX(_id) FROM "+DbConstants.MY_CELLAR_TABLE_NAME+")) last_add, (SELECT c."+DbConstants.MY_CELLAR_WINE_NAME+" FROM "+DbConstants.MY_CELLAR_TABLE_NAME+" c WHERE c."
         		+DbConstants.MY_CELLAR_RATING+" = (SELECT MAX(a."+DbConstants.MY_CELLAR_RATING+") FROM "+DbConstants.MY_CELLAR_TABLE_NAME+") LIMIT 1) favourite, (SELECT COUNT(1) FROM "
-        		+DbConstants.MY_CELLAR_TABLE_NAME+" d WHERE d."+DbConstants.MY_CELLAR_INSTOCK+" = 'Y') in_stock, AVG("+DbConstants.MY_CELLAR_PRICE+") avg  FROM "
+        		+DbConstants.MY_CELLAR_TABLE_NAME+" d WHERE d."+DbConstants.MY_CELLAR_INSTOCK+" = 'Y') in_stock, AVG("+DbConstants.MY_CELLAR_PRICE+") avg,  MAX(a."+DbConstants.MY_CELLAR_RATING+") max_rating FROM "
         		+DbConstants.MY_CELLAR_TABLE_NAME+" a",  null);
         
         //String[] columns = {DbConstants.NOTIFICATION_TITLE, DbConstants.NOTIFICATION_TIME, DbConstants.NOTIFICATION_READ};

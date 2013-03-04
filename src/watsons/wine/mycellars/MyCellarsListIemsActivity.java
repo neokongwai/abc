@@ -74,7 +74,7 @@ public class MyCellarsListIemsActivity extends Activity {
 		item_details.setWineBody(cursor.getString(i++));
 		item_details.setWineSweetness(cursor.getString(i++));
 		item_details.setWineSize(cursor.getString(i++));
-		item_details.setWinePrice(cursor.getString(i++));
+		item_details.setWinePrice("$"+cursor.getString(i++));
 		item_details.setWineQuantity(cursor.getString(i++));
 		item_details.setWineNote(cursor.getString(i++));
 		item_details.setWinefavourite(cursor.getString(i++));
@@ -95,7 +95,7 @@ public class MyCellarsListIemsActivity extends Activity {
     
     private Cursor getCursor(){
         SQLiteDatabase db = dbhelper.getReadableDatabase();
-        Cursor cursor = db.query(DbConstants.MY_CELLAR_TABLE_NAME, null, null, null, null, null, DbConstants.MY_CELLAR_MODIFY_DATE);
+        Cursor cursor = db.query(DbConstants.MY_CELLAR_TABLE_NAME, null, null, null, null, null, DbConstants.MY_CELLAR_MODIFY_DATE+" DESC");
         startManagingCursor(cursor);
 
         return cursor;
@@ -295,7 +295,7 @@ public class MyCellarsListIemsActivity extends Activity {
         
         ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
   
-        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results));
+        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results, true));
         list.setOnItemClickListener(new OnItemClickListener() {
 	    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 				Log.i("Osmands", "position = "+position);
@@ -345,7 +345,7 @@ public class MyCellarsListIemsActivity extends Activity {
 		        }
 		        ListView list = (ListView) findViewById(R.id.cellars_instock_list_View);  
 		  
-		        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, instock_results_list)); 
+		        list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, instock_results_list, false)); 
 		        list.setOnItemClickListener(new OnItemClickListener() {
 			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 						Log.i("Osmands", "position = "+position);
@@ -377,7 +377,7 @@ public class MyCellarsListIemsActivity extends Activity {
 				((ListView) findViewById (R.id.cellars_wish_list_View)).setVisibility(View.GONE);
 				ListView list = (ListView) findViewById(R.id.cellars_all_list_View);  
 				  
-			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results)); 
+			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, results, true)); 
 			    list.setOnItemClickListener(new OnItemClickListener() {
 			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 						Log.i("Osmands", "position = "+position);
@@ -416,7 +416,7 @@ public class MyCellarsListIemsActivity extends Activity {
 		        }
 				ListView list = (ListView) findViewById(R.id.cellars_wish_list_View);  
 				  
-			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, wish_results_list)); 
+			    list.setAdapter(new CellarsListItemsAdapter(MyCellarsListIemsActivity.this, wish_results_list, false)); 
 			    list.setOnItemClickListener(new OnItemClickListener() {
 			    	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 						Log.i("Osmands", "position = "+position);

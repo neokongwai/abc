@@ -191,6 +191,8 @@ public class WineListProduct extends Activity {
 		
 		ProgressDialog pdia;
 		Boolean quitTask;
+		String resultJsonStr;
+		private JSONObject json;
 		
 		@Override
 		protected void onPreExecute() {
@@ -227,6 +229,70 @@ public class WineListProduct extends Activity {
 				return;
 			}
 			
+			if (resultJsonStr != null) {
+				
+				try {
+					json = new JSONObject(resultJsonStr);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				
+				try {
+					// Getting Array of Contacts
+					if (search)
+						products = json.getJSONArray(TAG_PRODUCT_LIST);
+					else
+						products = json.getJSONArray(TAG_PRODUCT);
+					// looping through All Contacts
+					for (int i = 0; i < products.length(); i++) {
+						JSONObject p = products.getJSONObject(i);
+
+						// creating new HashMap
+						LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+						// adding each child node to HashMap key => value
+						map.put(TAG_ID, p.getString(TAG_ID));
+						map.put(TAG_NAME, p.getString(TAG_NAME));
+						// map.put(TAG_SIZE, p.getString(TAG_SIZE));
+						// map.put(TAG_ORIGINAL_PRICE,
+						// p.getString(TAG_ORIGINAL_PRICE));
+						// map.put(TAG_PROMOTE_PRICE,
+						// p.getString(TAG_PROMOTE_PRICE));
+						// map.put(TAG_VINTAGE, p.getString(TAG_VINTAGE));
+						// map.put(TAG_COLOR, p.getString(TAG_COLOR));
+						// map.put(TAG_GRAPE, p.getString(TAG_GRAPE));
+						// map.put(TAG_BODY, p.getString(TAG_BODY));
+						// map.put(TAG_SWEETNESS, p.getString(TAG_SWEETNESS));
+						map.put(TAG_NOTE, p.getString(TAG_NOTE));
+						// map.put(TAG_RP, p.getString(TAG_RP));
+						// map.put(TAG_WS, p.getString(TAG_WS));
+						// map.put(TAG_JH, p.getString(TAG_JH));
+						map.put(TAG_PHOTO, p.getString(TAG_PHOTO));
+						// map.put(TAG_IN_STOCK, p.getString(TAG_IN_STOCK));
+						// map.put(TAG_DELETED, p.getString(TAG_DELETED));
+						// map.put(TAG_RPDDEPT, p.getString(TAG_RPDDEPT));
+						// map.put(TAG_PRDCLASS, p.getString(TAG_PRDCLASS));
+						// map.put(TAG_PRDSUBCLASS, p.getString(TAG_PRDSUBCLASS));
+						// map.put(TAG_COUNTRY_ID, p.getString(TAG_COUNTRY_ID));
+						// map.put(TAG_PROVINCE_ID, p.getString(TAG_PROVINCE_ID));
+						// map.put(TAG_FOOD_MATCH, p.getString(TAG_FOOD_MATCH));
+
+						// adding HashList to ArrayList
+						wineList.add(new Wine(p.getString(TAG_PHOTO), p
+								.getString(TAG_NAME), p.getString(TAG_SIZE), p
+								.getString(TAG_ORIGINAL_PRICE), p
+								.getString(TAG_PROMOTE_PRICE), p.getString(TAG_RP),
+								p.getString(TAG_WS), p.getString(TAG_JH)));
+						productList.add(map);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			}
+			
+			
 			if (wineList.size() == 0 && search) {
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -261,58 +327,8 @@ public class WineListProduct extends Activity {
 	        	quitTask = true;
 	        	return null;
 	        }
-
-			try {
-				// Getting Array of Contacts
-				if (search)
-					products = json.getJSONArray(TAG_PRODUCT_LIST);
-				else
-					products = json.getJSONArray(TAG_PRODUCT);
-				// looping through All Contacts
-				for (int i = 0; i < products.length(); i++) {
-					JSONObject p = products.getJSONObject(i);
-
-					// creating new HashMap
-					LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
-					// adding each child node to HashMap key => value
-					map.put(TAG_ID, p.getString(TAG_ID));
-					map.put(TAG_NAME, p.getString(TAG_NAME));
-					// map.put(TAG_SIZE, p.getString(TAG_SIZE));
-					// map.put(TAG_ORIGINAL_PRICE,
-					// p.getString(TAG_ORIGINAL_PRICE));
-					// map.put(TAG_PROMOTE_PRICE,
-					// p.getString(TAG_PROMOTE_PRICE));
-					// map.put(TAG_VINTAGE, p.getString(TAG_VINTAGE));
-					// map.put(TAG_COLOR, p.getString(TAG_COLOR));
-					// map.put(TAG_GRAPE, p.getString(TAG_GRAPE));
-					// map.put(TAG_BODY, p.getString(TAG_BODY));
-					// map.put(TAG_SWEETNESS, p.getString(TAG_SWEETNESS));
-					map.put(TAG_NOTE, p.getString(TAG_NOTE));
-					// map.put(TAG_RP, p.getString(TAG_RP));
-					// map.put(TAG_WS, p.getString(TAG_WS));
-					// map.put(TAG_JH, p.getString(TAG_JH));
-					map.put(TAG_PHOTO, p.getString(TAG_PHOTO));
-					// map.put(TAG_IN_STOCK, p.getString(TAG_IN_STOCK));
-					// map.put(TAG_DELETED, p.getString(TAG_DELETED));
-					// map.put(TAG_RPDDEPT, p.getString(TAG_RPDDEPT));
-					// map.put(TAG_PRDCLASS, p.getString(TAG_PRDCLASS));
-					// map.put(TAG_PRDSUBCLASS, p.getString(TAG_PRDSUBCLASS));
-					// map.put(TAG_COUNTRY_ID, p.getString(TAG_COUNTRY_ID));
-					// map.put(TAG_PROVINCE_ID, p.getString(TAG_PROVINCE_ID));
-					// map.put(TAG_FOOD_MATCH, p.getString(TAG_FOOD_MATCH));
-
-					// adding HashList to ArrayList
-					wineList.add(new Wine(p.getString(TAG_PHOTO), p
-							.getString(TAG_NAME), p.getString(TAG_SIZE), p
-							.getString(TAG_ORIGINAL_PRICE), p
-							.getString(TAG_PROMOTE_PRICE), p.getString(TAG_RP),
-							p.getString(TAG_WS), p.getString(TAG_JH)));
-					productList.add(map);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			else {
+				resultJsonStr = json.toString();
 			}
 			return "";
 

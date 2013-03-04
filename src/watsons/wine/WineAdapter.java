@@ -40,6 +40,7 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 	ArrayList<Wine> data = null;
 	ImageSpan is;
 	LinearLayout ll;
+	ArrayList<LoadImageTask> tasks = null;
 
 	public WineAdapter(Context context, int layoutResourceId,
 			ArrayList<Wine> data) {
@@ -47,6 +48,8 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
+		
+		this.tasks = new ArrayList<LoadImageTask>();
 	}
 
 	@Override
@@ -94,7 +97,14 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		//Edit By Stark //
 		if(wine.photo == null)
 		{
-			new LoadImageTask().execute(holder.imgIcon, wine);
+			LoadImageTask task = (LoadImageTask) new LoadImageTask().execute(holder.imgIcon, wine);
+			tasks.add(task);
+			
+			if (tasks.size() > 10) {
+				// too much loading, remove it
+				LoadImageTask tasktoquit = tasks.get(0);
+				tasktoquit.cancel(true);
+			}
 		}
 		else {
 			holder.imgIcon.setImageBitmap(wine.photo);
@@ -176,6 +186,7 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 	
 		private ImageView imv;
         private Wine wine;
+        public Boolean quit;
 		
 		@Override
 		protected void onPreExecute() {

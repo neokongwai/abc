@@ -419,6 +419,10 @@ public class WineListTab extends Activity {
 			            e.printStackTrace();
 			        }
 					
+					SharedPreferences.Editor editor = sharedPreferences.edit();
+				    editor.putString("json_wine", json.toString());
+				    editor.commit();
+					
 					mAdapter.notifyDataSetChanged();
 				}				
 			}

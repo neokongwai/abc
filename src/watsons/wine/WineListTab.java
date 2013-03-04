@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.impl.client.TunnelRefusedException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import watsons.wine.notification.NotificationMainActivity;
+import android.R.string;
 import android.app.Activity;
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
@@ -264,19 +266,19 @@ public class WineListTab extends Activity {
 		Handler handler = new Handler(); 
 	    handler.postDelayed(new Runnable() { 
 	         public void run() { 
-	        	 onRestart();
+	        	Intent intent = new Intent(getParent(), WineListTab.class);
+	     	    TabGroupBase parentActivity = (TabGroupBase)getParent();
+	     		parentActivity.startChildActivityNotAddId("WineListTab", intent);
 	         } 
 	    }, 500); 
 	}
 
-	@Override
+	/*@Override
 	protected void onRestart() {
 	    super.onRestart();
-	    Intent intent = new Intent(getParent(), WineListTab.class);
-	    TabGroupBase parentActivity = (TabGroupBase)getParent();
-		parentActivity.startChildActivityNotAddId("WineListTab", intent);
+	    
 	
-	}
+	}*/
 
 	protected void performSearch() {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -309,6 +311,8 @@ public class WineListTab extends Activity {
 			
 			ProgressDialog pdia;
 			Boolean quitTask;
+			Boolean skipBGTask;
+			String resultJsonStr;
 			
 			@Override
 			protected void onPreExecute() {
@@ -317,14 +321,21 @@ public class WineListTab extends Activity {
 	            pdia.setMessage("Loading...");
 	            pdia.setCancelable(false);
 	            pdia.show();   
-				
 	            quitTask = false;
+	            skipBGTask = false;
+	            
+	            //by stark  
+	            sharedPreferences = getPreferences(MODE_PRIVATE);
+	            resultJsonStr = sharedPreferences.getString("json_wine", null);
+				if(resultJsonStr != null)
+				{
+					skipBGTask = true;
+				}
 			}
 	
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				
 				pdia.dismiss();
 				
 				if (quitTask) {
@@ -345,15 +356,93 @@ public class WineListTab extends Activity {
 					
 					return;
 				}
-				mAdapter.notifyDataSetChanged();				
+				else {
+					
+					try {
+						json = new JSONObject(resultJsonStr);
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
+					
+					try {
+			            // Getting Array of Contacts
+			        	contries = json.getJSONArray(TAG_COUNTRIES);
+
+			            // looping through All Contacts
+			            for(int i = 0; i < contries.length(); i++){
+			                JSONObject c = contries.getJSONObject(i);
+			 
+			                // Storing each json item in variable
+			                String id = c.getString(TAG_ID);
+			                String name = c.getString(TAG_NAME);
+			                //String province = c.getString(TAG_PROVINCE);
+			                String product_count = c.getString(TAG_PRODUCT_COUNT);
+			                
+			                // Provinces is again a JSON Object
+			                try
+			                {
+			                	provinces = c.getJSONArray(TAG_PROVINCE);
+			                }
+			                catch (Exception e) {
+			                    Log.e("Json Error", "province converting result " + e.toString());       
+			                }
+
+			                List<Map<String, String>> children = new ArrayList<Map<String, String>>();
+			                for(int j = 0; j < provinces.length(); j++){
+			                	JSONObject p = provinces.getJSONObject(j);
+				                String province_id = p.getString(TAG_ID);
+				                String province_name = p.getString(TAG_NAME);
+				                String province_product_count = p.getString(TAG_PRODUCT_COUNT);
+				                
+				                // creating new HashMap
+				                HashMap<String, String> p_map = new HashMap<String, String>();
+				                p_map.put(TAG_ID, province_id);
+				                p_map.put(TAG_NAME, province_name);
+				                p_map.put(TAG_PRODUCT_COUNT, province_product_count);
+				                children.add(p_map);
+			                }
+			                provinceList.add(children);
+			                
+			                // creating new HashMap
+			                HashMap<String, String> map = new HashMap<String, String>();
+			                // adding each child node to HashMap key => value
+			                map.put(TAG_ID, id);
+			                map.put(TAG_NAME, name);
+			                //map.put(TAG_PROVINCE, province);
+			                map.put(TAG_PRODUCT_COUNT, product_count);
+			 
+			                // adding HashList to ArrayList
+			                countryList.add(map);
+			            }
+			        } 
+			        catch (JSONException e) {
+			            e.printStackTrace();
+			        }
+					
+					mAdapter.notifyDataSetChanged();
+				}				
 			}
 
 			@Override
 			protected String doInBackground(String... arg0) {
-				sharedPreferences = getPreferences(MODE_PRIVATE);
-				String strJson = sharedPreferences.getString("json_wine", null);
 				
-				//Log.d("Stark Debug", "doInBackground - "+strJson);
+				if (skipBGTask) {
+					return null;
+				}
+				
+				JSONParser jParser = new JSONParser();
+				json = jParser.getJSONFromUrl(url);
+				if(json == null)
+				{
+					quitTask = true;
+					return null;
+				}
+				resultJsonStr = json.toString();
+				return null;
+				
+				
+				/*sharedPreferences = getPreferences(MODE_PRIVATE);
+				String strJson = sharedPreferences.getString("json_wine", null);
 				
 				if(strJson != null)
 				{
@@ -435,9 +524,9 @@ public class WineListTab extends Activity {
 		        } 
 		        catch (JSONException e) {
 		            e.printStackTrace();
-		        }
+		        }*/
 				// TODO Auto-generated method stub
-				return null;
+				//return null;
 			}
 	}
 }

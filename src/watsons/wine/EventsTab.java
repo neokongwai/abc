@@ -204,19 +204,19 @@ public class EventsTab extends Activity implements
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			public void run() {
-				onRestart();
+				Intent intent = new Intent(getParent(), EventsTab.class);
+				TabGroupBase parentActivity = (TabGroupBase) getParent();
+				parentActivity.startChildActivityNotAddId("EventsTab", intent);
 			}
 		}, 500);
 	}
 
-	@Override
+	/*@Override
 	protected void onRestart() {
 		super.onRestart();
-		Intent intent = new Intent(getParent(), EventsTab.class);
-		TabGroupBase parentActivity = (TabGroupBase) getParent();
-		parentActivity.startChildActivityNotAddId("EventsTab", intent);
+		
 
-	}
+	}*/
 	
 	private class JsonTask extends AsyncTask<String, Void, String> {
 		

@@ -2,8 +2,10 @@ package watsons.wine;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,8 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -94,8 +98,29 @@ public class WineListProduct extends Activity {
 		search = bundle.getBoolean("search");
 		if (search) {
 			String str = bundle.getString("search_str");
-			url = search_url + str;
-			nameText.setText(str);
+			try {
+				String encode_str = URLEncoder.encode(str, "utf-8");
+				
+				url = search_url + encode_str;
+				nameText.setText(str);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						getParent());
+				alertDialogBuilder.setTitle("Warnings!");
+				alertDialogBuilder
+						.setMessage("Search cannot contain special character.")
+						.setCancelable(true)
+						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				alertDialog.show();
+			}
 		} else {
 			Boolean country = bundle.getBoolean("country");
 			String id = bundle.getString("id");
@@ -165,18 +190,43 @@ public class WineListProduct extends Activity {
 	private class JsonTask extends AsyncTask<String, Void, String> {
 		
 		ProgressDialog pdia;
+		Boolean quitTask;
+		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pdia = new ProgressDialog(getParent());
             pdia.setMessage("Loading...");
+            pdia.setCancelable(false);
             pdia.show();   
-			
+            quitTask = false;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			
+			pdia.dismiss();
+			
+			if (quitTask) {
+				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						getParent());
+				alertDialogBuilder.setTitle("Warnings!");
+				alertDialogBuilder
+						.setMessage("Cannot connect. Please check your network and try again later.")
+						.setCancelable(true)
+						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				alertDialog.show();
+				
+				return;
+			}
+			
 			if (wineList.size() == 0 && search) {
 				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -194,7 +244,7 @@ public class WineListProduct extends Activity {
 			{
 				adapter.notifyDataSetChanged();
 			}
-			pdia.dismiss();
+			
 		}
 
 		protected String doInBackground(String... strUrl) {
@@ -203,6 +253,14 @@ public class WineListProduct extends Activity {
 
 			// getting JSON string from URL
 			JSONObject json = jParser.getJSONFromUrl(url);
+			
+			Log.d("Stark", "json search - "+json);
+			
+			if(json == null)
+	        {
+	        	quitTask = true;
+	        	return null;
+	        }
 
 			try {
 				// Getting Array of Contacts

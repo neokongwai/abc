@@ -94,8 +94,9 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity 
-            android:name="watsons.wine.mycellars.MyCellarsUpdateItemsActivity" 
-            android:screenOrientation="portrait" >
+            android:configChanges="orientation|keyboardHidden"
+			android:name="watsons.wine.mycellars.MyCellarsUpdateItemsActivity" 
+			android:screenOrientation="portrait" >
         </activity>
         <activity 
             android:name="watsons.wine.mycellars.MyCellarsSearchMain" 

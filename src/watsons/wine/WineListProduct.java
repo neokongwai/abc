@@ -101,7 +101,7 @@ public class WineListProduct extends Activity {
 		if (search) {
 			String str = bundle.getString("search_str");
 			try {
-				String encode_str = URLEncoder.encode(str, "utf-8");
+				String encode_str = URLEncoder.encode(str, "utf-8").replace("+", "%20");
 				
 				url = search_url + encode_str;
 				nameText.setText(str);

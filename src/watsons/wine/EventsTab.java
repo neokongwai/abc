@@ -215,7 +215,6 @@ public class EventsTab extends Activity implements
 		Intent intent = new Intent(getParent(), EventsTab.class);
 		TabGroupBase parentActivity = (TabGroupBase) getParent();
 		parentActivity.startChildActivityNotAddId("EventsTab", intent);
-
 	}
 	
 	private class JsonTask extends AsyncTask<String, Void, String> {
@@ -253,7 +252,12 @@ public class EventsTab extends Activity implements
 					dateList.add(Integer.parseInt(date));
 				}
 			}
-			mView.drawDate(dateList);
+			mHandler.postDelayed(new Runnable(){
+				@Override
+				public void run() {
+					mView.drawDate(dateList);
+				}
+			}, 100);
 			pdia.dismiss();
 		}
 

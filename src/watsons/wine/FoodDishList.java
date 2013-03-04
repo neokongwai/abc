@@ -14,11 +14,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -105,6 +109,7 @@ public class FoodDishList extends Activity {
 	private class JsonTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog pdia;
+		Boolean quitTask;
 
 		@Override
 		protected void onPreExecute() {
@@ -112,24 +117,54 @@ public class FoodDishList extends Activity {
 			pdia = new ProgressDialog(getParent());
 			pdia.setMessage("Loading...");
 			pdia.show();
-
+			quitTask = false;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			adapter.notifyDataSetChanged();
+			
 			pdia.dismiss();
+			if (quitTask) {
+				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						FoodDishList.this.getParent());
+				alertDialogBuilder.setTitle("Warnings!");
+				alertDialogBuilder
+						.setMessage("Cannot connect. Please check your network and try again later.")
+						.setCancelable(true)
+						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				alertDialog.show();
+				
+				return;
+			}
+			adapter.notifyDataSetChanged();
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
+			if (!isOnline())
+	        {
+	        	quitTask = true;
+	        	return null;
+	        }
 			// Creating JSON Parser instance
 	        JSONParser jParser = new JSONParser();
 	 
 	        String dish_url = params[0];
 	        // getting JSON string from URL
 	        JSONObject json = jParser.getJSONFromUrl(dish_url);
+	        
+	        if(json == null)
+	        {
+	        	quitTask = true;
+	        	return null;
+	        }
 	                
 	        try {
 	            // Getting Array of Contacts
@@ -159,6 +194,16 @@ public class FoodDishList extends Activity {
 	            e.printStackTrace();
 	        }
 			return null;
+		}
+		
+		public boolean isOnline() {
+		    ConnectivityManager cm =
+		        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+		        return true;
+		    }
+		    return false;
 		}
 	}
 }

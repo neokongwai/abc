@@ -18,6 +18,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -368,6 +370,11 @@ public class WineListTab extends Activity {
 			        // Creating JSON Parser instance
 			        JSONParser jParser = new JSONParser(); 
 			        // getting JSON string from URL
+			        if (!isOnline())
+			        {
+			        	quitTask = true;
+			        	return null;
+			        }
 			        
 			        json = jParser.getJSONFromUrl(url);
 			        
@@ -439,5 +446,17 @@ public class WineListTab extends Activity {
 				// TODO Auto-generated method stub
 				return null;
 			}
+			
+			public boolean isOnline() {
+			    ConnectivityManager cm =
+			        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			        return true;
+			    }
+			    return false;
+			}
 	}
+	
+
 }

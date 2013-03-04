@@ -24,6 +24,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -250,11 +252,18 @@ public class WineListProduct extends Activity {
 		protected String doInBackground(String... strUrl) {
 
 			JSONParser jParser = new JSONParser();
-
+			
+			if (!isOnline())
+	        {
+	        	quitTask = true;
+	        	return null;
+	        }
+			
 			// getting JSON string from URL
 			JSONObject json = jParser.getJSONFromUrl(url);
 			
 			Log.d("Stark", "json search - "+json);
+			
 			
 			if(json == null)
 	        {
@@ -317,6 +326,15 @@ public class WineListProduct extends Activity {
 			return "";
 
 		}
-
+		
+		public boolean isOnline() {
+		    ConnectivityManager cm =
+		        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+		        return true;
+		    }
+		    return false;
+		}
 	}
 }

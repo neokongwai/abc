@@ -16,12 +16,16 @@ import org.json.JSONObject;
 
 import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -313,6 +317,7 @@ public class FoodCuisineList extends Activity {
 	private class JsonTask extends AsyncTask<String, Void, String> {
 
 		ProgressDialog pdia;
+		Boolean quitTask;
 
 		@Override
 		protected void onPreExecute() {
@@ -320,13 +325,33 @@ public class FoodCuisineList extends Activity {
 			pdia = new ProgressDialog(getParent());
 			pdia.setMessage("Loading...");
 			pdia.show();
+			quitTask = false;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			mAdapter.notifyDataSetChanged();
 			pdia.dismiss();
+			if (quitTask) {
+				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						FoodCuisineList.this.getParent());
+				alertDialogBuilder.setTitle("Warnings!");
+				alertDialogBuilder
+						.setMessage("Cannot connect. Please check your network and try again later.")
+						.setCancelable(true)
+						.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								dialog.cancel();
+							}
+						});
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				alertDialog.show();
+				
+				return;
+			}
+			mAdapter.notifyDataSetChanged();
+			
 		}
 
 		@Override
@@ -340,10 +365,20 @@ public class FoodCuisineList extends Activity {
 					e1.printStackTrace();
 				}
 			} else {
+				if (!isOnline())
+		        {
+		        	quitTask = true;
+		        	return null;
+		        }
 				// Creating JSON Parser instance
 				JSONParser jParser = new JSONParser();
 				// getting JSON string from URL
 				json = jParser.getJSONFromUrl(url);
+				if(json == null)
+		        {
+		        	quitTask = true;
+		        	return null;
+		        }
 				SharedPreferences.Editor editor = sharedPreferences.edit();
 				editor.putString("json_food", json.toString());
 				editor.commit();
@@ -409,6 +444,16 @@ public class FoodCuisineList extends Activity {
 				e.printStackTrace();
 			}
 			return "";
+		}
+		
+		public boolean isOnline() {
+		    ConnectivityManager cm =
+		        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+		        return true;
+		    }
+		    return false;
 		}
 	}
 }

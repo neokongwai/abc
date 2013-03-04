@@ -50,6 +50,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -84,9 +85,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	MyCellarsTO myCellarsTO = null;
 	
 	int[] details_table_view_id = new int[]{R.id.tableRow0, R.id.tableRow1, R.id.tableRow2, R.id.tableRow3, R.id.tableRow4, R.id.tableRow5, R.id.tableRow6, R.id.tableRow7, R.id.tableRow8, R.id.tableRow9};
+	int[] myceller_separator_id = new int[]{R.id.cellar_separator_1, R.id.cellar_separator_2, R.id.cellar_separator_3, R.id.cellar_separator_4, R.id.cellar_separator_5, R.id.cellar_separator_6, R.id.cellar_separator_7, R.id.cellar_separator_8, R.id.cellar_separator_9, R.id.cellar_separator_10, R.id.cellar_separator_11};
 	HashMap<Integer, String> display_details_output_id_map;
 	HashMap<Integer, String> display_output_id_map;
-	int[] details_table_view_output_id = new int[]{R.id.tableRow0_1, R.id.tableRow1_1, R.id.tableRow2_1, R.id.tableRow3_1, R.id.tableRow4_1, R.id.tableRow5_1,R.id.tableRow6_1, R.id.tableRow7_1, R.id.tableRow8_1, R.id.tableRow9_1};
+	int[] details_table_view_output_id = new int[]{R.id.tableRow0_1, R.id.tableRow1_1, R.id.tableRow2_1, R.id.tableRow3_1, R.id.tableRow4_1, R.id.tableRow4_2, R.id.tableRow5_1,R.id.tableRow6_1, R.id.tableRow6_2, R.id.tableRow7_1, R.id.tableRow7_2, R.id.tableRow8_1, R.id.tableRow9_1};
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,9 +131,18 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		
 		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
 		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
-		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("ON");
 		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("OFF");
 		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("OFF");
+		((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setVisibility(View.VISIBLE);
+		 for(int i =0; i<9; i++){
+			 ImageView temp = (ImageView)findViewById(myceller_separator_id[i]);
+        	 temp.setVisibility(View.VISIBLE);
+    	 }
+    	 for(int i =9; i<11; i++){
+    		 ImageView temp = (ImageView)findViewById(myceller_separator_id[i]);
+        	 temp.setVisibility(View.GONE);
+    	 }
 		
 		//For add mode init, set wineImage = "-"
 		myCellarsTO.setWineImage("-");
@@ -142,7 +153,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
   			mode = "edit";
   			wineDetail = bundle.getStringArrayList("wineDetail");
   			mapBundleToMyCellarsTO(wineDetail);
-  			((TextView) findViewById(R.id.cellar_added_date_update)).setText("Added: "+wineDetail.get(17));
+  			((TextView) findViewById(R.id.cellar_added_date_update)).setText("Added: "+wineDetail.get(17).substring(0,wineDetail.get(17).length()-3));
   			((ImageView)findViewById(R.id.cellar_update_wine_title)).setImageResource(R.drawable.title_edit);
   		}
   		
@@ -177,6 +188,46 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
         temp.setOnClickListener(this);
         temp = (TableRow)findViewById(R.id.tableRow13);
         temp.setOnClickListener(this);
+        
+        //********
+      //********go to selection view************
+  		temp = (TableRow)findViewById(R.id.tableRow0_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow1_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow2_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow3_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow5_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow8_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow9_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow10_1);
+        temp.setOnClickListener(this);
+        
+      //********not go to selection view************
+        temp = (TableRow)findViewById(R.id.tableRow4_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow4_2);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow6_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow6_2);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow7_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow7_2);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow11_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow12_1);
+        temp.setOnClickListener(this);
+        temp = (TableRow)findViewById(R.id.tableRow13_1);
+        temp.setOnClickListener(this);
+        //********
         
         ImageView wineImageView = (ImageView)findViewById(R.id.cellar_update_wine_image);
         wineImageView.setOnClickListener(new OnClickListener(){
@@ -306,6 +357,14 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                	 TableRow temp = (TableRow)findViewById(details_table_view_id[i]);
 		                	 temp.setVisibility(View.VISIBLE);
 	                	 }
+	                	 for(int i =0; i<9; i++){
+	                		 ImageView temp = (ImageView)findViewById(myceller_separator_id[i]);
+		                	 temp.setVisibility(View.VISIBLE);
+	                	 }
+	                	 for(int i =9; i<11; i++){
+	                		 ImageView temp = (ImageView)findViewById(myceller_separator_id[i]);
+		                	 temp.setVisibility(View.GONE);
+	                	 }
 	                	for(int i =0; i<details_table_view_output_id.length; i++){
 	                		if (display_details_output_id_map.get(details_table_view_output_id[i]).equals("true")) {
 			                	 TableRow temp = (TableRow)findViewById(details_table_view_output_id[i]);
@@ -316,26 +375,50 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).getTag().toString().equals("ON") ||
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).getTag().toString().equals("ON") ||
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).getTag().toString().equals("ON")) {
-	                		display_details_output_id_map.put(R.id.tableRow4_1, "true");
-	                		TableRow temp = (TableRow)findViewById(R.id.tableRow4_1);
+	                		display_details_output_id_map.put(R.id.tableRow4_2, "true");
+	                		TableRow temp = (TableRow)findViewById(R.id.tableRow4_2);
 		                	 temp.setVisibility(View.VISIBLE);
+		                	((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+		                	if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).getTag().equals("ON")){
+		        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Red");
+		        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).getTag().equals("ON")){
+		        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("White");
+		        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).getTag().equals("ON")){
+		        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Rose");	
+		        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).getTag().equals("ON")){
+		        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Other");
+		        			} 
                 		} else {
-                			display_details_output_id_map.put(R.id.tableRow4_1, "false");
+                			display_details_output_id_map.put(R.id.tableRow4_2, "false");
                 			TableRow temp = (TableRow)findViewById(R.id.tableRow4_1);
 		                	 temp.setVisibility(View.GONE);
+		                	 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.GONE);
+		                	 ((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("");
                 		}
 	                	
 	                	if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).getTag().toString().equals("ON") ||
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).getTag().toString().equals("ON") ||
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).getTag().toString().equals("ON") ||
 	                			((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).getTag().toString().equals("ON")) {
-	                		display_details_output_id_map.put(R.id.tableRow7_1, "true");
-	                		TableRow temp = (TableRow)findViewById(R.id.tableRow7_1);
+	                		display_details_output_id_map.put(R.id.tableRow7_2, "true");
+	                		TableRow temp = (TableRow)findViewById(R.id.tableRow7_2);
 		                	 temp.setVisibility(View.VISIBLE);
+		                	 ((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+		                	 if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("37.5CL");
+			        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("75CL");
+			        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("150CL");	
+			        			}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Others");
+			        			} 
                 		} else {
-                			display_details_output_id_map.put(R.id.tableRow7_1, "false");
+                			display_details_output_id_map.put(R.id.tableRow7_2, "false");
                 			TableRow temp = (TableRow)findViewById(R.id.tableRow7_1);
 		                	 temp.setVisibility(View.GONE);
+		                	 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.GONE);
+		                	 ((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("");
                 		}
 	                	
 	                	if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().toString().equals("ON") ||
@@ -343,9 +426,21 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().toString().equals("ON") ||
 	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().toString().equals("ON") ||
 	                			((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().toString().equals("ON") ) {
-	                		display_details_output_id_map.put(R.id.tableRow6_1, "true");
-	                		TableRow temp = (TableRow)findViewById(R.id.tableRow6_1);
+	                		display_details_output_id_map.put(R.id.tableRow6_2, "true");
+	                		TableRow temp = (TableRow)findViewById(R.id.tableRow6_2);
 		                	 temp.setVisibility(View.VISIBLE);
+		                	 ((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+		                	 if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Brut");
+			        			}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Dry");
+			        			}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Medium Dry");	
+			        			}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Off Dry");
+			        			}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().equals("ON")){
+			        				((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Sweet");
+			        			}  
                 		} else {
                 			display_details_output_id_map.put(R.id.tableRow6_1, "false");
                 			TableRow temp = (TableRow)findViewById(R.id.tableRow6_1);
@@ -377,8 +472,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                	 TableRow temp = (TableRow)findViewById(details_table_view_id[i]);
 		                	 temp.setVisibility(View.INVISIBLE);
 	                	 }
+	                	 for(int i =0; i<9; i++){
+	                		 ImageView temp2 = (ImageView)findViewById(myceller_separator_id[i]);
+		                	 temp2.setVisibility(View.GONE);
+	                	 }
+	                	 ImageView temp2 = (ImageView)findViewById(myceller_separator_id[9]);
+		                	 temp2.setVisibility(View.VISIBLE);
+		                	  temp2 = (ImageView)findViewById(myceller_separator_id[10]);
+		                	 temp2.setVisibility(View.GONE);
 	                	 for(int i =0; i<details_table_view_output_id.length; i++){
-		                	 TableRow temp = (TableRow)findViewById(details_table_view_output_id[i]);
+	                		 TableRow  temp = (TableRow)findViewById(details_table_view_output_id[i]);
 		                	 temp.setVisibility(View.GONE);
 	                	 }
 	                	 TableRow temp = (TableRow)findViewById(R.id.tableRow10);
@@ -417,8 +520,14 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                	 TableRow temp = (TableRow)findViewById(details_table_view_id[i]);
 		                	 temp.setVisibility(View.INVISIBLE);
 	                	 }
+	                	 for(int i =0; i<10; i++){
+	                		 ImageView temp2 = (ImageView)findViewById(myceller_separator_id[i]);
+		                	 temp2.setVisibility(View.GONE);
+	                	 }
+	                	 ImageView temp2 = (ImageView)findViewById(myceller_separator_id[10]);
+		                	 temp2.setVisibility(View.VISIBLE);
 	                	 for(int i =0; i<details_table_view_output_id.length; i++){
-		                	 TableRow temp = (TableRow)findViewById(details_table_view_output_id[i]);
+	                		 TableRow  temp = (TableRow)findViewById(details_table_view_output_id[i]);
 		                	 temp.setVisibility(View.GONE);
 	                	 }
 	                	 TableRow temp = (TableRow)findViewById(R.id.tableRow10);
@@ -642,7 +751,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		    			
 	    				Bitmap myBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
 	    				    
-	 			    	myBitmap = resizeBitmap(myBitmap, 80,80);
+	 			    	myBitmap = resizeBitmap(myBitmap, 256,256);
 	    				((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageBitmap(myBitmap);
 	                } catch (FileNotFoundException e) {                 
 	                    e.printStackTrace();
@@ -794,31 +903,35 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		//LayoutInflater mInflater = getLayoutInflater();
         //View layout = mInflater.inflate(R.layout.my_cellars_selection, null);
 		if (whellMenuNumber == 1) {
+			int currentItem = getWheel(R.id.wheel).getCurrentItem();
+			Log.i("Osmands", "currentItem = "+currentItem);
 			String Region = "Region";
-			if (getWheel(R.id.wheel).getCurrentItem() == 1 || getWheel(R.id.wheel).getCurrentItem() == 10) {
+			if (currentItem == 0 ) {
 				Region = "Bordeaux";
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 2 && getWheel(R.id.wheel).getCurrentItem() <= 9) {
-				Region = "Bordeaux, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];	
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 11 && getWheel(R.id.wheel).getCurrentItem() <= 20) {
-				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
-			} else if (getWheel(R.id.wheel).getCurrentItem() == 20 || getWheel(R.id.wheel).getCurrentItem() == 31) {
+			} else if (currentItem >= 1 && currentItem <= 8) {
+				Region = "Bordeaux, "+CommonUtilities.wheelMenuRegion[currentItem];	
+			} else if (currentItem >= 10 && currentItem <= 19) {
+				Region = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 20 ) {
 				Region = "Australia";
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 21 || getWheel(R.id.wheel).getCurrentItem() <= 30) {
-				Region = "Australia, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 32 || getWheel(R.id.wheel).getCurrentItem() <= 36) {
-				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
-			} else if (getWheel(R.id.wheel).getCurrentItem() == 37 || getWheel(R.id.wheel).getCurrentItem() == 41) {
+			} else if (currentItem > 20 && currentItem <= 29) {
+				Region = "Australia, "+CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem >= 31 && currentItem <= 35) {
+				Region = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 36 ) {
 				Region = "Champagne";
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 38 || getWheel(R.id.wheel).getCurrentItem() <= 40) {
-				Region = "Champagne, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
-			} else if (getWheel(R.id.wheel).getCurrentItem() >= 42 || getWheel(R.id.wheel).getCurrentItem() <= 50) {
-				Region = CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
-			} else if (getWheel(R.id.wheel).getCurrentItem() == 51 || getWheel(R.id.wheel).getCurrentItem() == 55) {
+			} else if (currentItem >= 37 && currentItem <= 39) {
+				Region = "Champagne, "+CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem >= 41 && currentItem <= 49) {
+				Region = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 50) {
 				Region = "Accessories";
-			}  else if (getWheel(R.id.wheel).getCurrentItem() >= 52 || getWheel(R.id.wheel).getCurrentItem() <= 54) {
-				Region = "Accessories, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.wheel).getCurrentItem()];
+			}  else if (currentItem >= 51 && currentItem <= 53) {
+				Region = "Accessories, "+CommonUtilities.wheelMenuRegion[currentItem];
 			}
-			((EditText) findViewById(R.id.cellars_input_text)).setText(Region);
+			if (currentItem != 9 && currentItem != 30 && currentItem != 40 && currentItem != 54) {
+				((EditText) findViewById(R.id.cellars_input_text)).setText(Region);
+			}
 		}
 		if (whellMenuNumber == 2) {
 			((EditText) findViewById(R.id.cellars_input_text)).setText(CommonUtilities.wheelMenuVintage[getWheel(R.id.wheel).getCurrentItem()]);
@@ -841,16 +954,93 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 
 	@Override
 	public void onClick(View v) {
-		if(v.getId() != R.id.tableRow4 && v.getId() != R.id.tableRow6 && v.getId() != R.id.tableRow13 && v.getId() != R.id.tableRow7) {
+		if(v.getId() != R.id.tableRow4 && v.getId() != R.id.tableRow6 && v.getId() != R.id.tableRow13 && v.getId() != R.id.tableRow7 && v.getId() != R.id.tableRow4_1 && v.getId() != R.id.tableRow6_1 && v.getId() != R.id.tableRow13_1 && v.getId() != R.id.tableRow7_1 && v.getId() != R.id.tableRow4_2 && v.getId() != R.id.tableRow7_2 && v.getId() != R.id.tableRow6_2) {
 			((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.GONE);
 			((ScrollView)findViewById(R.id.cellar_details_home)).setVisibility(View.GONE);
 			((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.GONE);
 			((LinearLayout)findViewById(R.id.cellar_selection_layout)).setVisibility(View.VISIBLE);
+			if (v.getId() !=R.id.tableRow10 && v.getId() !=R.id.tableRow10_1 && v.getId() !=R.id.tableRow11 && v.getId() !=R.id.tableRow11_1 && v.getId() !=R.id.tableRow12 && v.getId() !=R.id.tableRow12_1) {
+				if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Red");
+					((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("White");
+					((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Rose");	
+					((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("Other");
+					((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.VISIBLE);
+				} else {
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText("");
+					((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.GONE);
+				}
+				if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("37.5CL");
+					((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("75CL");
+					((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("150CL");	
+					((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Others");
+					((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.VISIBLE);
+				} else {
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("");
+					((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.GONE);
+				}
+				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Brut");
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Dry");
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Medium Dry");	
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Off Dry");
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
+				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().equals("ON")){
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Sweet");
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
+				} else {
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("");
+					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
+					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.GONE);
+				}
+			}
+		}
+		if(v.getId() == R.id.tableRow8 || v.getId() == R.id.tableRow8_1) {
+			((TextView) findViewById(R.id.cellar_price_hk)).setVisibility(View.VISIBLE);
+		} else {
+			((TextView) findViewById(R.id.cellar_price_hk)).setVisibility(View.GONE);
 		}
 		
 		switch(v.getId()) {
 			case R.id.tableRow0:
+			case R.id.tableRow0_1:
 				 ((TextView) findViewById(R.id.cellar_selection_title)).setText("Name");
+				 ((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
+				 
 				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_name_1)).getText().toString());
 				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
@@ -861,45 +1051,58 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 output_row = R.id.cellar_table_name_1;
 				 break;
 			case R.id.tableRow1:
+			case R.id.tableRow1_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Region");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("Select or type in the region below");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_region_1)).getText().toString());
+				whellMenuNumber = 1;
 				initWheel(R.id.wheel, CommonUtilities.wheelMenuRegion);
 				row = R.id.tableRow1_1;
 				output_row = R.id.cellar_table_region_1;
-				whellMenuNumber = 1;
+				
 				break;
 			case R.id.tableRow2:
+			case R.id.tableRow2_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Vintage");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("Select or type in the vintage below");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_vintage_1)).getText().toString());
+				whellMenuNumber = 2;
 				initWheel(R.id.wheel, CommonUtilities.wheelMenuVintage);
 				row = R.id.tableRow2_1;
 				output_row = R.id.cellar_table_vintage_1;
-				whellMenuNumber = 2;
+				
 				break;
 			case R.id.tableRow3:
+			case R.id.tableRow3_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Grape");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("Select or type in the grape below");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_grape_1)).getText().toString());
+				whellMenuNumber = 3;
 				initWheel(R.id.wheel, CommonUtilities.wheelMenuGrape);
 				row = R.id.tableRow3_1;
 				output_row = R.id.cellar_table_grape_1;
-				whellMenuNumber = 3;
 				break;
 			case R.id.tableRow5:
+			case R.id.tableRow5_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Body");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("Select or type in the body below");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_body_1)).getText().toString());
+				whellMenuNumber = 5;
 				initWheel(R.id.wheel, CommonUtilities.wheelMenuBody);
 				row = R.id.tableRow5_1;
 				output_row = R.id.cellar_table_body_1;
-				whellMenuNumber = 5;
+				
 				break;
 			case R.id.tableRow8:
+			case R.id.tableRow8_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Price");
-				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_NUMBER);
-				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_price_1)).getText().toString());
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
+				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_price_1)).getText().toString().replaceAll("[^\\d.]", ""));
 				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
 				// ((LinearLayout) findViewById(R.id.wheel_date)).setVisibility(View.GONE);
 				((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
@@ -908,7 +1111,9 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 output_row = R.id.cellar_table_price_1;
 				 break;
 			case R.id.tableRow9:
+			case R.id.tableRow9_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Quantity");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_NUMBER);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_quantity_1)).getText().toString());
 				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
@@ -919,7 +1124,9 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 output_row = R.id.cellar_table_quantity_1;
 				 break;
 			case R.id.tableRow10:
+			case R.id.tableRow10_1:
 				((TextView) findViewById(R.id.cellar_selection_title)).setText("Testing Date");
+				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_NULL);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_testing_date_1)).getText().toString());
 				 initDateWheel();
@@ -927,43 +1134,66 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 output_row = R.id.cellar_table_testing_date_1;
 				 break;
 			case R.id.tableRow4:
+			case R.id.tableRow4_1:
+			case R.id.tableRow4_2:
 				 ((TableRow)findViewById(R.id.tableRow4_1)).setVisibility(View.VISIBLE);
+				 ((TableRow)findViewById(R.id.tableRow4_2)).setVisibility(View.GONE);
 				 row = R.id.tableRow4_1;
 				 break;
 			case R.id.tableRow6:
+			case R.id.tableRow6_1:
+			case R.id.tableRow6_2:
 				 ((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.VISIBLE);
+				 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.GONE);
 				 row = R.id.tableRow6_1;
 				 break;
 			case R.id.tableRow7:
+			case R.id.tableRow7_1:
+			case R.id.tableRow7_2:
 				 ((TableRow)findViewById(R.id.tableRow7_1)).setVisibility(View.VISIBLE);
+				 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.GONE);
 				 row = R.id.tableRow7_1;
 				 break;
 			case R.id.tableRow11:
+			case R.id.tableRow11_1:
 				 ((TableRow)findViewById(R.id.tableRow11_1)).setVisibility(View.VISIBLE);
 				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				 ((TextView) findViewById(R.id.cellar_selection_title)).setText("Occasion");
+				 ((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
 				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_occasion_1)).getText().toString());
 				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
 				// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
 				 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
 		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
-				 ((EditText)findViewById(R.id.cellars_input_text)).setMinLines(5);
+		    	 ((EditText)findViewById(R.id.cellars_input_text)).setLines(5);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setHorizontallyScrolling(false);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setGravity(Gravity.TOP);
 				 row = R.id.tableRow11_1;
 				 output_row = R.id.cellar_table_occasion_1;
 				 break;
 			case R.id.tableRow12:
+			case R.id.tableRow12_1:
 				 ((TableRow)findViewById(R.id.tableRow12_1)).setVisibility(View.VISIBLE);
 				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
+				 ((TextView) findViewById(R.id.cellar_selection_title)).setText("Note");
+				 ((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
 				 ((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_note_1)).getText().toString());
 				// ((WheelView) findViewById(R.id.wheel)).setVisibility(View.GONE);
 				// ((LinearLayout)findViewById(R.id.wheel_date)).setVisibility(View.GONE);
 				 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_layout)).setVisibility(View.GONE);
 		    	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
 				 
-				 ((EditText)findViewById(R.id.cellars_input_text)).setMinLines(5);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setLines(5);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setHorizontallyScrolling(false);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+				 ((EditText)findViewById(R.id.cellars_input_text)).setGravity(Gravity.TOP);
+				 
 				 row = R.id.tableRow12_1;
 				 output_row = R.id.cellar_table_note_1;
 				 break;
 			case R.id.tableRow13:
+			case R.id.tableRow13_1:
 				 //((TableRow)findViewById(R.id.tableRow13_1)).setVisibility(View.VISIBLE);
 				 ((TextView)findViewById(R.id.cellar_table_rating_bad)).setVisibility(View.VISIBLE);
 				 ((TextView)findViewById(R.id.cellar_table_rating_good)).setVisibility(View.VISIBLE);
@@ -978,6 +1208,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		setSweetnessDisplay();
 		
 		ImageButton done_btn = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_done_button);
+		done_btn.setTag(v.getId());
         done_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -987,7 +1218,11 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				String input = ((EditText) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellars_input_text)).getText().toString();
 				TableRow temp = (TableRow)findViewById(row);
 				temp.setVisibility(View.VISIBLE);
-				((TextView)findViewById(output_row)).setText(input);
+				if (v.getTag().toString().equals(String.valueOf(R.id.tableRow8))&& !input.isEmpty()) {
+					java.text.DecimalFormat myformat=new java.text.DecimalFormat("0.00");
+					input = myformat.format(Double.valueOf(input));    
+				}
+				((TextView)findViewById(output_row)).setText(v.getTag().toString().equals(String.valueOf(R.id.tableRow8)) && !input.isEmpty()? "$"+input:input);
 				((TextView)findViewById(R.id.cellar_wine_name)).setText(((TextView)findViewById(R.id.cellar_table_name_1)).getText().toString());
 				((RelativeLayout)findViewById(R.id.cellar_details_header)).setVisibility(View.VISIBLE);
 				((ScrollView)findViewById(R.id.cellar_details_home)).setVisibility(View.VISIBLE);
@@ -1090,25 +1325,30 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		
 		myCellarsTO.setColour(wineDetail.get(8));
 		if (!wineDetail.get(8).equals("-")) {
-			display_details_output_id_map.put(R.id.tableRow4_1, "true");
-			TableRow temp = (TableRow)findViewById(R.id.tableRow4_1);
+			display_details_output_id_map.put(R.id.tableRow4_2, "true");
+			TableRow temp = (TableRow)findViewById(R.id.tableRow4_2);
+			((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_color_2)).setText(wineDetail.get(8));
        	 	temp.setVisibility(View.VISIBLE);
        	 //((TextView)findViewById(R.id.cellar_table_colour_1)).setText(wineDetail.get(8));
        	 	if (wineDetail.get(8).equals("Red")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
        	 	}
 	       	if (wineDetail.get(8).equals("Rose")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setImageResource(R.drawable.icon_tick);
+		     	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	   	 	}
 	       	if (wineDetail.get(8).equals("White")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	  	 	}
 	       	if (wineDetail.get(8).equals("Other")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	  	 	}
 		}
 		myCellarsTO.setBody(wineDetail.get(9));
@@ -1120,27 +1360,72 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		}
 		myCellarsTO.setSize(wineDetail.get(11));
 		if (!wineDetail.get(11).equals("-")) {
-			display_details_output_id_map.put(R.id.tableRow7_1, "true");
-			TableRow temp = (TableRow)findViewById(R.id.tableRow7_1);
+			display_details_output_id_map.put(R.id.tableRow7_2, "true");
+			TableRow temp = (TableRow)findViewById(R.id.tableRow7_2);
        	 	temp.setVisibility(View.VISIBLE);
+       	 	((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText(wineDetail.get(11));
        	  //((TextView)findViewById(R.id.cellar_table_size_1)).setText(wineDetail.get(11));
        	 	if (wineDetail.get(11).equals("37.5CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	   	 	}
 	       	if (wineDetail.get(11).equals("75CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(R.drawable.icon_tick);
+		       //	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	   	 	}
 	       	if (wineDetail.get(11).equals("150CL")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	  	 	}
 	       	if (wineDetail.get(11).equals("Others")) {
 		       	 ((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setTag("ON");
-		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(R.drawable.icon_tick);
+		       	//((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(R.drawable.icon_tick);
+		       	((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
 	  	 	}
 		}
+		
+		myCellarsTO.setSweetness(wineDetail.get(10));
+		if (!wineDetail.get(10).equals("-")) {
+			SeekBar mSeekBar = (SeekBar)findViewById(R.id.cellar_seek_bar);
+			display_details_output_id_map.put(R.id.tableRow6_2, "true");
+			TableRow temp = (TableRow)findViewById(R.id.tableRow6_2);
+       	 	temp.setVisibility(View.VISIBLE);
+       	 ((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText(wineDetail.get(10));
+       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setVisibility(View.GONE);
+       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setVisibility(View.GONE);
+       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setVisibility(View.GONE);
+       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setVisibility(View.GONE);
+       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setVisibility(View.GONE);
+       	 	if (wineDetail.get(10).equals("Brut")) {
+		       	 ((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("ON");
+		       	mSeekBar.setProgress(0);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setVisibility(View.VISIBLE);
+	   	 	}
+	       	if (wineDetail.get(10).equals("Dry")) {
+		       	 ((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("ON");
+		       	mSeekBar.setProgress(25);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setVisibility(View.VISIBLE);
+	   	 	}
+	       	if (wineDetail.get(10).equals("Off Dry")) {
+		       	 ((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("ON");
+		       	mSeekBar.setProgress(50);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setVisibility(View.VISIBLE);
+	  	 	}
+	       	if (wineDetail.get(10).equals("Medium Dry")) {
+		       	 ((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setTag("ON");
+		       	mSeekBar.setProgress(75);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setVisibility(View.VISIBLE);
+	       	}
+	    	if (wineDetail.get(10).equals("Sweet")) {
+		       	 ((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setTag("ON");
+		       	mSeekBar.setProgress(100);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setVisibility(View.VISIBLE);
+	  	 	}
+		}
+		
 		myCellarsTO.setPrice(Double.valueOf(wineDetail.get(12)));
 		if (Double.valueOf(wineDetail.get(12)) != 0) {
 			display_details_output_id_map.put(R.id.tableRow8_1, "true");
@@ -1286,10 +1571,10 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				myCellarsTO.setSize("-");
 				break;
 			case R.id.tableRow8_1:
-				myCellarsTO.setPrice(temp.isEmpty()? 0.00 : Double.valueOf(temp));
+				myCellarsTO.setPrice(temp.isEmpty()? 0.00 : Double.valueOf(temp.replaceAll("[^\\d.]", "")));
 				 break;
 			case R.id.tableRow9_1:
-				myCellarsTO.setQuantity(Integer.valueOf(temp));
+				myCellarsTO.setQuantity(temp.isEmpty()? 0 : Integer.valueOf(temp));
 				 break;
 			case R.id.tableRow10_1:
 				myCellarsTO.setTasting_date(temp);
@@ -1350,8 +1635,15 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekbar) {
+				((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setVisibility(View.GONE);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setVisibility(View.GONE);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setVisibility(View.GONE);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setVisibility(View.GONE);
+		       	((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setVisibility(View.GONE);
 				if(current_position>=0 && current_position <25) {
 					seekbar.setProgress(0);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setVisibility(View.VISIBLE);
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Brut");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("ON");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
@@ -1360,6 +1652,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				}
 				if(current_position>=25 && current_position <50) {
 					seekbar.setProgress(25);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setVisibility(View.VISIBLE);
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Dry");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("ON");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
@@ -1368,6 +1662,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				}
 				if(current_position>=50 && current_position <75) {
 					seekbar.setProgress(50);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setVisibility(View.VISIBLE);
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Off Dry");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("ON");
@@ -1376,6 +1672,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				}
 				if(current_position>=75 && current_position <100) {
 					seekbar.setProgress(75);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).setVisibility(View.VISIBLE);
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Medium Dry");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
@@ -1384,6 +1682,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				}
 				if(current_position >=100) {
 					seekbar.setProgress(100);
+					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).setVisibility(View.VISIBLE);
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Sweet");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).setTag("OFF");
 					((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).setTag("OFF");
@@ -1405,14 +1705,21 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				if (v.getTag().toString().equals("OFF")) {
-					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(R.drawable.icon_tick);
+					/*((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("ON");
+					
 				} else {
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("OFF");
@@ -1430,10 +1737,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setTag("OFF");
@@ -1455,10 +1768,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setTag("OFF");
@@ -1480,10 +1799,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_red_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_rose_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_colour_white_btn)).setTag("OFF");
@@ -1506,10 +1831,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				if (v.getTag().toString().equals("OFF")) {
-					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(R.drawable.icon_tick);
+					/*((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setTag("OFF");
@@ -1531,10 +1862,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setTag("OFF");
@@ -1547,19 +1884,25 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
         	
         });
 		
-		ImageButton colour_rose_btn = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn);
+		ImageButton size_150_btn = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn);
 		//colour_rose_btn.setTag("OFF");
-		colour_rose_btn.setOnClickListener(new OnClickListener(){
+		size_150_btn.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setTag("OFF");
@@ -1581,10 +1924,16 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				Log.i("Osmands", "v.getTag().toString() = "+v.getTag().toString());
 				ImageButton button = (ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn);
 				if (v.getTag().toString().equals("OFF")) {
-					button.setImageResource(R.drawable.icon_tick);
+					/*button.setImageResource(R.drawable.icon_tick);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setImageResource(android.R.color.transparent);
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setImageResource(android.R.color.transparent);
+					*/
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick_form));
+					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_other_btn)).setBackgroundDrawable(getResources().getDrawable(R.drawable.icon_tick));
+				
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_37_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_75_btn)).setTag("OFF");
 					((ImageButton) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_150_btn)).setTag("OFF");
@@ -1771,13 +2120,14 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	        	Log.d("Osmands", "decode start");
 	        	Bitmap bitmapOrg = BitmapFactory.decodeFile(realImagePathFromURI, options);
 	        	Log.d("Osmands", "decode end");
-	
-	    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
-	    		Log.d("Osmands", "compress start");
-	    		bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
-	    		byte [] ba = bao.toByteArray();
-	    		ba1=Base64.encodeBytes(ba); 
-	    		Log.d("Osmands", "compress end");
+	        	if (bitmapOrg!=null) {
+		    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		    		Log.d("Osmands", "compress start");
+		    		bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+		    		byte [] ba = bao.toByteArray();
+		    		ba1=Base64.encodeBytes(ba); 
+		    		Log.d("Osmands", "compress end");
+	        	}
         	}
 	    		
     		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

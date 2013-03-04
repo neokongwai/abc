@@ -54,7 +54,7 @@ public final class WatsonWineDB {
 		region_temp = region;
 		vintage_temp = vintage;
 		grape_temp = grape;
-		if(!size.equals("Red") && !size.equals("Rose") && !size.equals("White") ) {
+		if(!colour.equals("Red") && !colour.equals("Rose") && !colour.equals("White") ) {
 			colour ="Other";
 			colour_temp = "Other";
 		} else {
@@ -327,13 +327,14 @@ class FileUploadTask extends AsyncTask<Object, Integer, Void> {
 	        	Log.d("Osmands", "decode start");
 	        	Bitmap bitmapOrg = BitmapFactory.decodeFile(realImagePathFromURI, options);
 	        	Log.d("Osmands", "decode end");
-	
-	    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
-	    		Log.d("Osmands", "compress start");
-	    		bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
-	    		byte [] ba = bao.toByteArray();
-	    		ba1=Base64.encodeBytes(ba); 
-	    		Log.d("Osmands", "compress end");
+	        	if(bitmapOrg != null) {
+		    		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		    		Log.d("Osmands", "compress start");
+		    		bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+		    		byte [] ba = bao.toByteArray();
+		    		ba1=Base64.encodeBytes(ba); 
+		    		Log.d("Osmands", "compress end");
+	        	}
         	}
 	    		
     		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

@@ -64,15 +64,15 @@ public final class CommonUtilities {
     /**
      * wheel string
      */
-    public static final String wheelMenuRegion[] = new String[]{"Region", "----- Bordeaus -----", "Pauillac", "St. Julien", "Margaux", "St. Estephe",  "Pessac Leognan", "St. Emilion", "Pomerol", "Others",//0-9
+    public static final String wheelMenuRegion[] = new String[]{"----- Bordeaux -----", "Pauillac", "St. Julien", "Margaux", "St. Estephe",  "Pessac Leognan", "St. Emilion", "Pomerol", "Others",//0-9
     															"-------------", "Burgundy", "Rhone", "Loire", "South of France", "Alsace", "Italy", "Spain", "Portugal", "Germany",//10-19
-    															"Austria", "----- Australia -----", "Barossa", "Mclaran Vale", "Clare Valley", "Adelaide Hills", "Coonawarra", "Victoria", "Western Australia", "New South Wales",//20-29
+    															"Austria", "----- Australia -----", "Barossa", "Mclaren Vale", "Clare Valley", "Adelaide Hills", "Coonawarra", "Victoria", "Western Australia", "New South Wales",//20-29
     															"Other", "-------------", "New Zealand", "Chile", "Argentina", "North America", "South Afria", "----- Champagne -----", "Vintage", "Non-Vintage",//30-39
     															"Rose", "-------------", "Sparkling", "Dessert", "Special Pack", "Beer", "Japan", "Cognac & Brandy", "Port & Sherry", "Spirits",//40-49
     															"Whiskies", "----- Accessories -----", "Glassware", "Wine Fridge", "Others", "-------------"};//50-55
-    public static final String wheelMenuVintage[] = new String[]{"Vintage","<1990", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010"};
-    public static final String wheelMenuGrape[] = new String[]{"Grape", "Cabernet Franc", "Cabernet Sauvignon", "Chardonnary", "Chenin Blanc", "Gewurztraminer", "Grenache", "Gruner Veltliner", "Malbec", "Merlot", "Muscat", "Nevviolo", "Pinotage", "Pinot Gris", "Pinot Grigio", "Pinot Noir", "Riesling", "Sangiovese", "Sauvignon Blanc", "Semillon", "Shiraz/Syrah", "Tempranillo", "Zinfandel"};
-    public static final String wheelMenuBody[] = new String[]{"Body", "Light-Bodied", "Light to Medium-Bodied", "Medium-Bodied", "Medium to Full-Bodied", "Full-Bodied"};
+    public static final String wheelMenuVintage[] = new String[]{"<1990", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012"};
+    public static final String wheelMenuGrape[] = new String[]{"Cabernet Franc", "Cabernet Sauvignon", "Chardonnary", "Chenin Blanc", "Gewurztraminer", "Grenache", "Gruner Veltliner", "Malbec", "Merlot", "Muscat", "Nebbiolo", "Pinotage", "Pinot Gris", "Pinot Grigio", "Pinot Noir", "Riesling", "Sangiovese", "Sauvignon Blanc", "Semillon", "Shiraz/Syrah", "Tempranillo", "Zinfandel"};
+    public static final String wheelMenuBody[] = new String[]{"Light-Bodied", "Light to Medium-Bodied", "Medium-Bodied", "Medium to Full-Bodied", "Full-Bodied"};
     public static final String wheelMenuColour[] = new String[]{"Colour", "Red", "White", "Rose", "Other"};
     public static final String wheelMenuPrice[] = new String[]{"Price", "$1 - $100", "$101 - $200", "$201 - $500", "$501 - $1,000", "$1,001 - $2,000", "$2,001 - $5,000", ">$5000"};
     public static final String wheelMenuSize[] = new String[]{"Size", "37.5CL", "75CL", "150CL", "Others"};

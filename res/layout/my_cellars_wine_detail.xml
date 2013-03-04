@@ -43,6 +43,17 @@
 	    
     </RelativeLayout>
     
+      <ScrollView 
+        android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    >
+    
+    <LinearLayout
+        android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+    >
+    
     <LinearLayout  
         android:orientation="horizontal"
 	    android:layout_width="fill_parent"
@@ -104,7 +115,10 @@
 	            android:id="@+id/cellar_details_wine_image"
 	        	android:layout_width="120dip"
 	        	android:layout_height="120dip"
-	        	android:background="@drawable/bg_photo_container"  />
+	        	android:paddingLeft="2dip"
+		         android:paddingRight="2dip"
+		         android:paddingTop="2dip"
+		         android:paddingBottom="2dip"  />
 	    
 	    <View  android:layout_height="1dp"   
          		android:layout_width="10dp"/>
@@ -121,28 +135,31 @@
 		        	android:textStyle="bold"
 	        		android:textColor="@color/Maroon" />
 		    
-
+			<View  
+			    android:layout_height="0dp"   
+         		android:layout_width="fill_parent"
+         		android:layout_weight="1"
+        	/>
 		    
 		     <LinearLayout  
 		        android:orientation="horizontal" 
 			    android:layout_width="fill_parent"
-			    android:layout_height="0dip"
-			    android:layout_weight="1"
-			    android:layout_gravity="bottom"	>
+			    android:layout_height="wrap_content"
+			>
 			    
 	       		<ImageButton 
 		            android:id="@+id/cellar_in_stock_btn"
 		        	android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_gravity="bottom"
-		        	android:background="@drawable/icon_tick_form"  />
+		        	
+		        	android:background="@drawable/icon_tick_form"
+		        	  />
 	       		
 			    <View  android:layout_height="1dp"   
 	         		android:layout_width="5dp"/>
 			    <TextView 
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_gravity="bottom"
 			        	android:textStyle="bold"
 		        		android:textColor="@color/Maroon"
 			        	android:text="In Stock" />
@@ -154,14 +171,12 @@
 		            android:id="@+id/cellar_wish_list_btn"
 		        	android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
-		        	android:layout_gravity="bottom"
 		        	android:background="@drawable/icon_tick_form"  />
 			    <View  android:layout_height="1dp"   
 	         		android:layout_width="5dp"/>
 			    <TextView 
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_gravity="bottom"
 			        	android:textStyle="bold"
 		        		android:textColor="@color/Maroon"
 			        	android:text="Wish List" />
@@ -392,7 +407,7 @@
 		        	android:layout_height="wrap_content"
 		        	android:textStyle="bold"
 	        		android:textColor="@color/Maroon"
-		        	android:text="Quantility:" />
+		        	android:text="Quantity:" />
 		 
 		         <View  android:layout_height="1dp"   
 	         		android:layout_width="20dp"/>
@@ -427,7 +442,7 @@
 		        	android:layout_height="wrap_content"
 		        	android:textStyle="bold"
 	        		android:textColor="@color/Maroon"
-		        	android:text="Testing Date:" />
+		        	android:text="Tasting Date:" />
 		 
 		         <View  android:layout_height="1dp"   
 	         		android:layout_width="20dp"/>
@@ -493,7 +508,8 @@
 		        <TextView
 		            android:id="@+id/cellar_table_note"
 		            android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content" />
+		        	android:layout_height="wrap_content"
+		        	android:singleLine="false" />
 		        
 		    </TableRow>
 		    
@@ -581,6 +597,7 @@
  	</LinearLayout>
  	
 
- 	
+ 	</LinearLayout>
+ 	</ScrollView>
    
 </LinearLayout>

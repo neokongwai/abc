@@ -32,6 +32,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -119,9 +120,12 @@ public class FoodCuisineList extends Activity {
 		topImage = (ImageView) findViewById(R.id.food_top_image);
 		String top_image_url = get_top_img_url();
 		if(top_image_url != null) {
+			Display display = getWindowManager().getDefaultDisplay();
+			int display_width = display.getWidth();
+						
 			Drawable d = LoadImageFromWebOperations(top_image_url);
 			Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
-			Drawable dx = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int)(320*480/320), (int)(220*480/320), true));
+			Drawable dx = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int)(320*display_width/320), (int)(220*display_width/320), true));
 			
 			topImage.setImageDrawable(dx);
 			topImage.setScaleType(ScaleType.FIT_CENTER);

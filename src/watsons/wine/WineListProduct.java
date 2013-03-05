@@ -326,10 +326,12 @@ public class WineListProduct extends Activity {
 	        }
 			
 			// getting JSON string from URL
+			
+			Log.d("Stark", "go to URL = "+url);
+			
 			JSONObject json = jParser.getJSONFromUrl(url);
 			
 			Log.d("Stark", "json search - "+json);
-			
 			
 			if(json == null)
 	        {

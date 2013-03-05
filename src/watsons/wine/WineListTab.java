@@ -50,11 +50,14 @@ import android.widget.TextView;
 
 public class WineListTab extends Activity {
 	// url to make request
-    private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_countries";
+    //private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_countries";
+    private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/get_wine_list.php";
     
     // JSON Node names
     private static final String TAG_COUNTRIES = "countries";
-    private static final String TAG_ID = "id";
+    //private static final String TAG_ID = "id";
+    private static final String TAG_PG1 = "pg1";
+    private static final String TAG_PG2 = "pg2";
     private static final String TAG_NAME = "name";
     private static final String TAG_PROVINCE = "province";
     private static final String TAG_PRODUCT_COUNT = "product_count";
@@ -193,7 +196,8 @@ public class WineListTab extends Activity {
 	        	Bundle bundle = new Bundle();
 	        	bundle.putBoolean("country", false);
 	    		bundle.putBoolean("search", false);
-	        	bundle.putString("id", provinceList.get(groupPosition).get(childPosition).get(TAG_ID));
+	        	bundle.putString("pg1", provinceList.get(groupPosition).get(childPosition).get(TAG_PG1));
+	        	bundle.putString("pg2", provinceList.get(groupPosition).get(childPosition).get(TAG_PG2));
 	        	bundle.putString("name", provinceList.get(groupPosition).get(childPosition).get(TAG_NAME));
 	        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
 	        	Constants.SHOW_DETAILS = true;
@@ -215,7 +219,8 @@ public class WineListTab extends Activity {
 					Bundle bundle = new Bundle();
 		        	bundle.putBoolean("country", true);
 		    		bundle.putBoolean("search", false);
-		        	bundle.putString("id", countryList.get(groupPosition).get(TAG_ID));
+		        	bundle.putString("pg1", countryList.get(groupPosition).get(TAG_PG1));
+		        	bundle.putString("pg2", countryList.get(groupPosition).get(TAG_PG2));
 		        	bundle.putString("name", countryList.get(groupPosition).get(TAG_NAME));
 		        	bundle.putString("country_name", countryList.get(groupPosition).get(TAG_NAME));
 		        	Constants.SHOW_DETAILS = true;
@@ -375,9 +380,9 @@ public class WineListTab extends Activity {
 			                JSONObject c = contries.getJSONObject(i);
 			 
 			                // Storing each json item in variable
-			                String id = c.getString(TAG_ID);
+			                String cpg1 = c.getString(TAG_PG1);
+			                String cpg2 = c.getString(TAG_PG2);
 			                String name = c.getString(TAG_NAME);
-			                //String province = c.getString(TAG_PROVINCE);
 			                String product_count = c.getString(TAG_PRODUCT_COUNT);
 			                
 			                // Provinces is again a JSON Object
@@ -387,18 +392,22 @@ public class WineListTab extends Activity {
 			                }
 			                catch (Exception e) {
 			                    Log.e("Json Error", "province converting result " + e.toString());       
+			                    provinces = new JSONArray();
 			                }
 
 			                List<Map<String, String>> children = new ArrayList<Map<String, String>>();
 			                for(int j = 0; j < provinces.length(); j++){
 			                	JSONObject p = provinces.getJSONObject(j);
-				                String province_id = p.getString(TAG_ID);
+				                //String province_id = p.getString(TAG_ID);
+			                	String province_pg1 = p.getString(TAG_PG1);
+			                	String province_pg2 = p.getString(TAG_PG2);
 				                String province_name = p.getString(TAG_NAME);
 				                String province_product_count = p.getString(TAG_PRODUCT_COUNT);
 				                
 				                // creating new HashMap
 				                HashMap<String, String> p_map = new HashMap<String, String>();
-				                p_map.put(TAG_ID, province_id);
+				                p_map.put(TAG_PG1, province_pg1);
+				                p_map.put(TAG_PG2, province_pg2);
 				                p_map.put(TAG_NAME, province_name);
 				                p_map.put(TAG_PRODUCT_COUNT, province_product_count);
 				                children.add(p_map);
@@ -408,18 +417,23 @@ public class WineListTab extends Activity {
 			                // creating new HashMap
 			                HashMap<String, String> map = new HashMap<String, String>();
 			                // adding each child node to HashMap key => value
-			                map.put(TAG_ID, id);
+			                map.put(TAG_PG1, cpg1);
+			                map.put(TAG_PG2, cpg2);
 			                map.put(TAG_NAME, name);
 			                //map.put(TAG_PROVINCE, province);
 			                map.put(TAG_PRODUCT_COUNT, product_count);
 			 
 			                // adding HashList to ArrayList
 			                countryList.add(map);
+			               
 			            }
 			        } 
 			        catch (JSONException e) {
 			            e.printStackTrace();
 			        }
+					
+					Log.d("Stark", "provinceList = "+ provinceList);
+					Log.d("Stark", "countryList = "+ countryList);
 					
 					SharedPreferences.Editor editor = sharedPreferences.edit();
 				    editor.putString("json_wine", json.toString());
@@ -437,6 +451,7 @@ public class WineListTab extends Activity {
 				}
 				
 				JSONParser jParser = new JSONParser();
+				
 				json = jParser.getJSONFromUrl(url);
 				if(json == null)
 				{
@@ -446,98 +461,6 @@ public class WineListTab extends Activity {
 				resultJsonStr = json.toString();
 				return null;
 				
-				
-				/*sharedPreferences = getPreferences(MODE_PRIVATE);
-				String strJson = sharedPreferences.getString("json_wine", null);
-				
-				if(strJson != null)
-				{
-					try {
-						json = new JSONObject(strJson);
-					} catch (JSONException e1) {
-						e1.printStackTrace();
-					}
-				}
-				else
-				{
-			        // Creating JSON Parser instance
-			        JSONParser jParser = new JSONParser(); 
-			        // getting JSON string from URL
-			        if (!isOnline())
-			        {
-			        	quitTask = true;
-			        	return null;
-			        }
-			        
-			        json = jParser.getJSONFromUrl(url);
-			        
-			        if(json == null)
-			        {
-			        	quitTask = true;
-			        	return null;
-			        }
-						        
-				    SharedPreferences.Editor editor = sharedPreferences.edit();
-				    editor.putString("json_wine", json.toString());
-				    editor.commit();
-				}
-		                
-		        try {
-		            // Getting Array of Contacts
-		        	contries = json.getJSONArray(TAG_COUNTRIES);
-
-		            // looping through All Contacts
-		            for(int i = 0; i < contries.length(); i++){
-		                JSONObject c = contries.getJSONObject(i);
-		 
-		                // Storing each json item in variable
-		                String id = c.getString(TAG_ID);
-		                String name = c.getString(TAG_NAME);
-		                //String province = c.getString(TAG_PROVINCE);
-		                String product_count = c.getString(TAG_PRODUCT_COUNT);
-		                
-		                // Provinces is again a JSON Object
-		                try
-		                {
-		                	provinces = c.getJSONArray(TAG_PROVINCE);
-		                }
-		                catch (Exception e) {
-		                    Log.e("Json Error", "province converting result " + e.toString());       
-		                }
-
-		                List<Map<String, String>> children = new ArrayList<Map<String, String>>();
-		                for(int j = 0; j < provinces.length(); j++){
-		                	JSONObject p = provinces.getJSONObject(j);
-			                String province_id = p.getString(TAG_ID);
-			                String province_name = p.getString(TAG_NAME);
-			                String province_product_count = p.getString(TAG_PRODUCT_COUNT);
-			                
-			                // creating new HashMap
-			                HashMap<String, String> p_map = new HashMap<String, String>();
-			                p_map.put(TAG_ID, province_id);
-			                p_map.put(TAG_NAME, province_name);
-			                p_map.put(TAG_PRODUCT_COUNT, province_product_count);
-			                children.add(p_map);
-		                }
-		                provinceList.add(children);
-		                
-		                // creating new HashMap
-		                HashMap<String, String> map = new HashMap<String, String>();
-		                // adding each child node to HashMap key => value
-		                map.put(TAG_ID, id);
-		                map.put(TAG_NAME, name);
-		                //map.put(TAG_PROVINCE, province);
-		                map.put(TAG_PRODUCT_COUNT, product_count);
-		 
-		                // adding HashList to ArrayList
-		                countryList.add(map);
-		            }
-		        } 
-		        catch (JSONException e) {
-		            e.printStackTrace();
-		        }*/
-				// TODO Auto-generated method stub
-				//return null;
 			}
 			
 			public boolean isOnline() {

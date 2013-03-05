@@ -217,26 +217,12 @@ public class EventsTab extends Activity implements
 
 	/*@Override
 	protected void onRestart() {
-<<<<<<< HEAD
+
 		super.onRestart();
-<<<<<<< HEAD
+
 		
 
 	}*/
-=======
-=======
-		super.onRestart();
->>>>>>> fix merge conflict
-		Intent intent = new Intent(getParent(), EventsTab.class);
-		TabGroupBase parentActivity = (TabGroupBase) getParent();
-		parentActivity.startChildActivityNotAddId("EventsTab", intent);
-	}
-<<<<<<< HEAD
->>>>>>> Fix Event may disappear when click from first page
-=======
-
-	}*/
->>>>>>> fix merge conflict
 	
 	private class JsonTask extends AsyncTask<String, Void, String> {
 		

@@ -292,19 +292,22 @@ public class FoodCuisineList extends Activity {
 		Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 			public void run() {
-				onRestart();
+				Intent intent = new Intent(getParent(), FoodCuisineList.class);
+				TabGroupBase parentActivity = (TabGroupBase) getParent();
+				parentActivity.startChildActivityNotAddId("FoodCuisineList", intent);
 			}
 		}, 500);
 	}
 
-	@Override
+	// by stark
+	/*@Override
 	protected void onRestart() {
 		super.onRestart();
 		Intent intent = new Intent(getParent(), FoodCuisineList.class);
 		TabGroupBase parentActivity = (TabGroupBase) getParent();
 		parentActivity.startChildActivityNotAddId("FoodCuisineList", intent);
 
-	}
+	}*/
 
 	public static Bitmap loadBitmap(String url) throws IOException {
 		Bitmap bitmap = null;

@@ -40,6 +40,7 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 	ArrayList<Wine> data = null;
 	ImageSpan is;
 	LinearLayout ll;
+	ArrayList<LoadImageTask> tasks = null;
 
 	public WineAdapter(Context context, int layoutResourceId,
 			ArrayList<Wine> data) {
@@ -47,6 +48,8 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
+		
+		this.tasks = new ArrayList<LoadImageTask>();
 	}
 
 	@Override
@@ -94,7 +97,17 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		//Edit By Stark //
 		if(wine.photo == null)
 		{
-			new LoadImageTask().execute(holder.imgIcon, wine);
+			LoadImageTask task = (LoadImageTask) new LoadImageTask().execute(holder.imgIcon, wine);
+			tasks.add(task);
+			
+			Log.d("Stark", "loading image task --- "+ tasks.size());
+			
+			if (tasks.size() > 20) {
+				Log.d("Stark", "too much loading, remove the older one"); 
+				LoadImageTask tasktoquit = tasks.get(0);
+				tasktoquit.cancel(true);
+				tasks.remove(0);
+			}
 		}
 		else {
 			holder.imgIcon.setImageBitmap(wine.photo);
@@ -176,21 +189,24 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 	
 		private ImageView imv;
         private Wine wine;
+        public Boolean quit;
 		
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();  
-			
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
 			super.onPostExecute(result);
 			
+			Log.d("Stark", "removed = "+ tasks.remove(LoadImageTask.this));
+			
 			if(result != null && imv != null){
                 //imv.setVisibility(View.VISIBLE);
                 imv.setImageBitmap(result);
             }else{
+            	imv.setImageBitmap(null);
                 //imv.setVisibility(View.GONE);
             }
 		}
@@ -201,7 +217,7 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 			try {
 				String url = wine.url;
 				Bitmap photo = Wine.loadBitmap(url);
-				wine.photo = photo;
+				//wine.photo = photo; //Don't cache the image inside the app ram, as it may be OOM
 				return photo;
 				
 			} catch (IOException e) {

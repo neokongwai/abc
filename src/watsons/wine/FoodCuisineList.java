@@ -77,6 +77,7 @@ public class FoodCuisineList extends Activity {
 	private SimpleExpandableListAdapter mAdapter;
 	Context mContext = FoodCuisineList.this;
 	ImageView topImage;
+	ImageButton homeBtn,mailBtn;
 	ExpandableListView listView;
 	ImageView refreshBtn;
 	RelativeLayout refreshAni;
@@ -131,9 +132,18 @@ public class FoodCuisineList extends Activity {
 			topImage.setScaleType(ScaleType.FIT_CENTER);
 		}
 		
+		homeBtn = (ImageButton) findViewById(R.id.cellar_home_button);
+		mailBtn = (ImageButton) findViewById(R.id.cellar_mail_button);
 		//topImage.setImageResource(R.drawable.food_index1);
 		if (Constants.FOOD_CUISINE == true) {
 			topImage.setVisibility(View.GONE);
+			homeBtn.setVisibility(View.GONE);
+			mailBtn.setVisibility(View.GONE);
+		}
+		else
+		{
+			homeBtn.setVisibility(View.VISIBLE);
+			mailBtn.setVisibility(View.VISIBLE);
 		}
 
 		new JsonTask().execute(url);
@@ -255,6 +265,8 @@ public class FoodCuisineList extends Activity {
 					topImage.setVisibility(View.GONE);
 					refreshAni.setVisibility(View.INVISIBLE);
 					refreshBtn.setVisibility(View.INVISIBLE);
+					homeBtn.setVisibility(View.GONE);
+					mailBtn.setVisibility(View.GONE);
 				}
 				return false;
 			}
@@ -329,6 +341,8 @@ public class FoodCuisineList extends Activity {
 			Constants.FOOD_CUISINE = false;
 			topImage.setVisibility(View.VISIBLE);
 			refreshBtn.setVisibility(View.VISIBLE);
+			homeBtn.setVisibility(View.VISIBLE);
+			mailBtn.setVisibility(View.VISIBLE);
 			for (int i = 0; i < cuisines.length(); i++) {
 				listView.collapseGroup(i);
 			}
@@ -340,14 +354,25 @@ public class FoodCuisineList extends Activity {
 
 		ProgressDialog pdia;
 		Boolean quitTask;
+		Boolean skipBGTask;
+		String resultJsonStr;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pdia = new ProgressDialog(getParent());
 			pdia.setMessage("Loading...");
-			pdia.show();
-			quitTask = false;
+			pdia.setCancelable(false);
+            pdia.show();   
+            quitTask = false;
+            skipBGTask = false;
+            
+            sharedPreferences = getPreferences(MODE_PRIVATE);
+            resultJsonStr = sharedPreferences.getString("json_food", null);
+			if(resultJsonStr != null)
+			{
+				skipBGTask = true;
+			}
 		}
 
 		@Override
@@ -372,12 +397,103 @@ public class FoodCuisineList extends Activity {
 				
 				return;
 			}
-			mAdapter.notifyDataSetChanged();
+			else
+			{
+				try {
+					json = new JSONObject(resultJsonStr);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					// Getting Array of Contacts
+					cuisines = json.getJSONArray(TAG_LIST);
+
+					// looping through All Contacts
+					for (int i = 0; i < cuisines.length(); i++) {
+						JSONObject c = cuisines.getJSONObject(i);
+
+						// Storing each json item in variable
+						String id = c.getString(TAG_ID);
+						String name = c.getString(TAG_NAME);
+						String icon = c.getString(TAG_ICON);
+						String sponsor = c.getString(TAG_SPONSOR);
+						String use_sponsor = c.getString(TAG_USE_SPONSOR);
+
+						// Provinces is again a JSON Object
+						try {
+							regions = c.getJSONArray(TAG_REGION);
+						} catch (Exception e) {
+							Log.e("Json Error",
+									"province converting result " + e.toString());
+						}
+
+						List<Map<String, String>> children = new ArrayList<Map<String, String>>();
+						for (int j = 0; j < regions.length(); j++) {
+							JSONObject p = regions.getJSONObject(j);
+							String regions_id = p.getString(TAG_ID);
+							String regions_name = p.getString(TAG_NAME);
+
+							// creating new HashMap
+							HashMap<String, String> p_map = new HashMap<String, String>();
+							p_map.put(TAG_ID, regions_id);
+							p_map.put(TAG_NAME, regions_name);
+							children.add(p_map);
+						}
+						if (use_sponsor.contains("1")) {
+							HashMap<String, String> p_map = new HashMap<String, String>();
+							p_map.put(TAG_ID, "30");
+							p_map.put(TAG_SPONSOR, sponsor);
+							children.add(p_map);
+						}
+
+						regionList.add(children);
+
+						// creating new HashMap
+						HashMap<String, String> map = new HashMap<String, String>();
+						// adding each child node to HashMap key => value
+						map.put(TAG_ID, id);
+						map.put(TAG_NAME, name);
+						map.put(TAG_ICON, icon);
+						map.put(TAG_SPONSOR, sponsor);
+						map.put(TAG_USE_SPONSOR, use_sponsor);
+
+						// adding HashList to ArrayList
+						cuisineList.add(map);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				SharedPreferences.Editor editor = sharedPreferences.edit();
+				editor.putString("json_food", json.toString());
+				editor.commit();
+				
+				mAdapter.notifyDataSetChanged();
+			}
+			
 			
 		}
 
 		@Override
 		protected String doInBackground(String... arg0) {
+			if (skipBGTask) {
+				return null;
+			}
+			if (!isOnline())
+	        {
+	        	quitTask = true;
+	        	return null;
+	        }
+			JSONParser jParser = new JSONParser();
+			json = jParser.getJSONFromUrl(url);
+			if(json == null)
+			{
+				quitTask = true;
+				return null;
+			}
+			resultJsonStr = json.toString();
+			return null;
+			/*
 			sharedPreferences = getPreferences(MODE_PRIVATE);
 			String strJson = sharedPreferences.getString("json_food", null);
 			if (strJson != null) {
@@ -465,7 +581,7 @@ public class FoodCuisineList extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			return "";
+			return "";*/
 		}
 		
 		public boolean isOnline() {

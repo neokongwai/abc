@@ -29,7 +29,7 @@
         >
         <uses-library android:name="com.google.android.maps"/>
         <activity
-            android:name=".WatsonsWineActivity"
+            android:name=".Splash"
             android:label="@string/app_name" 
             android:screenOrientation="portrait">
             <intent-filter>
@@ -46,6 +46,7 @@
 		  </intent-filter>
 		</receiver>
 		<service android:name="watsons.wine.GCMIntentService" />
+		<activity android:name="watsons.wine.WatsonsWineActivity" />
         <activity android:name="watsons.wine.TabGroupView" />
         <activity android:name="watsons.wine.TabGroupWine" />
         <activity android:name="watsons.wine.TabGroupCellar" />

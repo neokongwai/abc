@@ -44,7 +44,8 @@ public class FoodDishList extends Activity {
     private static final String TAG_NAME_CHI= "name_chi";
  
     // contacts JSONArray
-    JSONArray dishes = null;
+    private JSONArray dishes = null;
+	private JSONObject json = null;
     Context mContext = FoodDishList.this;
     FoodDishAdapter adapter = null;
 
@@ -111,14 +112,18 @@ public class FoodDishList extends Activity {
 
 		ProgressDialog pdia;
 		Boolean quitTask;
+		Boolean skipBGTask;
+		String resultJsonStr;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pdia = new ProgressDialog(getParent());
 			pdia.setMessage("Loading...");
-			pdia.show();
-			quitTask = false;
+			pdia.setCancelable(false);
+            pdia.show();   
+            quitTask = false;
+            skipBGTask = false;
 		}
 
 		@Override
@@ -144,56 +149,64 @@ public class FoodDishList extends Activity {
 				
 				return;
 			}
-			adapter.notifyDataSetChanged();
+			else
+			{
+				try {
+					json = new JSONObject(resultJsonStr);
+				} catch (JSONException e1) {
+					e1.printStackTrace();
+				}
+				try {
+		            // Getting Array of Contacts
+		        	dishes = json.getJSONArray(TAG_LIST);
+
+		            // looping through All Contacts
+		            for(int i = 0; i < dishes.length(); i++){
+		                JSONObject c = dishes.getJSONObject(i);
+		 
+		                // Storing each json item in variable
+		                String id = c.getString(TAG_ID);
+		                String name_en = c.getString(TAG_NAME_EN);
+		                String name_chi = c.getString(TAG_NAME_CHI);
+		                // creating new HashMap
+		                HashMap<String, String> map = new HashMap<String, String>();
+		                // adding each child node to HashMap key => value
+		                map.put(TAG_ID, id);
+		                map.put(TAG_NAME_EN, name_en);
+		                map.put(TAG_NAME_CHI, name_chi);
+		 
+		                // adding HashList to ArrayList
+		                nameListEng.add(name_en);
+		                nameListChi.add(name_chi);
+		                dishList.add(map);
+		            }
+		        } catch (JSONException e) {
+		            e.printStackTrace();
+		        }
+				adapter.notifyDataSetChanged();
+			}
+			
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
-			if (!isOnline())
+	        if (skipBGTask) {
+				return null;
+			}
+	        if (!isOnline())
 	        {
 	        	quitTask = true;
 	        	return null;
 	        }
-			// Creating JSON Parser instance
-	        JSONParser jParser = new JSONParser();
-	 
 	        String dish_url = params[0];
-	        // getting JSON string from URL
-	        JSONObject json = jParser.getJSONFromUrl(dish_url);
-	        
-	        if(json == null)
-	        {
-	        	quitTask = true;
-	        	return null;
-	        }
-	                
-	        try {
-	            // Getting Array of Contacts
-	        	dishes = json.getJSONArray(TAG_LIST);
-
-	            // looping through All Contacts
-	            for(int i = 0; i < dishes.length(); i++){
-	                JSONObject c = dishes.getJSONObject(i);
-	 
-	                // Storing each json item in variable
-	                String id = c.getString(TAG_ID);
-	                String name_en = c.getString(TAG_NAME_EN);
-	                String name_chi = c.getString(TAG_NAME_CHI);
-	                // creating new HashMap
-	                HashMap<String, String> map = new HashMap<String, String>();
-	                // adding each child node to HashMap key => value
-	                map.put(TAG_ID, id);
-	                map.put(TAG_NAME_EN, name_en);
-	                map.put(TAG_NAME_CHI, name_chi);
-	 
-	                // adding HashList to ArrayList
-	                nameListEng.add(name_en);
-	                nameListChi.add(name_chi);
-	                dishList.add(map);
-	            }
-	        } catch (JSONException e) {
-	            e.printStackTrace();
-	        }
+			JSONParser jParser = new JSONParser();
+			json = jParser.getJSONFromUrl(dish_url);
+			if(json == null)
+			{
+				quitTask = true;
+				return null;
+			}
+			resultJsonStr = json.toString();
 			return null;
 		}
 		

@@ -44,7 +44,7 @@
 	        android:layout_toRightOf="@id/cellar_home_button"
 	        android:layout_centerVertical="true"
 	        android:layout_marginLeft="5dip"
-	        android:background="@drawable/btn_email" />
+	        android:background="@drawable/btn_email"  />
         
 	    <ImageView
 	        android:id="@+id/refresh_btn"

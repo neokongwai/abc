@@ -98,5 +98,4 @@
             android:contentDescription="@string/app_name"
             android:visibility="visible"/>
     </LinearLayout>
-
 </RelativeLayout>

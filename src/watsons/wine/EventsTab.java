@@ -345,7 +345,6 @@ public class EventsTab extends Activity implements
 
 		@Override
 		protected String doInBackground(String... params) {
-		
 			if (skipBGTask) {
 				return null;
 			}

@@ -91,6 +91,7 @@ public class FoodCuisineList extends Activity {
 	// Hashmap for ListView
 	List<Map<String, String>> cuisineList = new ArrayList<Map<String, String>>();
 	List<List<Map<String, String>>> regionList = new ArrayList<List<Map<String, String>>>();
+	Map<Integer,Bitmap> bitmapList  = new HashMap<Integer,Bitmap>();
 
 	public class ViewPos {
 		int gourp;
@@ -173,7 +174,34 @@ public class FoodCuisineList extends Activity {
 				ImageView inidicatorImage = (ImageView) view
 						.findViewById(R.id.explist_indicator);
 
-				try {
+				ImageView iconImage = (ImageView) view
+						.findViewById(R.id.list_fooditem_img);
+				//Edit By Stark //
+				if(iconImage.getDrawable() == null)
+				{
+					if (bitmapList.get(groupPosition) != null)
+					{
+						iconImage.setImageBitmap(bitmapList.get(groupPosition));
+					}
+					else
+					{
+						LoadImageTask task = (LoadImageTask) new LoadImageTask().execute(iconImage,cuisineList.get(groupPosition).get(TAG_ICON),String.valueOf(groupPosition));
+					}
+					/*//tasks.add(task);
+					
+					//Log.d("Stark", "loading image task --- "+ tasks.size());
+					
+					//if (tasks.size() > 20) {
+						Log.d("Stark", "too much loading, remove the older one"); 
+						LoadImageTask tasktoquit = tasks.get(0);
+						tasktoquit.cancel(true);
+						tasks.remove(0);
+					}*/
+				}
+				else {
+					iconImage.setImageBitmap(bitmapList.get(groupPosition));
+				}
+				/*try {
 					ImageView iconImage = (ImageView) view
 							.findViewById(R.id.list_fooditem_img);
 					Bitmap bitmap = loadBitmap(cuisineList.get(groupPosition)
@@ -181,7 +209,7 @@ public class FoodCuisineList extends Activity {
 					iconImage.setImageBitmap(bitmap);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 				if (getChildrenCount(groupPosition) == 0) {
 					emptyList.add(groupPosition);
 					inidicatorImage.setVisibility(View.INVISIBLE);
@@ -593,6 +621,53 @@ public class FoodCuisineList extends Activity {
 		    }
 		    return false;
 		}
+	}
+	
+	private class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
+		
+		private ImageView imv;
+        public Boolean quit;
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();  
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			super.onPostExecute(result);
+			
+			//Log.d("Stark", "removed = "+ tasks.remove(LoadImageTask.this));
+			
+			if(result != null && imv != null){
+                //imv.setVisibility(View.VISIBLE);
+                imv.setImageBitmap(result);
+            }else{
+            	imv.setImageBitmap(null);
+                //imv.setVisibility(View.GONE);
+            }
+		}
+
+		protected Bitmap doInBackground(Object... params) {
+			imv = (ImageView)   params[0];
+			String url = (String) params[1];
+			String pos = (String) params[2];
+			int i_pos = Integer.parseInt(pos);
+			try {
+				//String url = wine.url;
+				Bitmap photo = Wine.loadBitmap(url);
+				bitmapList.put(i_pos, photo);
+				//wine.photo = photo; //Don't cache the image inside the app ram, as it may be OOM
+				return photo;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+
 	}
 	
 	public static Drawable LoadImageFromWebOperations(String url) {

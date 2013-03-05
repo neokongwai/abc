@@ -58,15 +58,12 @@
 	        />
     </RelativeLayout>
 
-     <RelativeLayout 
+    <ImageView
         android:id="@+id/food_top_image"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/food_index1"
-        android:layout_marginTop="-1dp"
-        android:layout_marginBottom="-2dp"
-        >
-	</RelativeLayout>
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/bg_cellar_index" />
 
     <ExpandableListView
         android:id="@+id/list_food"

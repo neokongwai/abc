@@ -116,16 +116,15 @@ public class FoodCuisineList extends Activity {
 		});
 
 		/* change food and wine top image */
-		RelativeLayout topImageRL = (RelativeLayout) findViewById(R.id.food_top_image);
+		topImage = (ImageView) findViewById(R.id.food_top_image);
 		String top_image_url = get_top_img_url();
 		if(top_image_url != null) {
 			Drawable d = LoadImageFromWebOperations(top_image_url);
 			Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
 			Drawable dx = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int)(320*480/320), (int)(220*480/320), true));
 			
-			//topImageRL.setImageDrawable(dx);
-			//topImageRL.setScaleType(ScaleType.FIT_CENTER);
-			topImageRL.setBackgroundDrawable(dx);
+			topImage.setImageDrawable(dx);
+			topImage.setScaleType(ScaleType.FIT_CENTER);
 		}
 		
 		//topImage.setImageResource(R.drawable.food_index1);

@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -34,13 +36,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
@@ -48,7 +49,8 @@ import android.widget.TextView;
 public class FoodCuisineList extends Activity {
 	// url to make request
 	private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_cuisines_and_regions";
-
+	private static String top_image_api_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/food_and_wine_top_image";
+	
 	// JSON Node names
 	private static final String TAG_LIST = "list_cuisines_and_regions";
 	private static final String TAG_ID = "id";
@@ -59,6 +61,9 @@ public class FoodCuisineList extends Activity {
 	// private static final String TAG_DELETED = "deleted";
 	private static final String TAG_REGION = "regions";
 	// private static final String TAG_CUISINE_ID = "cuisine_id";
+	
+	private static final String TAG_CONTENT = "top_image_url";
+    private static final String TAG_URL = "url";
 
 	private static final int TYPE_ITEM = 0;
 	private static final int TYPE_SEPARATOR = 1;
@@ -111,8 +116,19 @@ public class FoodCuisineList extends Activity {
 		});
 
 		/* change food and wine top image */
-		topImage = (ImageView) findViewById(R.id.food_top_image);
-		topImage.setImageResource(R.drawable.food_index1);
+		RelativeLayout topImageRL = (RelativeLayout) findViewById(R.id.food_top_image);
+		String top_image_url = get_top_img_url();
+		if(top_image_url != null) {
+			Drawable d = LoadImageFromWebOperations(top_image_url);
+			Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+			Drawable dx = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, (int)(320*480/320), (int)(220*480/320), true));
+			
+			//topImageRL.setImageDrawable(dx);
+			//topImageRL.setScaleType(ScaleType.FIT_CENTER);
+			topImageRL.setBackgroundDrawable(dx);
+		}
+		
+		//topImage.setImageResource(R.drawable.food_index1);
 		if (Constants.FOOD_CUISINE == true) {
 			topImage.setVisibility(View.GONE);
 		}
@@ -458,5 +474,34 @@ public class FoodCuisineList extends Activity {
 		    }
 		    return false;
 		}
+	}
+	
+	public static Drawable LoadImageFromWebOperations(String url) {
+	    try {
+	        InputStream is = (InputStream) new URL(url).getContent();
+	        Drawable d = Drawable.createFromStream(is, "src name");
+	        return d;
+	    } catch (Exception e) {
+	        return null;
+	    }
+	}
+	
+	private String get_top_img_url() {
+		String return_url = null;
+		
+		// Creating JSON Parser instance
+        JSONParser jParser = new JSONParser();
+        JSONObject json = jParser.getJSONFromUrl(top_image_api_url);
+        JSONArray top_image_url = null;
+        try {
+            // Getting Array of Contacts
+            top_image_url = json.getJSONArray(TAG_CONTENT);
+            JSONObject c = top_image_url.getJSONObject(0);
+            return_url = c.getString(TAG_URL);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        return return_url;
 	}
 }

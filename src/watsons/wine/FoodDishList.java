@@ -25,6 +25,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -64,7 +65,7 @@ public class FoodDishList extends Activity {
 		// Receive Parameter
         Bundle bundle = this.getIntent().getExtras();
         String dish_url = url + bundle.getString("id");
-        
+        Log.d("vk", "food dish list");
         TextView tv = (TextView)findViewById(R.id.title_dish_text);
         tv.setText(bundle.getString("name"));
 

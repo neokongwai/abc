@@ -218,16 +218,12 @@ public class EventsTab extends Activity implements
 	/*@Override
 	protected void onRestart() {
 		super.onRestart();
-<<<<<<< HEAD
 		Intent intent = new Intent(getParent(), EventsTab.class);
 		TabGroupBase parentActivity = (TabGroupBase) getParent();
 		parentActivity.startChildActivityNotAddId("EventsTab", intent);
 	}
-=======
-		
 
 	}*/
->>>>>>> stark
 	
 	private class JsonTask extends AsyncTask<String, Void, String> {
 		

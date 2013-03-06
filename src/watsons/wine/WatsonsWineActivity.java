@@ -33,23 +33,23 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 
 		Display display = getWindowManager().getDefaultDisplay();
 		int width = display.getWidth();
-		if (width == 720)
+		/*if (width == 720)
 		{
 			LinearLayout ll = (LinearLayout) findViewById(R.id.main_ll1);
 	        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)ll.getLayoutParams(); 
-	        lp.setMargins(0, 300, 0, 0);
-	        ll.setLayoutParams(lp);
+	        //lp.setMargins(0, 300, 0, 0);
+	        //ll.setLayoutParams(lp);
 	        
 	        ll = (LinearLayout) findViewById(R.id.main_ll2);
 	        lp = (RelativeLayout.LayoutParams)ll.getLayoutParams();
-	        lp.setMargins(0, 80, 0, 0);
-	        ll.setLayoutParams(lp);
+	        //lp.setMargins(0, 80, 0, 0);
+	        //ll.setLayoutParams(lp);
 	        
 	        ll = (LinearLayout) findViewById(R.id.main_ll3);
 	        lp = (RelativeLayout.LayoutParams)ll.getLayoutParams();
-	        lp.setMargins(0, 80, 0, 0);
-	        ll.setLayoutParams(lp);
-		}
+	        //lp.setMargins(0, 80, 0, 0);
+	        //ll.setLayoutParams(lp);
+		}*/
 
 		// **********Create My Cellars Table*************
 		WatsonWineDB temp = new WatsonWineDB();

@@ -4,14 +4,17 @@
     android:layout_height="fill_parent"
     android:background="@color/FloralWhite"
     android:orientation="vertical" >
-
-	<ImageView 
+
+	<ImageView
 	    android:id="@+id/iv_aboutus"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:contentDescription="@string/app_name"
-	    android:src="@drawable/aboutus"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
 	    android:layout_centerHorizontal="true"
-	    android:layout_centerVertical ="true"
-	    />
+	    android:layout_centerVertical="true"
+	    android:adjustViewBounds="true"
+	    android:contentDescription="@string/app_name"
+	    android:cropToPadding="true"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/aboutus" />
+
 </RelativeLayout>

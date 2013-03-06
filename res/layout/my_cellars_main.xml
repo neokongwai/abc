@@ -92,7 +92,8 @@
         	android:textSize="20sp"
         	android:typeface="serif"
         	android:text="Visit My Cellar"
-        	android:textColor="@color/Maroon" />
+        	android:textColor="@color/Maroon"
+        	android:textStyle="bold" />
     
          
         

@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
@@ -797,7 +798,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
     }
 	
    
-    private void initWheel(int id, String[] wheel_data )
+    private void initWheel(int id, String[] wheel_data, String target )
 
     {
     	//((WheelView) findViewById(R.id.wheel)).setVisibility(View.VISIBLE);
@@ -806,8 +807,12 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
     	 ((RelativeLayout)findViewById(R.id.cellar_selection_wheel_date_layout)).setVisibility(View.GONE);
         WheelView wheel = (WheelView) findViewById(id);
         wheel.setViewAdapter(new ArrayWheelAdapter(this, wheel_data));
+        int position = Arrays.asList(wheel_data).indexOf(target);
+        if (position == -1) {
+        	position = 0;
+        }
         wheel.setVisibleItems(2);
-        wheel.setCurrentItem(0);
+        wheel.setCurrentItem(position);
         wheel.addChangingListener(changedListener);
         wheel.addScrollingListener(scrolledListener);
 
@@ -1003,27 +1008,27 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 					 ((TableRow)findViewById(R.id.tableRow7_2)).setVisibility(View.GONE);
 				}
 				if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_brut)).getTag().equals("ON")){
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Brut");
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Brut");
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
 				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_dry)).getTag().equals("ON")){
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Dry");
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Dry");
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
 				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_med_dry)).getTag().equals("ON")){
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Medium Dry");	
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Medium Dry");	
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
 				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_off_dry)).getTag().equals("ON")){
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Off Dry");
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Off Dry");
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
 				}else if (((ImageView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_sweet)).getTag().equals("ON")){
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("Sweet");
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("Sweet");
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.VISIBLE);
 				} else {
-					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_size_2)).setText("");
+					((TextView) MyCellarsUpdateItemsActivity.this.findViewById(R.id.cellar_table_sweetness_2)).setText("");
 					((TableRow)findViewById(R.id.tableRow6_1)).setVisibility(View.GONE);
 					 ((TableRow)findViewById(R.id.tableRow6_2)).setVisibility(View.GONE);
 				}
@@ -1057,7 +1062,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_region_1)).getText().toString());
 				whellMenuNumber = 1;
-				initWheel(R.id.wheel, CommonUtilities.wheelMenuRegion);
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuRegion, ((TextView) findViewById(R.id.cellar_table_region_1)).getText().toString());
 				row = R.id.tableRow1_1;
 				output_row = R.id.cellar_table_region_1;
 				
@@ -1069,7 +1074,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_vintage_1)).getText().toString());
 				whellMenuNumber = 2;
-				initWheel(R.id.wheel, CommonUtilities.wheelMenuVintage);
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuVintage, ((TextView) findViewById(R.id.cellar_table_vintage_1)).getText().toString());
 				row = R.id.tableRow2_1;
 				output_row = R.id.cellar_table_vintage_1;
 				
@@ -1081,7 +1086,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_grape_1)).getText().toString());
 				whellMenuNumber = 3;
-				initWheel(R.id.wheel, CommonUtilities.wheelMenuGrape);
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuGrape, ((TextView) findViewById(R.id.cellar_table_grape_1)).getText().toString());
 				row = R.id.tableRow3_1;
 				output_row = R.id.cellar_table_grape_1;
 				break;
@@ -1092,7 +1097,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_CLASS_TEXT);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_body_1)).getText().toString());
 				whellMenuNumber = 5;
-				initWheel(R.id.wheel, CommonUtilities.wheelMenuBody);
+				initWheel(R.id.wheel, CommonUtilities.wheelMenuBody, ((TextView) findViewById(R.id.cellar_table_body_1)).getText().toString());
 				row = R.id.tableRow5_1;
 				output_row = R.id.cellar_table_body_1;
 				
@@ -1125,7 +1130,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 				 break;
 			case R.id.tableRow10:
 			case R.id.tableRow10_1:
-				((TextView) findViewById(R.id.cellar_selection_title)).setText("Testing Date");
+				((TextView) findViewById(R.id.cellar_selection_title)).setText("Tasting Date");
 				((TextView) findViewById(R.id.cellar_seclect_desc)).setText("");
 				((EditText)findViewById(R.id.cellars_input_text)).setInputType(InputType.TYPE_NULL);
 				((EditText)findViewById(R.id.cellars_input_text)).setText(((TextView) findViewById(R.id.cellar_table_testing_date_1)).getText().toString());

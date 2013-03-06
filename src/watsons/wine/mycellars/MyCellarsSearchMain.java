@@ -126,6 +126,7 @@ public class MyCellarsSearchMain extends Activity implements View.OnClickListene
         ((RelativeLayout)findViewById(R.id.cellar_search_size)).setOnClickListener(this);
         ((RelativeLayout)findViewById(R.id.cellar_search_sweetness)).setOnClickListener(this);
         ((RelativeLayout)findViewById(R.id.cellar_search_vintage)).setOnClickListener(this);
+        ((ImageButton)findViewById(R.id.cellar_search_done_btn)).setOnClickListener(this);
         
        
     }
@@ -158,6 +159,9 @@ public class MyCellarsSearchMain extends Activity implements View.OnClickListene
 			case R.id.cellar_search_vintage:
 				initWheel(R.id.cellar_search_wheel, CommonUtilities.wheelMenuVintage);
 				break;
+			case R.id.cellar_search_done_btn:
+				((LinearLayout) findViewById(R.id.cellar_search_wheel_layout)).setVisibility(View.GONE);
+				break;
 		}
 		
 	}
@@ -166,7 +170,7 @@ public class MyCellarsSearchMain extends Activity implements View.OnClickListene
 
     {
 		wheelShowing = true;
-    	((RelativeLayout) findViewById(R.id.cellar_search_wheel_layout)).setVisibility(View.VISIBLE);
+    	((LinearLayout) findViewById(R.id.cellar_search_wheel_layout)).setVisibility(View.VISIBLE);
         WheelView wheel = (WheelView) findViewById(id);
         wheel.setViewAdapter(new ArrayWheelAdapter(this, wheel_data));
         wheel.setVisibleItems(2);
@@ -208,7 +212,7 @@ public class MyCellarsSearchMain extends Activity implements View.OnClickListene
 	{
 		if (whellMenuNumber == R.id.cellar_search_region) {
 			Log.i("Osmands", "getWheel(R.id.cellar_search_wheel).getCurrentItem() = "+getWheel(R.id.cellar_search_wheel).getCurrentItem());
-			if (getWheel(R.id.cellar_search_wheel).getCurrentItem() == 1 || getWheel(R.id.cellar_search_wheel).getCurrentItem() == 10) {
+			/*if (getWheel(R.id.cellar_search_wheel).getCurrentItem() == 1 || getWheel(R.id.cellar_search_wheel).getCurrentItem() == 10) {
 				searchRegion = "Bordeaux";
 			} else if (getWheel(R.id.cellar_search_wheel).getCurrentItem() >= 2 && getWheel(R.id.cellar_search_wheel).getCurrentItem() <= 9) {
 					searchRegion = "Bordeaux, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.cellar_search_wheel).getCurrentItem()];	
@@ -230,6 +234,32 @@ public class MyCellarsSearchMain extends Activity implements View.OnClickListene
 				searchRegion = "Accessories";
 			}  else if (getWheel(R.id.cellar_search_wheel).getCurrentItem() >= 52 || getWheel(R.id.cellar_search_wheel).getCurrentItem() <= 54) {
 				searchRegion = "Accessories, "+CommonUtilities.wheelMenuRegion[getWheel(R.id.cellar_search_wheel).getCurrentItem()];
+			}*/
+			int currentItem = getWheel(R.id.cellar_search_wheel).getCurrentItem();
+			Log.i("Osmands", "currentItem = "+currentItem);
+			String Region = "Region";
+			if (currentItem == 0 ) {
+				searchRegion = "Bordeaux";
+			} else if (currentItem >= 1 && currentItem <= 8) {
+				searchRegion = "Bordeaux, "+CommonUtilities.wheelMenuRegion[currentItem];	
+			} else if (currentItem >= 10 && currentItem <= 19) {
+				searchRegion = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 20 ) {
+				searchRegion = "Australia";
+			} else if (currentItem > 20 && currentItem <= 29) {
+				searchRegion = "Australia, "+CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem >= 31 && currentItem <= 35) {
+				searchRegion = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 36 ) {
+				searchRegion = "Champagne";
+			} else if (currentItem >= 37 && currentItem <= 39) {
+				searchRegion = "Champagne, "+CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem >= 41 && currentItem <= 49) {
+				searchRegion = CommonUtilities.wheelMenuRegion[currentItem];
+			} else if (currentItem == 50) {
+				searchRegion = "Accessories";
+			}  else if (currentItem >= 51 && currentItem <= 53) {
+				searchRegion = "Accessories, "+CommonUtilities.wheelMenuRegion[currentItem];
 			}
 			((TextView) findViewById(R.id.cellar_search_region_text)).setText(CommonUtilities.wheelMenuRegion[getWheel(R.id.cellar_search_wheel).getCurrentItem()]);
 		}

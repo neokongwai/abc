@@ -39,8 +39,10 @@ import android.widget.TextView;
 public class WineListProduct extends Activity {
 	// url to make request
 	private static String search_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/search_products/";
-	private static String country_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_country/";
-	private static String province_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_province/";
+	//private static String country_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_country/";
+	//private static String province_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_products_by_province/";
+	private static String country_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/get_wine_details_list.php";
+	private static String province_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/get_wine_details_list.php";
 	private static String url = "http://watsonswineiphone.pacim.com/index.php/api/list_products_by_location/10";;
 
 	// JSON Node names
@@ -125,17 +127,18 @@ public class WineListProduct extends Activity {
 			}
 		} else {
 			Boolean country = bundle.getBoolean("country");
-			String id = bundle.getString("id");
+			String pg1 = bundle.getString("pg1");
+			String pg2 = bundle.getString("pg2");
 			String name = bundle.getString("name");
 
 			// Top TextView
 			if (country) {
 				nameText.setText(name);
-				url = country_url + id;
+				url = country_url + "?pg1=" + pg1 + "&pg2="+ pg2;
 			} else {
 				String countryName = bundle.getString("country_name");
 				nameText.setText(countryName + " | " + name);
-				url = province_url + id;
+				url = province_url + "?pg1=" + pg1 + "&pg2="+ pg2;
 			}
 		}
 

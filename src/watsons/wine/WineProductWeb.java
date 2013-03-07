@@ -55,12 +55,12 @@ public class WineProductWeb extends Activity implements OnTouchListener, Handler
 		        	System.out.println("Inside fb.com");
 		        	webView.requestFocus(View.FOCUS_DOWN);
 		        	Bundle params = new Bundle();
-		            params.putString("description", "I've tasted "+name+" recently and here is my tasting note to share: "+note);
+		            params.putString("description", "I've added "+name+" into my wish list. Let's have a wine gathering and try together."+url+" Tasting note: "+note);
 		            params.putString("name", name);
 		            if (!photo.equals("-") && photo != null) {
 		               params.putString("picture", "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/uploads/wine/"+photo);
 		            }
-		            params.putString("link", "https://www.watsonswine.com");
+		            params.putString("link", url);
 		            CommonUtilities.facebook.dialog(WineProductWeb.this.getParent(), "feed", params, new UpdateStatusListener());
 		        	return true;
 		        }

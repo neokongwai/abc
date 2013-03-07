@@ -2,6 +2,7 @@ package watsons.wine;
  
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.TextView;
  
 @SuppressLint("SetJavaScriptEnabled")
 public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Callback {
@@ -17,6 +20,8 @@ public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Ca
 	private static String dish_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/dish_info/";
 	private WebView webView;
  
+	String name;
+	Bitmap icon;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.food_dish_webview);
@@ -26,6 +31,13 @@ public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Ca
         String id = bundle.getString("id");
         //Toast.makeText(ProductWebView.this, id, Toast.LENGTH_SHORT).show();
         String url = dish_url + id;
+        TextView tv = (TextView)findViewById(R.id.title_dish_text);
+        name = bundle.getString("name");
+        tv.setText(name);
+        ImageView iv = (ImageView)findViewById(R.id.title_dish_img);
+        icon = (Bitmap)bundle.getParcelable("image");
+        iv.setImageBitmap(icon);
+        
  
 		webView = (WebView) findViewById(R.id.food_dish_webview);
 		webView.loadUrl(url);

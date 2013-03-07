@@ -30,6 +30,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -56,6 +58,8 @@ public class FoodDishList extends Activity {
     // Hashmap for ListView
     List<Map<String, String>> dishList = new ArrayList<Map<String, String>>();
     
+    String name;
+    Bitmap icon;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,11 +72,15 @@ public class FoodDishList extends Activity {
         String dish_url = url + bundle.getString("id");
         Log.d("vk", "food dish list");
         TextView tv = (TextView)findViewById(R.id.title_dish_text);
-        tv.setText(bundle.getString("name"));
+        name = bundle.getString("name");
+        tv.setText(name);
+        ImageView iv = (ImageView)findViewById(R.id.title_dish_img);
+        icon = (Bitmap)bundle.getParcelable("image");
+        iv.setImageBitmap(icon);
 
         new JsonTask().execute(dish_url);
 
-        ListView listView = (ListView)findViewById(R.id.list_food_dish);
+        ListView listView = (ListView) findViewById(R.id.list_food_dish);
         adapter = new FoodDishAdapter(this, nameListEng,nameListChi);
         listView.setAdapter(adapter);
 		listView.setDividerHeight(0);
@@ -83,6 +91,8 @@ public class FoodDishList extends Activity {
 					long arg3) {
 				Bundle bundle = new Bundle();
 	        	bundle.putString("id", dishList.get(position).get(TAG_ID));
+	        	bundle.putString("name", name);
+	        	bundle.putParcelable("image",icon);
 	        	Intent intent = new Intent(getParent(), FoodDishWeb.class);
 	        	TabGroupBase parentActivity = (TabGroupBase)getParent();
 	        	intent.putExtras(bundle);

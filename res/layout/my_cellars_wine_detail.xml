@@ -146,40 +146,46 @@
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			>
-			    
-	       		<ImageButton 
-		            android:id="@+id/cellar_in_stock_btn"
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	
-		        	android:background="@drawable/icon_tick_form"
-		        	  />
+			    
+	       		<ImageButton
+	       		    android:id="@+id/cellar_in_stock_btn"
+	       		    android:layout_width="wrap_content"
+	       		    android:layout_height="wrap_content"
+	       		    android:background="@drawable/icon_tick_form" />
 	       		
 			    <View  android:layout_height="1dp"   
 	         		android:layout_width="5dp"/>
-			    <TextView 
-			            android:layout_width="wrap_content"
-			        	android:layout_height="wrap_content"
-			        	android:textStyle="bold"
-		        		android:textColor="@color/Maroon"
-			        	android:text="In Stock" />
+
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:maxLines="2"
+			        android:text="In Stock"
+			        android:textColor="@color/Maroon"
+			        android:textStyle="bold" />
 			    
 			     <View  android:layout_height="1dp"   
 	         		android:layout_width="20dp"/>
-			    
-			    <ImageButton 
-		            android:id="@+id/cellar_wish_list_btn"
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:background="@drawable/icon_tick_form"  />
+			    
+			    <ImageButton
+			        android:id="@+id/cellar_wish_list_btn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/icon_tick_form" />
+
 			    <View  android:layout_height="1dp"   
 	         		android:layout_width="5dp"/>
-			    <TextView 
-			            android:layout_width="wrap_content"
-			        	android:layout_height="wrap_content"
-			        	android:textStyle="bold"
-		        		android:textColor="@color/Maroon"
-			        	android:text="Wish List" />
+
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:maxLines="2"
+			        android:text="Wish List"
+			        android:textColor="@color/Maroon"
+			        android:textStyle="bold" />
+
 		    </LinearLayout>
 		 </LinearLayout>
     </LinearLayout>

@@ -71,7 +71,8 @@ public final class WatsonWineDB {
 		}
 		note_temp = note; 
 		price_temp = price;
-		String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+		String cache_image_path = CommonUtilities.cashImagePath;
+		//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 		int slashIndex = wineImage.lastIndexOf('/');
 		String filenameWithExtension;
 		filenameWithExtension = wineImage.substring(slashIndex + 1);
@@ -318,7 +319,8 @@ class FileUploadTask extends AsyncTask<Object, Integer, Void> {
         	String URL = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/watsonswine_application/models/insert_mycellars_record.php";
         	String ba1 ="";
         	if (!wineImage_temp.equals("-") && wineImage_temp != null) {
-	        	String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+        		String cache_image_path = CommonUtilities.cashImagePath;
+	        	//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 	        	String realImagePathFromURI = cache_image_path+wineImage_temp;
 	        	Log.i("Osmands", "FileUploadTask realImagePathFromURI = "+realImagePathFromURI);
 	        	BitmapFactory.Options options = new BitmapFactory.Options();

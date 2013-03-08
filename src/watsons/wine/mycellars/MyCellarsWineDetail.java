@@ -465,7 +465,8 @@ public class MyCellarsWineDetail extends Activity{
 			//((ImageView) findViewById (R.id.cellar_details_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
 			((ImageView) findViewById (R.id.cellar_details_wine_image)).setBackgroundDrawable(MyCellarsWineDetail.this.getResources().getDrawable(R.drawable.bg_photo_container_camera));
 		} else {
-			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+			String cache_image_path = CommonUtilities.cashImagePath;
+			//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 			File imgFile = new File(cache_image_path+wineDetail.get(4));
 			if (imgFile.exists()) {
 				//holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_small));

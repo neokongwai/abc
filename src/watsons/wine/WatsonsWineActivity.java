@@ -1,5 +1,7 @@
 package watsons.wine;
 
+import com.flurry.android.FlurryAgent;
+
 import watsons.wine.utilities.WatsonWineDB;
 
 import watsons.wine.utilities.Registration;
@@ -122,5 +124,20 @@ public class WatsonsWineActivity extends Activity implements OnClickListener {
 		}
 		startActivity(intent);
 
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "KTFNZWRNTHJFPGT7DFSX");
+		FlurryAgent.logEvent("Home");
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 }

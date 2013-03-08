@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import watsons.wine.R;
+import watsons.wine.utilities.CommonUtilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -62,7 +63,8 @@ public class CellarsListItemsAdapter extends BaseAdapter {
 			convertView = l_Inflater.inflate(R.layout.my_cellars_list_view,null);
 			holder = new ViewHolder();
 			holder.itemImageView = (ImageView) convertView.findViewById(R.id.cellarWineImage);
-			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+			String cache_image_path = CommonUtilities.cashImagePath;
+			//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 			if (itemDetailsrrayList.get(position).getWineImage().equals("-") || itemDetailsrrayList.get(position).getWineImage() == null || itemDetailsrrayList.get(position).getWineImage().isEmpty()) {
 				Log.i("osmand", "setResources");
 				//holder.itemImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bg_photo_container_camera));

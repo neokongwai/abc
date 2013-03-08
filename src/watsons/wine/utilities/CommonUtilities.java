@@ -21,12 +21,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
+import android.os.Environment;
 
 /**
  * Helper class providing methods and constants common to other classes in the
  * app.
  */
 public final class CommonUtilities {
+	
+	public static final String cashImagePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/watsons_wine/MyCellarsChash/";
 	
 	public static final String twitter_consumer_key = "WUvAHsxs77isIJeQ7c9ZJw";
 	public static final String twitter_secret_key = "5A9VVKWtchXB9mwlQdadyXSu1y1fKFzCLIUJwu63HU";

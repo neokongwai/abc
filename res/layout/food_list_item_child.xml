@@ -14,5 +14,6 @@
         android:paddingRight="10dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="18sp" />
+        android:textSize="18sp" 
+        android:typeface="serif"/>
 </RelativeLayout>

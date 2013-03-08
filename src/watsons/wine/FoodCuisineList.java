@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.flurry.android.FlurryAgent;
+
 import watsons.wine.notification.NotificationMainActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -698,5 +700,20 @@ public class FoodCuisineList extends Activity {
         }
         
         return return_url;
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "KTFNZWRNTHJFPGT7DFSX");
+		FlurryAgent.logEvent("FoodAndWine");
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
 	}
 }

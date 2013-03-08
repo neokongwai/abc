@@ -23,6 +23,8 @@ import android.view.View.OnClickListener;
 
 import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
+import com.flurry.android.FlurryAgent;
+
 import watsons.wine.notification.ItemListBaseAdapter;
 import android.view.View.OnClickListener;
 import watsons.wine.R;
@@ -162,4 +164,19 @@ public class NotificationMainActivity extends Activity {
     private void closeDatabase(){
         dbhelper.close(); 
     }
+    
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "KTFNZWRNTHJFPGT7DFSX");
+		FlurryAgent.logEvent("Notification");
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
 }

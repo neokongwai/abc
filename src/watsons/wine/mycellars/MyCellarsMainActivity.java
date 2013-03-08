@@ -2,6 +2,8 @@ package watsons.wine.mycellars;
 
 import com.android.sqlite.DBHelper;
 import com.android.sqlite.DbConstants;
+import com.flurry.android.FlurryAgent;
+
 import watsons.wine.R;
 import watsons.wine.TabGroupBase;
 import watsons.wine.notification.NotificationMainActivity;
@@ -130,4 +132,19 @@ public class MyCellarsMainActivity extends Activity {
     	Log.v("Osmands", "onDestroy()");
         super.onDestroy();
     }
+    
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		FlurryAgent.onStartSession(this, "KTFNZWRNTHJFPGT7DFSX");
+		FlurryAgent.logEvent("MyCeller");
+	}
+	 
+	@Override
+	protected void onStop()
+	{
+		super.onStop();		
+		FlurryAgent.onEndSession(this);
+	}
 }

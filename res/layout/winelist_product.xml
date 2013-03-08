@@ -26,7 +26,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
         android:textSize="22sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:typeface="serif" />
 
     <ListView
         android:id="@+id/list_product"

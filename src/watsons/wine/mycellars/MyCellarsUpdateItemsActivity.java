@@ -664,7 +664,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                Random randomGenerator = new Random();
 	                
 	                String newimagename = randomGenerator.nextInt()+".jpg";
-	                String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+	                String cache_image_path = CommonUtilities.cashImagePath;
+	                //String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 	                new File(cache_image_path).mkdirs();
 	                File f = new File(cache_image_path+ newimagename);
 	                try {
@@ -673,6 +674,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                } catch (IOException e) {
 	                    // TODO Auto-generated catch block
 	                    e.printStackTrace();
+	                    break;
 	                }
 	                //write the bytes in file
 	                FileOutputStream fo = null;
@@ -681,18 +683,22 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 	                } catch (FileNotFoundException e) {
 	                    // TODO Auto-generated catch block
 	                    e.printStackTrace();
+	                    break;
 	                }
 	                try {
 	                    fo.write(bytes.toByteArray());
 	                } catch (IOException e) {
 	                    // TODO Auto-generated catch block
 	                    e.printStackTrace();
+	                    break;
 	                }
 	                Log.i("Osmands", "f.getAbsolutePath() = "+f.getAbsolutePath());
 	    			myCellarsTO.setWineImage(newimagename);
 	    			
     				Bitmap myBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
-    				((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageBitmap(myBitmap);
+    				if (myBitmap != null){ 
+    					((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageBitmap(myBitmap);
+    				}
 
 	    	        //imageview.setImageURI(selectedImage);
 	    	    }
@@ -724,7 +730,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                Random randomGenerator = new Random();
 		                
 		                String newimagename = randomGenerator.nextInt()+".jpg";
-		                String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+		                String cache_image_path = CommonUtilities.cashImagePath;
+		                //String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 		                new File(cache_image_path).mkdirs();
 		                File f = new File(cache_image_path+ newimagename);
 		                try {
@@ -732,6 +739,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                } catch (IOException e) {
 		                    // TODO Auto-generated catch block
 		                    e.printStackTrace();
+		                    break;
 		                }
 		                //write the bytes in file
 		                FileOutputStream fo = null;
@@ -740,20 +748,23 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 		                } catch (FileNotFoundException e) {
 		                    // TODO Auto-generated catch block
 		                    e.printStackTrace();
+		                    break;
 		                }
 		                try {
 		                    fo.write(bytes.toByteArray());
 		                } catch (IOException e) {
 		                    // TODO Auto-generated catch block
 		                    e.printStackTrace();
+		                    break;
 		                }
 		                Log.i("Osmands", "f.getAbsolutePath() = "+f.getAbsolutePath());
 		    			myCellarsTO.setWineImage(newimagename);
 		    			
 	    				Bitmap myBitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
-	    				    
-	 			    	myBitmap = resizeBitmap(myBitmap, 256,256);
-	    				((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageBitmap(myBitmap);
+	    				if (myBitmap != null) {
+		 			    	myBitmap = resizeBitmap(myBitmap, 256,256);
+		    				((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageBitmap(myBitmap);
+	    				}
 	                } catch (FileNotFoundException e) {                 
 	                    e.printStackTrace();
 	                } catch (IOException e) {                   
@@ -1292,7 +1303,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 			myCellarsTO.setWineImage("-");
 			((ImageView) findViewById (R.id.cellar_update_wine_image)).setImageResource(R.drawable.bg_photo_container_camera);
 		} else {
-			String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+			String cache_image_path = CommonUtilities.cashImagePath;
+			//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 			myCellarsTO.setWineImage(wineDetail.get(4));
 			File imgFile = new File(cache_image_path+wineDetail.get(4));
 			if (imgFile.exists()) {
@@ -2116,7 +2128,8 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
         	}
         	String ba1 ="";
         	if (!myCellarsTO.getWineImage().equals("-") && myCellarsTO.getWineImage() != null) {
-	        	String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
+        		String cache_image_path = CommonUtilities.cashImagePath;
+	        	//String cache_image_path = "/storage/sdcard0/watsons_wine/MyCellarsChash/";
 	        	String realImagePathFromURI = cache_image_path+myCellarsTO.getWineImage();
 	        	Log.i("Osmands", "FileUploadTask realImagePathFromURI = "+realImagePathFromURI);
 	        	BitmapFactory.Options options = new BitmapFactory.Options();

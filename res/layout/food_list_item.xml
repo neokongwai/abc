@@ -25,8 +25,9 @@
         android:paddingRight="10dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
     <ImageView
         android:id="@+id/explist_indicator"
         android:layout_width="14dp"

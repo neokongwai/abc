@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class FoodDishAdapter extends BaseAdapter {
+public class FoodDishAdapter extends BaseAdapter  {
 private LayoutInflater linflater;
 private TextView txt_1, txt_2;
 private List<String> str1;

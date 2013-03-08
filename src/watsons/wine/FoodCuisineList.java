@@ -277,6 +277,7 @@ public class FoodCuisineList extends Activity {
 						"name",
 						regionList.get(groupPosition).get(childPosition)
 								.get(TAG_NAME));
+				bundle.putParcelable("image", bitmapList.get(groupPosition));
 				Intent intent = new Intent(getParent(), FoodDishList.class);
 				TabGroupBase parentActivity = (TabGroupBase) getParent();
 				intent.putExtras(bundle);

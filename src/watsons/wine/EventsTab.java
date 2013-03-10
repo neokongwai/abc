@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.opengl.GLSurfaceView.Renderer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -231,8 +232,72 @@ public class EventsTab extends Activity implements
 		
 		ProgressDialog pdia;
 		Boolean quitTask;
-		Boolean skipBGTask;
+		//Boolean cachedJSONExist;
 		String resultJsonStr;
+		
+		protected void randerResultDtat() {
+			try {
+				json = new JSONObject(resultJsonStr);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			
+			try {
+				// Getting Array of Contacts
+				events = json.getJSONArray(TAG_EVENT);
+				
+				// looping through All Contacts
+				for (int i = 0; i < events.length(); i++) {
+					JSONObject c = events.getJSONObject(i);
+
+					// Storing each json item in variable
+					String id = c.getString(TAG_ID);
+					String name = c.getString(TAG_NAME);
+					String date = c.getString(TAG_DATE);
+
+					HashMap<String, String> map = new HashMap<String, String>();
+					// adding each child node to HashMap key => value
+					map.put(TAG_ID, id);
+					map.put(TAG_NAME, name);
+					map.put(TAG_DATE, date);
+
+					// adding HashList to ArrayList
+					eventList.add(map);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString("json_events", json.toString());
+			editor.commit();
+			
+			mView = (CalendarView) findViewById(R.id.calendar_view);
+			for (int i = 0; i < eventList.size(); i++) 
+			{
+				if (!eventList.get(i).get(TAG_DATE).equals("")) 
+				{
+					String date, tmp;
+					int index;
+					date = eventList.get(i).get(TAG_DATE);
+					tmp = date.substring(0, 4);
+					dateList.add(Integer.parseInt(tmp));
+					index = date.indexOf("-");
+					date = date.substring(index + 1);
+					index = date.indexOf("-");
+					tmp = date.substring(0, index);
+					dateList.add(Integer.parseInt(tmp));
+					date = date.substring(index + 1);
+					dateList.add(Integer.parseInt(date));
+				}
+			}
+			mHandler.postDelayed(new Runnable(){
+				@Override
+				public void run() {
+					mView.drawDate(dateList);
+				}
+			}, 100);
+		}
 		
 		@Override
 		protected void onPreExecute() {
@@ -240,15 +305,18 @@ public class EventsTab extends Activity implements
 			pdia = new ProgressDialog(getParent());
 			pdia.setMessage("Loading...");
 			pdia.setCancelable(false);
-			pdia.show();
+			//pdia.show();
 			quitTask = false;
-			skipBGTask = false;
+			//cachedJSONExist = false;
 			
 			sharedPreferences = getPreferences(MODE_PRIVATE);
 			resultJsonStr = sharedPreferences.getString("json_events", null);
 			if(resultJsonStr != null)
 			{
-				skipBGTask = true;
+				randerResultDtat();
+			}
+			else {
+				pdia.show();
 			}
 		}
 
@@ -277,79 +345,12 @@ public class EventsTab extends Activity implements
 			}
 			else
 			{
-				try {
-					json = new JSONObject(resultJsonStr);
-				} catch (JSONException e1) {
-					e1.printStackTrace();
-				}
-				
-				try {
-					// Getting Array of Contacts
-					events = json.getJSONArray(TAG_EVENT);
-					
-					// looping through All Contacts
-					for (int i = 0; i < events.length(); i++) {
-						JSONObject c = events.getJSONObject(i);
-
-						// Storing each json item in variable
-						String id = c.getString(TAG_ID);
-						String name = c.getString(TAG_NAME);
-						String date = c.getString(TAG_DATE);
-
-						HashMap<String, String> map = new HashMap<String, String>();
-						// adding each child node to HashMap key => value
-						map.put(TAG_ID, id);
-						map.put(TAG_NAME, name);
-						map.put(TAG_DATE, date);
-
-						// adding HashList to ArrayList
-						eventList.add(map);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
-				SharedPreferences.Editor editor = sharedPreferences.edit();
-				editor.putString("json_events", json.toString());
-				editor.commit();
-				
-				mView = (CalendarView) findViewById(R.id.calendar_view);
-				for (int i = 0; i < eventList.size(); i++) 
-				{
-					if (!eventList.get(i).get(TAG_DATE).equals("")) 
-					{
-						String date, tmp;
-						int index;
-						date = eventList.get(i).get(TAG_DATE);
-						tmp = date.substring(0, 4);
-						dateList.add(Integer.parseInt(tmp));
-						index = date.indexOf("-");
-						date = date.substring(index + 1);
-						index = date.indexOf("-");
-						tmp = date.substring(0, index);
-						dateList.add(Integer.parseInt(tmp));
-						date = date.substring(index + 1);
-						dateList.add(Integer.parseInt(date));
-					}
-				}
-				mHandler.postDelayed(new Runnable(){
-					@Override
-					public void run() {
-						mView.drawDate(dateList);
-					}
-				}, 100);
-				
+				randerResultDtat();
 			}
-			
-			
-			
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
-			if (skipBGTask) {
-				return null;
-			}
 			if (!isOnline())
 	        {
 	        	quitTask = true;
@@ -364,65 +365,6 @@ public class EventsTab extends Activity implements
 			}
 			resultJsonStr = json.toString();
 			return null;
-			/*
-			if (strJson != null) {
-				try {
-					json = new JSONObject(strJson);
-				} catch (JSONException e1) {
-					e1.printStackTrace();
-				}
-			} else {
-				if (!isOnline())
-		        {
-		        	quitTask = true;
-		        	return null;
-		        }
-				// Creating JSON Parser instance
-				JSONParser jParser = new JSONParser();
-				// getting JSON string from URL
-				json = jParser.getJSONFromUrl(url);
-				
-				if(json == null)
-		        {
-		        	quitTask = true;
-		        	return null;
-		        }
-				SharedPreferences.Editor editor = sharedPreferences.edit();
-				editor.putString("json_events", json.toString());
-				editor.commit();
-			}
-
-			try {
-				
-				
-				// Getting Array of Contacts
-				events = json.getJSONArray(TAG_EVENT);
-
-				
-				
-				// looping through All Contacts
-				for (int i = 0; i < events.length(); i++) {
-					JSONObject c = events.getJSONObject(i);
-
-					// Storing each json item in variable
-					String id = c.getString(TAG_ID);
-					String name = c.getString(TAG_NAME);
-					String date = c.getString(TAG_DATE);
-
-					HashMap<String, String> map = new HashMap<String, String>();
-					// adding each child node to HashMap key => value
-					map.put(TAG_ID, id);
-					map.put(TAG_NAME, name);
-					map.put(TAG_DATE, date);
-
-					// adding HashList to ArrayList
-					eventList.add(map);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return "";
-			*/
 		}
 		
 		public boolean isOnline() {

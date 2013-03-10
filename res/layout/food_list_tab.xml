@@ -60,11 +60,10 @@
 
     <ImageView
         android:id="@+id/food_top_image"
-        android:layout_width="320dp"
+        android:layout_width="fill_parent"
         android:layout_height="220dp"
         android:contentDescription="@string/app_name"
-        
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         />
 
     <ExpandableListView

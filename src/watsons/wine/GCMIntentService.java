@@ -130,6 +130,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
 		
 		message = extras.getString("contentTitle");
+		message = message.replace("'", "''");
 		try{
 			sampleDB.execSQL("INSERT INTO " +DbConstants.NOTIFICATION_TABLE_NAME +" ("+DbConstants.NOTIFICATION_TITLE +", "+DbConstants.NOTIFICATION_BODY +", "+DbConstants.NOTIFICATION_TIME +") Values ('"+message+"', '"+extras.getString("contentText")+"', '"+extras.getString("messageTime")+"');");
 			Log.i("Osmands", "INSERT INTO " +DbConstants.NOTIFICATION_TABLE_NAME +" ("+DbConstants.NOTIFICATION_TITLE +", "+DbConstants.NOTIFICATION_BODY +", "+DbConstants.NOTIFICATION_TIME +") Values ('"+message+"', '"+extras.getString("contentText")+"', '"+extras.getString("messageTime")+"');");

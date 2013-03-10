@@ -48,7 +48,7 @@ public final class WatsonWineDB {
 	String wineName_temp, region_temp,  vintage_temp,  grape_temp,  colour_temp,  body_temp,  sweetness_temp,  size_temp,  note_temp,  wineImage_temp;
 	double price_temp;
 	
-	public boolean addToMyCellerFromWineList(Context context, String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, String note, String wineImage){
+	public boolean addToMyCellerFromWineList(Context context, String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, String note, String wineImage, int wine_url_id){
 		context_temp = context;
 		wineName_temp = wineName;
 		region_temp = region;
@@ -78,7 +78,7 @@ public final class WatsonWineDB {
 		filenameWithExtension = wineImage.substring(slashIndex + 1);
 		wineImage_temp = filenameWithExtension;
 		//return crateNewMyCellerRecord(context, wineName, region, vintage, grape, colour, body, sweetness, size, price, 1, note, 0, "-", "-", "N", wineImage, "N");
-		boolean result = crateNewMyCellerRecord(context, wineName, region, vintage, grape, colour, body, sweetness, size, price, 1, note, 0, "-", "-", "N", filenameWithExtension, "N");
+		boolean result = crateNewMyCellerRecord(context, wineName, region, vintage, grape, colour, body, sweetness, size, price, 1, note, 0, "-", "-", "N", filenameWithExtension, "N", wine_url_id);
 		if (result){ 
 			File imageDirectory = new File(cache_image_path);
 			// have the object build the directory
@@ -105,7 +105,7 @@ public final class WatsonWineDB {
 		return false;
 	}
 	
-	public boolean crateNewMyCellerRecord(Context context, String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, int quantity, String note, int rating, String tasting_date, String occasion, String instock, String wineImage, String up_to_cms){
+	public boolean crateNewMyCellerRecord(Context context, String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, int quantity, String note, int rating, String tasting_date, String occasion, String instock, String wineImage, String up_to_cms, int wine_url_id){
 		SQLiteDatabase watsonWineDB = createOrOpenMyCellarTable(context);
 		if (watsonWineDB != null) {
 			ContentValues cv = new ContentValues();
@@ -128,6 +128,7 @@ public final class WatsonWineDB {
 			cv.put(DbConstants.MY_CELLAR_CREATE_DATE, getDateTime());
 			cv.put(DbConstants.MY_CELLAR_MODIFY_DATE, getDateTime());
 			cv.put(DbConstants.MY_CELLAR_UP_TO_CMS, up_to_cms);
+			cv.put(DbConstants.MY_CELLAR_WINE_URL_ID, wine_url_id);
 			
 			watsonWineDB.insert(DbConstants.MY_CELLAR_TABLE_NAME, null, cv);
 			/*watsonWineDB.execSQL("INSERT INTO " + DbConstants.MY_CELLAR_TABLE_NAME 
@@ -205,7 +206,7 @@ public final class WatsonWineDB {
 						+DbConstants.MY_CELLAR_QUANTITY+" INTEGER Default 1, "+DbConstants.MY_CELLAR_NOTE+" TEXT, "
 						+DbConstants.MY_CELLAR_RATING+" INTEGER DEFAULT 0, "+DbConstants.MY_CELLAR_TASTING_DATE+" VARCHAR, "+DbConstants.MY_CELLAR_OCCASION+" TEXT, "
 						+DbConstants.MY_CELLAR_INSTOCK+" VARCHAR default 'N', "+DbConstants.MY_CELLAR_IMAGE+" VARCHAR, "+DbConstants.MY_CELLAR_CREATE_DATE+" VARCHAR, "
-						+DbConstants.MY_CELLAR_MODIFY_DATE+" VARCHAR, "+DbConstants.MY_CELLAR_UP_TO_CMS+" VARCHAR, "+DbConstants.MY_CELLAR_SERVER_ID+" INTEGER Default -1);");
+						+DbConstants.MY_CELLAR_MODIFY_DATE+" VARCHAR, "+DbConstants.MY_CELLAR_UP_TO_CMS+" VARCHAR, "+DbConstants.MY_CELLAR_SERVER_ID+" INTEGER Default -1, "+DbConstants.MY_CELLAR_WINE_URL_ID+" INTEGER Default -1);");
 			Log.i("Osmands", "Created watsonwine.db");
 			return sampleDB;
 		} catch(SQLiteException	e){

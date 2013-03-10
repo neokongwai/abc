@@ -314,7 +314,7 @@ public class MyCellarsUpdateItemsActivity extends Activity implements View.OnCli
 								myCellarsTO.getSize(), myCellarsTO.getPrice(), myCellarsTO.getQuantity(), 
 								myCellarsTO.getNote(), myCellarsTO.getRating(), myCellarsTO.getTasting_date(),
 								myCellarsTO.getOccasion(), myCellarsTO.getInstock(), myCellarsTO.getWineImage(), 
-								myCellarsTO.getUp_to_cms());
+								myCellarsTO.getUp_to_cms(), -1);
 								Log.i("Osmands", "mode.requals(add)");
 								if(CommonUtilities.isConnectedNetwork(MyCellarsUpdateItemsActivity.this)){
 									Log.i("Osmands", "isConnectedNetwork");

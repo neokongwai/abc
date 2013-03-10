@@ -112,7 +112,8 @@ public class WebAppInterface extends Activity {
     	WatsonWineDB wwdb = new WatsonWineDB();
     	System.out.println(wineName+" "+region+" "+vintage+" "+grape+" "+colour+" "+body+" "+sweetness+" "+size+" "+price+" "+note+" "+wineImage);
     	
-    	Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage);
+    	//Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage);
+    	Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage, 136866); //Osmands please pass the product ID also
     	if(return_bool) {
     		this.showToast("Added to My Cellar");
     	}else {

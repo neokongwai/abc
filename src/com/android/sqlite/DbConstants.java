@@ -35,7 +35,7 @@ public interface DbConstants extends BaseColumns {
     public static final String MY_CELLAR_MODIFY_DATE = "modify_date";
     public static final String MY_CELLAR_UP_TO_CMS = "up_to_cms";
     public static final String MY_CELLAR_SERVER_ID = "server_id";//20
-    
+    public static final String MY_CELLAR_WINE_URL_ID = "url_id";//21
      
 
 }

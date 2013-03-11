@@ -233,7 +233,7 @@ public class MyCellarsWineDetail extends Activity{
 			                int what = 0;
 			 
 			                try {
-			                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" recently. "+"https://www.watsonswine.com");
+			                    mTwitter.updateStatus("I've tasted "+wineDetail.get(1)+" into my wish list. Let's have a wine gathering. "+"https://www.watsonswine.com");
 			                    mHandler.sendMessage(mHandler.obtainMessage(0));
 			                } catch (Exception e) {
 			                	Log.e("Osmands", "Twitter updateStatus error = "+e);
@@ -337,12 +337,23 @@ public class MyCellarsWineDetail extends Activity{
 			@Override
 			public void onClick(View arg0) {
 				Bundle params = new Bundle();
-				params.putString("description", "I've tasted "+wineDetail.get(1)+" recently and here is my tasting note to share: "+wineDetail.get(14));
-				params.putString("name", wineDetail.get(1));
-				if (!wineDetail.get(4).equals("-") && wineDetail.get(4) != null) {
-					params.putString("picture", "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/uploads/wine/"+wineDetail.get(4));
+				String desc = wineDetail.get(14);
+				if (desc.length() > 180) {
+					desc = wineDetail.get(14).substring(0, 180)+"...";
 				}
-				params.putString("link", "https://www.watsonswine.com");
+				//params.putString("message", "I've added "+wineDetail.get(1)+" into my wish list. Let's have a wine gathering and try together.  Tasting note: "+desc);
+				params.putString("description", "I've added "+wineDetail.get(1)+" into my wish list. Let's have a wine gathering and try together.  Tasting note: "+desc);
+				params.putString("name", wineDetail.get(1));
+				/*if (!wineDetail.get(4).equals("-") && wineDetail.get(4) != null) {
+					params.putString("picture", "https://www.watsonswine.com/WebShop/asset/images/prd/"+wineDetail.get(4));
+				}*/
+				//params.putString("link", "https://www.watsonswine.com");
+				params.putString("picture", "https://www.watsonswine.com");
+				if (!wineDetail.get(21).equals("-1")) {
+					params.putString("link", "https://www.watsonswine.com/WebShop/BrowseProductDetail.do?prdid="+wineDetail.get(21));
+				} else {
+					params.putString("link", "https://www.watsonswine.com");
+				}
 				CommonUtilities.facebook.dialog(MyCellarsWineDetail.this.getParent(), "feed", params, new UpdateStatusListener());
 				
 			}
@@ -439,6 +450,9 @@ public class MyCellarsWineDetail extends Activity{
         ((TextView) findViewById(R.id.cellar_table_testing_date)).setText(wineDetail.get(15));
         ((TextView) findViewById(R.id.cellar_table_occasion)).setText(wineDetail.get(16));
         ((TextView) findViewById(R.id.cellar_table_note)).setText(wineDetail.get(14));
+        
+        TableRow.LayoutParams lp = new TableRow.LayoutParams((int)((2*width/3))-45,LinearLayout.LayoutParams.WRAP_CONTENT);
+        ((TextView) findViewById(R.id.cellar_table_note)).setLayoutParams(lp);
         int favourite = Integer.valueOf(wineDetail.get(3));
         ArrayList<ImageView> itemView = new ArrayList<ImageView>();
         itemView.add((ImageView) findViewById(R.id.cellar_table_rating_0));
@@ -508,6 +522,7 @@ public class MyCellarsWineDetail extends Activity{
 		item_details.setWineModifyDate(cursor.getString(i++));
 		item_details.setWineUpToCms(cursor.getString(i++));
 		item_details.setServerId(cursor.getString(i++));
+		item_details.setUrlId(cursor.getString(i++));
 		return item_details;
 	}
     

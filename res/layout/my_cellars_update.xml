@@ -380,7 +380,7 @@
 	                    android:id="@+id/cellar_table_colour_red_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="18dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -394,7 +394,7 @@
 	                    android:id="@+id/cellar_table_colour_white_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -407,7 +407,7 @@
 	                    android:id="@+id/cellar_table_colour_rose_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -421,7 +421,7 @@
 	                    android:id="@+id/cellar_table_colour_other_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -658,7 +658,7 @@
 	                    android:id="@+id/cellar_table_size_37_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="18dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -672,7 +672,7 @@
 	                    android:id="@+id/cellar_table_size_75_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -685,7 +685,7 @@
 	                    android:id="@+id/cellar_table_size_150_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -699,7 +699,7 @@
 	                    android:id="@+id/cellar_table_size_other_btn"
 			            android:layout_width="wrap_content"
 			        	android:layout_height="wrap_content"
-			        	android:layout_marginLeft="20dip"
+			        	android:layout_marginLeft="10dip"
 			        	android:background="@drawable/icon_tick_form"
 	                    />
 			 
@@ -945,14 +945,14 @@
 		    
               <TableRow
 		        android:id="@+id/tableRow12_1"
-		        android:layout_width="fill_parent"
+		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:padding="5dip"
 		        android:visibility="gone"  >
 		 
 		        <TextView
 		            android:id="@+id/cellar_table_note_1"
-		            android:layout_width="wrap_content"
+		            android:layout_width="fill_parent"
 		        	android:layout_height="wrap_content"
 		        	
 	        		android:textColor="@color/Maroon" />

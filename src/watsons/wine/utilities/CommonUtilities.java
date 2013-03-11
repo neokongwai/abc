@@ -34,7 +34,8 @@ public final class CommonUtilities {
 	public static final String twitter_consumer_key = "WUvAHsxs77isIJeQ7c9ZJw";
 	public static final String twitter_secret_key = "5A9VVKWtchXB9mwlQdadyXSu1y1fKFzCLIUJwu63HU";
 	
-	private final static String FB_APP_ID = "515948498450411";
+	//private final static String FB_APP_ID = "515948498450411";
+	private final static String FB_APP_ID = "484643194904731";
 	
 	public final static Facebook facebook = new Facebook(CommonUtilities.FB_APP_ID);
 

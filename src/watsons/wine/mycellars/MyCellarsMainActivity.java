@@ -15,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -54,7 +55,18 @@ public class MyCellarsMainActivity extends Activity {
             ((TextView) findViewById (R.id.cellar_total_wine)).setText(total);
             ((TextView) findViewById (R.id.cellar_in_stock_wine)).setText(in_stock);
             ((TextView) findViewById (R.id.cellar_wish_wine)).setText(""+(Integer.valueOf(total) -Integer.valueOf(in_stock)));
-            ((TextView) findViewById (R.id.cellar_avg_wine)).setText("HK$"+avg);
+            Display display = getWindowManager().getDefaultDisplay();
+      		int width = display.getWidth();
+      		if (width < 720){
+      			((TextView) findViewById (R.id.cellar_avg_wine)).setText("");
+      			((TextView) findViewById (R.id.cellar_avg_wine2)).setText("HK$"+avg);
+      		} else if (avg.length() <= 8) {
+      			((TextView) findViewById (R.id.cellar_avg_wine)).setText("HK$"+avg);
+      			((TextView) findViewById (R.id.cellar_avg_wine2)).setText("");
+      		} else {
+      			((TextView) findViewById (R.id.cellar_avg_wine)).setText("");
+      			((TextView) findViewById (R.id.cellar_avg_wine2)).setText("HK$"+avg);
+      		}
 
         }
         

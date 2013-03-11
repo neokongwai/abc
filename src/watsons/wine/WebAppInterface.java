@@ -79,7 +79,7 @@ public class WebAppInterface extends Activity {
     	runOnUiThread(runnable);
     }
     
-    public void addToCeller(String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, String note, String wineImage) {
+    public void addToCeller(String wineName, String region, String vintage, String grape, String colour, String body, String sweetness, String size, double price, String note, String wineImage, String prdID) {
     	//make sure string not empty
     	if(wineName.isEmpty()) {
     		wineName = "-";
@@ -109,11 +109,17 @@ public class WebAppInterface extends Activity {
     		note = "-";
     	}
     	
-    	WatsonWineDB wwdb = new WatsonWineDB();
-    	System.out.println(wineName+" "+region+" "+vintage+" "+grape+" "+colour+" "+body+" "+sweetness+" "+size+" "+price+" "+note+" "+wineImage);
+    	int prdID_int;
+    	if(prdID.isEmpty()) {
+    		prdID_int = -1;
+    	}else {
+    		prdID_int = Integer.valueOf(prdID);
+    	}
     	
-    	//Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage);
-    	Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage, 136866); //Osmands please pass the product ID also
+    	WatsonWineDB wwdb = new WatsonWineDB();
+    	System.out.println(wineName+" "+region+" "+vintage+" "+grape+" "+colour+" "+body+" "+sweetness+" "+size+" "+price+" "+note+" "+wineImage+" "+prdID_int);
+    	
+    	Boolean return_bool = wwdb.addToMyCellerFromWineList(mContext, wineName, region, vintage, grape, colour, body, sweetness, size, price, note, wineImage, prdID_int);
     	if(return_bool) {
     		this.showToast("Added to My Cellar");
     	}else {

@@ -53,6 +53,7 @@ public class FoodCuisineList extends Activity {
 	// url to make request
 	private static String url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/list_cuisines_and_regions";
 	private static String top_image_api_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/index.php/api/food_and_wine_top_image";
+	private static String top_image_url = "http://watsonwine.bull-b.com/CodeIgniter_2.1.3/uploads/top_image/index.jpg";
 	
 	// JSON Node names
 	private static final String TAG_LIST = "list_cuisines_and_regions";
@@ -120,7 +121,16 @@ public class FoodCuisineList extends Activity {
 
 		});
 
-		/* change food and wine top image */
+		topImage = (ImageView) findViewById(R.id.food_top_image);
+		if(topImage.getDrawable() == null)
+		{
+			new LoadImageTask().execute(topImage,top_image_url,"-1");
+		}
+		else
+		{
+			topImage.setImageBitmap(bitmapList.get(-1));
+		}
+		/* change food and wine top image 
 		topImage = (ImageView) findViewById(R.id.food_top_image);
 		String top_image_url = get_top_img_url();
 		if(top_image_url != null) {
@@ -134,7 +144,7 @@ public class FoodCuisineList extends Activity {
 			topImage.setImageDrawable(dx);
 			topImage.setScaleType(ScaleType.FIT_CENTER);
 		}
-		
+		*/
 		homeBtn = (ImageButton) findViewById(R.id.cellar_home_button);
 		mailBtn = (ImageButton) findViewById(R.id.cellar_mail_button);
 		//topImage.setImageResource(R.drawable.food_index1);
@@ -615,15 +625,7 @@ public class FoodCuisineList extends Activity {
 			return "";*/
 		}
 		
-		public boolean isOnline() {
-		    ConnectivityManager cm =
-		        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-		        return true;
-		    }
-		    return false;
-		}
+		
 	}
 	
 	private class LoadImageTask extends AsyncTask<Object, Void, Bitmap> {
@@ -633,13 +635,15 @@ public class FoodCuisineList extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();  
+			super.onPreExecute();
+			quit = false;
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
 			super.onPostExecute(result);
-			
+			if(quit)
+				return;
 			//Log.d("Stark", "removed = "+ tasks.remove(LoadImageTask.this));
 			
 			if(result != null && imv != null){
@@ -652,6 +656,11 @@ public class FoodCuisineList extends Activity {
 		}
 
 		protected Bitmap doInBackground(Object... params) {
+			if (!isOnline())
+			{
+				quit = true;
+				return null;
+			}
 			imv = (ImageView)   params[0];
 			String url = (String) params[1];
 			String pos = (String) params[2];
@@ -700,6 +709,16 @@ public class FoodCuisineList extends Activity {
         }
         
         return return_url;
+	}
+	
+	public boolean isOnline() {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
 	
 	@Override

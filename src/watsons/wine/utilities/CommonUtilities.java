@@ -31,8 +31,8 @@ public final class CommonUtilities {
 	
 	public static final String cashImagePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/watsons_wine/MyCellarsChash/";
 	
-	public static final String twitter_consumer_key = "WUvAHsxs77isIJeQ7c9ZJw";
-	public static final String twitter_secret_key = "5A9VVKWtchXB9mwlQdadyXSu1y1fKFzCLIUJwu63HU";
+	public static final String twitter_consumer_key = "0b4xuvMKe9rHw61oxdHVDQ";
+	public static final String twitter_secret_key = "J2BTUYScppMEkJR6aT3zVUNMV5jZMN7HvaouLX4Y";
 	
 	//private final static String FB_APP_ID = "515948498450411";
 	private final static String FB_APP_ID = "484643194904731";

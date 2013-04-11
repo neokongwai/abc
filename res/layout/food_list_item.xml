@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/list_fooditem_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="5dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
@@ -25,7 +25,7 @@
         android:paddingRight="10dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:typeface="serif" />
     <ImageView

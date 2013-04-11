@@ -1,6 +1,8 @@
 package watsons.wine;
 
 import java.io.IOException;
+
+import android.graphics.Typeface;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,6 +50,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.graphics.Color;
 
 public class FoodCuisineList extends Activity {
 	// url to make request
@@ -234,6 +237,22 @@ public class FoodCuisineList extends Activity {
 				TextView tv = (TextView) view
 						.findViewById(R.id.list_fooditem_text);
 				tv.setText(cuisineList.get(groupPosition).get(TAG_NAME));
+				
+				if (topImage.getVisibility() != View.GONE) {
+					Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+							"fonts/Arial Bold.ttf");
+					tv.setTypeface(tf);
+					tv.setTextColor(Color.parseColor("#480000"));
+					tv.setTextSize(20);
+				}
+				else {
+					Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+							"fonts/ACaslonPro-Regular.otf");
+					tv.setTypeface(tf);
+					tv.setTextColor(Color.parseColor("#700021"));
+					tv.setTextSize(20);
+				}
+				
 				return view;
 			}
 
@@ -241,7 +260,11 @@ public class FoodCuisineList extends Activity {
 					boolean isLastChild, View convertView, ViewGroup parent) {
 				LayoutInflater li = (LayoutInflater) mContext
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				
 				View view = null;
+				
+				Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Arial.ttf");
+				
 				if (isLastChild
 						&& cuisineList.get(groupPosition).get(TAG_USE_SPONSOR)
 								.contains("1")) {
@@ -264,6 +287,10 @@ public class FoodCuisineList extends Activity {
 							.findViewById(R.id.list_fooditem_text_child);
 					tv.setText(regionList.get(groupPosition).get(childPosition)
 							.get(TAG_NAME));
+					
+					tv.setTypeface(tf);
+					tv.setTextColor(Color.parseColor("#282828"));
+					tv.setTextSize(18);
 				}
 
 				return view;
@@ -309,6 +336,17 @@ public class FoodCuisineList extends Activity {
 					homeBtn.setVisibility(View.GONE);
 					mailBtn.setVisibility(View.GONE);
 				}
+				
+				/*LayoutInflater li = (LayoutInflater) mContext
+						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				View view = li.inflate(R.layout.food_list_item, null);
+				TextView tv = (TextView) view
+						.findViewById(R.id.list_fooditem_text);
+				Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+						"fonts/ACaslonPro-Regular.otf");
+				tv.setTypeface(tf);
+				tv.setTextColor(Color.parseColor("#700021"));*/
+				
 				return false;
 			}
 

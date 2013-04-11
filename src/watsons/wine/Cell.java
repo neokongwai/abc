@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.Typeface;
 
 public class Cell {
 	private static final String TAG = "Cell";
@@ -18,9 +19,12 @@ public class Cell {
             |Paint.ANTI_ALIAS_FLAG);
 	int dx, dy;
 	public Cell(Context context, int dayOfMon, Rect rect, float textSize, boolean thisMonth) {
+		Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/Arial.ttf");
+		
 		mDayOfMonth = dayOfMon;
 		mBound = rect;
 		mPaint.setTextSize(textSize/*26f*/);
+		mPaint.setTypeface(tf);
 		mPaint.setColor(Color.BLACK);
 		//if(bold) mPaint.setFakeBoldText(true);
 		if (thisMonth)

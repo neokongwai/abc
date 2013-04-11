@@ -13,5 +13,5 @@
 <dimen name="cell_heigh">41.8dp</dimen>
 <dimen name="cell_margin_top">61.3dp</dimen>
 <dimen name="cell_margin_left">26dp</dimen>
-<dimen name="cell_text_size">22.3dp</dimen>
+<dimen name="cell_text_size">18dp</dimen>
 </resources>

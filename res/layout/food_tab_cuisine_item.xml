@@ -22,7 +22,7 @@
         android:paddingRight="10dip"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/Maroon"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:typeface="serif" />
 
 </LinearLayout>

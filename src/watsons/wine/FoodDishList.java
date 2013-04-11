@@ -21,6 +21,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -74,6 +76,13 @@ public class FoodDishList extends Activity {
         TextView tv = (TextView)findViewById(R.id.title_dish_text);
         name = bundle.getString("name");
         tv.setText(name);
+        
+        Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+				"fonts/ACaslonPro-Regular.otf");
+		tv.setTypeface(tf);
+		tv.setTextColor(Color.parseColor("#700021"));
+		tv.setTextSize(20);
+        
         ImageView iv = (ImageView)findViewById(R.id.title_dish_img);
         icon = (Bitmap)bundle.getParcelable("image");
         iv.setImageBitmap(icon);

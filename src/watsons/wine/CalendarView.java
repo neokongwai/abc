@@ -149,11 +149,11 @@ public class CalendarView extends ImageView {
 				
 				Bound.offset(CELL_WIDTH, 0); // move to next column 
 				
-				/* get today
-				if(tmp[week][day].day==thisDay && tmp[week][day].thisMonth) {
-					mToday = mCells[week][day];
-					mDecoration.setBounds(mToday.getBound());
-				}*/
+				// get today
+				//if(tmp[week][day].day==thisDay && tmp[week][day].thisMonth) {
+				//	mToday = mCells[week][day];
+				//	mDecoration.setBounds(mToday.getBound());
+				//}
 			}
 			Bound.offset(0, CELL_HEIGH); // move to next row and first column
 			Bound.left = CELL_MARGIN_LEFT;

@@ -24,6 +24,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -107,6 +109,10 @@ public class WineListProduct extends Activity {
 				
 				url = search_url + encode_str;
 				nameText.setText(str);
+				
+				Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+						"fonts/DroidSerif-Bold.ttf");
+				nameText.setTypeface(tf);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

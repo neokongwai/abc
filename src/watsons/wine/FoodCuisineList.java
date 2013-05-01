@@ -242,15 +242,15 @@ public class FoodCuisineList extends Activity {
 					Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
 							"fonts/Arial Bold.ttf");
 					tv.setTypeface(tf);
-					tv.setTextColor(Color.parseColor("#480000"));
-					tv.setTextSize(20);
+					tv.setTextColor(Color.parseColor("#490000"));
+					tv.setTextSize(22);
 				}
 				else {
 					Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
-							"fonts/ACaslonPro-Regular.otf");
+							"fonts/Arial.ttf");
 					tv.setTypeface(tf);
-					tv.setTextColor(Color.parseColor("#700021"));
-					tv.setTextSize(20);
+					tv.setTextColor(Color.parseColor("#490000"));
+					tv.setTextSize(18);
 				}
 				
 				return view;
@@ -269,6 +269,13 @@ public class FoodCuisineList extends Activity {
 						&& cuisineList.get(groupPosition).get(TAG_USE_SPONSOR)
 								.contains("1")) {
 					view = li.inflate(R.layout.food_list_sponsor, null);
+					
+					TextView tv = (TextView) view.findViewById(R.id.list_fooditem_text_child);
+					Typeface tf_sponser = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Arial Bold.ttf");
+					tv.setTypeface(tf_sponser);
+					tv.setTextColor(Color.parseColor("#2b2b2b"));
+					//tv.setTextSize(17);
+					
 					ImageView iv = (ImageView) view
 							.findViewById(R.id.list_fooditem_sponsor);
 					String url = regionList.get(groupPosition)
@@ -290,7 +297,7 @@ public class FoodCuisineList extends Activity {
 					
 					tv.setTypeface(tf);
 					tv.setTextColor(Color.parseColor("#282828"));
-					tv.setTextSize(18);
+					tv.setTextSize(19);
 				}
 
 				return view;

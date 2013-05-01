@@ -108,8 +108,7 @@ public class FoodTab extends Activity {
 				LayoutInflater inflater = getLayoutInflater();
 				rowview = inflater.inflate(R.layout.food_tab_cuisine_item, parent, false);
 			}
-			Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
-					"fonts/Arial Bold.ttf");
+			Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Arial Bold.ttf");
 			TextView Nmae = (TextView) rowview.findViewById(R.id.list_cuisine_name);
 			Nmae.setText(textname[position]);
 			Nmae.setTypeface(tf);

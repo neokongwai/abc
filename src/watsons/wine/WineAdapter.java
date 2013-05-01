@@ -32,6 +32,8 @@ import android.widget.TextView;
 import java.net.URL;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 
 public class WineAdapter extends ArrayAdapter<Wine> {
 
@@ -41,6 +43,9 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 	ImageSpan is;
 	LinearLayout ll;
 	ArrayList<LoadImageTask> tasks = null;
+	
+	private Typeface tf_arialBold;
+	//private Typeface tf_droidSerifBold;
 
 	public WineAdapter(Context context, int layoutResourceId,
 			ArrayList<Wine> data) {
@@ -50,6 +55,9 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 		this.data = data;
 		
 		this.tasks = new ArrayList<LoadImageTask>();
+		
+		tf_arialBold = Typeface.createFromAsset(context.getAssets(), "fonts/Arial Bold.ttf");
+		//tf_droidSerifBold = Typeface.createFromAsset(context.getAssets(), "fonts/DroidSerif-Bold.ttf");
 	}
 
 	@Override
@@ -73,6 +81,8 @@ public class WineAdapter extends ArrayAdapter<Wine> {
 					.findViewById(R.id.list_product_item_image);
 			holder.txtName = (TextView) row
 					.findViewById(R.id.list_product_item_name);
+			holder.txtName.setTypeface(tf_arialBold);
+			
 			holder.txtSize = (TextView) row
 					.findViewById(R.id.list_product_item_size_value);
 			holder.txtOriPrice = (TextView) row

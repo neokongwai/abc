@@ -78,10 +78,10 @@ public class FoodDishList extends Activity {
         tv.setText(name);
         
         Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
-				"fonts/ACaslonPro-Regular.otf");
+				"fonts/DroidSerif-Bold.ttf");
 		tv.setTypeface(tf);
-		tv.setTextColor(Color.parseColor("#700021"));
-		tv.setTextSize(20);
+		tv.setTextColor(Color.parseColor("#490000"));
+		tv.setTextSize(16);
         
         ImageView iv = (ImageView)findViewById(R.id.title_dish_img);
         icon = (Bitmap)bundle.getParcelable("image");

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lv_winetab"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/FloralWhite"
+    android:orientation="vertical" >
+
+	<RelativeLayout 
+        android:id="@+id/title_events"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_events"
+        android:layout_marginTop="-1dp"
+        >
+        <RelativeLayout
+    		style="@style/GenericProgressBackground"
+    		android:id="@+id/refresh_img"
+    		android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:paddingRight="10dp"
+	        android:layout_centerVertical="true"
+	        android:visibility="gone"
+    	>
+		    <ProgressBar
+		        style="@style/GenericProgressIndicator"/>
+		</RelativeLayout>
+
+        <ImageButton
+	        android:id="@+id/cellar_home_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/btn_home" />
+	    
+	    <ImageButton
+	        android:id="@+id/cellar_mail_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/cellar_home_button"
+	        android:layout_centerVertical="true"
+	        android:layout_marginLeft="5dip"
+	        android:background="@drawable/btn_email" />
+        
+	    <ImageView
+	        android:id="@+id/refresh_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:paddingRight="10dp"
+	        android:layout_centerVertical="true"
+	        android:contentDescription="@string/app_name"
+	        android:src="@drawable/btn_referesh" 
+	        />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        
+
+        <watsons.wine.CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp"
+            android:id="@+id/calendar_text"
+            android:textColor="@color/Maroon"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>

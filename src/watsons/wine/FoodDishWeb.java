@@ -3,6 +3,8 @@ package watsons.wine;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +39,12 @@ public class FoodDishWeb extends Activity implements OnTouchListener, Handler.Ca
         ImageView iv = (ImageView)findViewById(R.id.title_dish_img);
         icon = (Bitmap)bundle.getParcelable("image");
         iv.setImageBitmap(icon);
+        
+        Typeface tf = Typeface.createFromAsset(getApplicationContext().getAssets(),
+				"fonts/DroidSerif-Bold.ttf");
+		tv.setTypeface(tf);
+		tv.setTextColor(Color.parseColor("#490000"));
+		tv.setTextSize(16);
         
  
 		webView = (WebView) findViewById(R.id.food_dish_webview);
